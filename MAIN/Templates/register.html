@@ -1,0 +1,9 @@
+<p>Register</p>
+<form method="POST">
+    {% csrf_token %}
+    {{forms.as_p}}
+    <button>
+        Guardar
+    </button>
+{{error}}
+</form>
