@@ -9,9 +9,6 @@ from django.contrib.auth import login, logout, authenticate
 def main(request):
     return render(request, 'main.html')
 
-def flashcard(request):
-    return render(request,'flashcard.html')
-
 def register(request):
     if request.method == 'GET':
         return render(request, 'register.html',{
@@ -54,7 +51,8 @@ def formlogin(request):
         else:
             login(request, user)
             return redirect('main')
-    
+
+@login_required
 def logout2(request):
     logout(request)
     return redirect('login')
@@ -62,4 +60,8 @@ def logout2(request):
 @login_required
 def perfil(request):
     return render(request, 'perfil.html')
+
+@login_required
+def flashcard(request):
+    return render(request,'flashcard.html')
 

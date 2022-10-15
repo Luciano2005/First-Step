@@ -10,22 +10,24 @@
         <li>
             <a href="">Home</a>
         </li>
+        {% if user.is_authenticated %}
         <li>
             <a href="/perfil">Mi Perfil</a>
         </li>
-        {% if user.is_authenticated %}
+        <li>
+            <a href="/flashcard">Flashcard</a>
+        </li>
         <li>
             <a href="/logout">Salir</a>
         </li>
         {% else %}
         <li>
+            <a href="/register">Registro</a>
+        </li>
+        <li>
             <a href="/formlogin">Login</a>
         </li>
-        {% endif %}
-        <li>
-            <a href="/flashcard">Flashcard</a>
-        </li>
-        
+        {% endif %}        
     </ul>
 </nav>
 <body>
