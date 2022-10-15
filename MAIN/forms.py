@@ -1,6 +1,6 @@
 from urllib import request
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 class Registro(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -17,4 +17,13 @@ class Registro(UserCreationForm):
     class Meta:
         model=User
         fields=['username','first_name','email','password1','password2']
-        
+class Loguearse(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label='Nombre de usuario'
+        self.fields['password'].label='Contraseña'
+        for fieldname in ['username', 'password']:
+            self.fields[fieldname].help_text = None
+    class Meta:
+        model=User
+        fields=['username','password']

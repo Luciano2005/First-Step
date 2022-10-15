@@ -1,13 +1,16 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registro
+from .forms import Registro, Loguearse
 from django.contrib.auth.models import User
-
+from django.contrib.auth import login, logout, authenticate
 # Create your views here.
 
 def main(request):
     return render(request, 'main.html')
+
+def flashcard(request):
+    return render(request,'flashcard.html')
 
 def register(request):
     if request.method == 'GET':
@@ -19,6 +22,7 @@ def register(request):
             try:
                 user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
                 user.save()
+                login(request, user)
                 return redirect("login")
             except IntegrityError:
                 return render(request, 'register.html',{
@@ -35,9 +39,27 @@ def register(request):
             'error':'Las contraseñas no coindicen'
     })
 
-def login(request):
-    return render(request, 'login.html')
+def formlogin(request):
+    if request.method== 'GET':
+        return render(request, 'login.html',{
+            'form':Loguearse
+    })
+    else:
+        user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
+        if user is None:
+         return render(request, 'login.html',{
+            'form':Loguearse,
+            'error':'Nombre de usuario o contraseña incorrecto'
+            }) 
+        else:
+            login(request, user)
+            return redirect('main')
+    
+def logout2(request):
+    logout(request)
+    return redirect('login')
 
 @login_required
 def perfil(request):
     return render(request, 'perfil.html')
+
