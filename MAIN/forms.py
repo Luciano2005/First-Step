@@ -24,6 +24,7 @@ class Loguearse(AuthenticationForm):
         self.fields['password'].label='Contraseña'
         for fieldname in ['username', 'password']:
             self.fields[fieldname].help_text = None
+            
     class Meta:
         model=User
         fields=['username','password']
