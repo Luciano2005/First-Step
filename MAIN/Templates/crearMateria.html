@@ -1,0 +1,16 @@
+{% extends 'navegacion.html' %}
+
+{% block content %}
+
+<p>Crear Materia</p>
+
+<form method = "POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>
+        Crear
+    </button>
+</form>
+
+
+{% endblock %}

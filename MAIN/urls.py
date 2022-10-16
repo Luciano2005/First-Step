@@ -7,5 +7,6 @@ urlpatterns = [
     path('register/' , views.register, name="register"),
     path('perfil/' , views.perfil, name="perfil"),
     path('logout/',views.logout2,name='logout'),
+    path('crearMateria/', views.crearMateria, name = 'crearMateria'),
     path('flashcard/',views.flashcard,name='flashcard')
 ]

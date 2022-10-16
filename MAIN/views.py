@@ -1,9 +1,10 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import Registro, Loguearse
+from .forms import Registro, Loguearse, newMateria
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from .models import Materia
 # Create your views here.
 
 def main(request):
@@ -60,6 +61,16 @@ def logout2(request):
 @login_required
 def perfil(request):
     return render(request, 'perfil.html')
+
+@login_required
+def crearMateria(request):
+    if request.method == 'GET':
+        return render(request, 'crearMateria.html', {
+        'form' : newMateria()
+    })
+    else:
+        Materia.objects.create(name = request.POST['name'], hora = request.POST['hora'], profesor = request.POST['profesor'], profesor_email = request.POST['profesor_email'])
+        return redirect('/perfil/')
 
 @login_required
 def flashcard(request):

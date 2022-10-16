@@ -1,6 +1,15 @@
 {% extends 'navegacion.html' %}
+
 {% block content %}
 <p>Pagina principal</p>
+
+{% if user.is_authenticated %}
 <h1>ESTE ES EL HOME</h1>
 <h2>¡Bienvenido, {{user.username}} esperamos que tu sesión de hoy sea bastante productiva!</h2>
+
+{% else %}
+
+<h3> Inicia sesion primero para acceder a las funcionalidades </h3>
+{% endif %}
+
 {% endblock %}
