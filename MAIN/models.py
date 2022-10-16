@@ -1,17 +1,16 @@
 from django.db import models
 from ESTUDIO.models import Pregunta
+from django.contrib.auth.models import User
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
 class Register(models.Model):
-    #revision id
     username=models.CharField(max_length= 30, blank= False)
     name=models.CharField(max_length=60, blank=False) 
     password=models.CharField(max_length=30, blank=False)
     email=models.EmailField(blank=False)
 
 class Materia(models.Model):
-    #enlace id con user
-    user = models.ForeignKey(Register, on_delete = models.CASCADE, null = True)
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)
     hora = models.TimeField(blank = False)
     profesor = models.CharField(max_length = 30, blank = False)
@@ -21,6 +20,7 @@ class Materia(models.Model):
     #UNAL vs NO UNAL
 
 class Seccion(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)
     materia = models.ForeignKey(Materia, on_delete = models.CASCADE)
     def __str__(self):

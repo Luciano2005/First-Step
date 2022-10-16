@@ -35,3 +35,4 @@ class newMateria(forms.Form):
     hora = forms.TimeField(label = "Hora de inicio de la materia", required = True)
     profesor = forms.CharField(label = "Nombre del profesor", required = True)
     profesor_email = forms.EmailField(label = "Correo del profesor", required = True)
+
