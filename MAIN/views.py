@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import Registro, Loguearse, newMateria
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .models import Materia
+from .models import Materia, Seccion
 # Create your views here.
 
 def main(request):
@@ -64,7 +64,7 @@ def perfil(request):
 
 @login_required
 def materias(request):
-    materias = Materia.objects.filter(user = request.User)
+    materias = Materia.objects.filter(user = request.user)
     return render(request, 'materias.html', {
         'materias' : materias
     })
@@ -76,8 +76,8 @@ def crearMateria(request):
         'form' : newMateria()
     })
     else:
-        Materia.objects.create(name = request.POST['name'], hora = request.POST['hora'], profesor = request.POST['profesor'], profesor_email = request.POST['profesor_email'])
-        return redirect('/perfil/')
+        Materia.objects.create(user = request.user, name = request.POST['name'], hora = request.POST['hora'], profesor = request.POST['profesor'], profesor_email = request.POST['profesor_email'])
+        return redirect('/materias/')
 
 @login_required
 def flashcard(request):
