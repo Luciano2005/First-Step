@@ -1,0 +1,20 @@
+{% extends 'navegacion.html' %}
+
+{% block content %}
+
+<p>Materias</p>
+
+{% for materia in materias %} 
+
+<div>
+
+    <p>{{materia.name}}</p>
+    <p>{{materia.hora}}</p>
+    <p>{{materia.profesor}}</p>
+    <p>{{materia.profesor_email}}</p>
+
+</div>
+
+{{% endfor %}}
+
+{% endblock %}

@@ -63,6 +63,13 @@ def perfil(request):
     return render(request, 'perfil.html')
 
 @login_required
+def materias(request):
+    materias = Materia.objects.filter(user = request.User)
+    return render(request, 'materias.html', {
+        'materias' : materias
+    })
+
+@login_required
 def crearMateria(request):
     if request.method == 'GET':
         return render(request, 'crearMateria.html', {

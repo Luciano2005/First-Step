@@ -1,16 +1,17 @@
-
 from django.db import models
 from ESTUDIO.models import Pregunta
-
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
 class Register(models.Model):
+    #revision id
     username=models.CharField(max_length= 30, blank= False)
     name=models.CharField(max_length=60, blank=False) 
     password=models.CharField(max_length=30, blank=False)
     email=models.EmailField(blank=False)
 
 class Materia(models.Model):
+    #enlace id con user
+    user = models.ForeignKey(Register, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)
     hora = models.TimeField(blank = False)
     profesor = models.CharField(max_length = 30, blank = False)
