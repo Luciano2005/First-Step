@@ -7,5 +7,10 @@
 <p> {{materia.hora}} </p>
 <p> {{materia.profesor}} </p>
 <p> {{materia.profesor_email}} </p>
+<form method="POST">
+{% csrf_token %}
+{{form}}
+<button>Save</button>
+</form>
 
 {% endblock %}

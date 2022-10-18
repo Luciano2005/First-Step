@@ -5,6 +5,7 @@ from .forms import Registro, Loguearse, newMateria, newSeccion
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .models import Materia, Seccion
+
 # Create your views here.
 
 def main(request):
@@ -71,11 +72,22 @@ def materias(request):
 
 @login_required
 def materia_detail(request, materia_id):
-    materia = get_object_or_404(Materia, pk=materia_id)
-    return render(request, 'materia_detail.html', {
-        'materia' : materia
-    })
-
+    if request.method=='GET':
+        materia = get_object_or_404(Materia, pk=materia_id)
+        form=newMateria(instance=materia)
+        return render(request, 'materia_detail.html', {
+        'materia' : materia,
+        'form':form})
+    else:
+        try:
+            materia = get_object_or_404(Materia, pk=materia_id)
+            form=newMateria(request.POST, instance=materia)
+            form.save()
+            return redirect('materias')
+        except ValueError:
+            return render(request, 'materia_detail.html', {
+        'materia' : materia,
+        'error':'dddfd'})
 @login_required
 def crearMateria(request):
     if request.method == 'GET':
@@ -83,8 +95,18 @@ def crearMateria(request):
         'form' : newMateria()
     })
     else:
-        Materia.objects.create(user = request.user, name = request.POST['name'], hora = request.POST['hora'], profesor = request.POST['profesor'], profesor_email = request.POST['profesor_email'])
-        return redirect('/materias/')
+        try:
+
+            form= newMateria(request.POST)
+            new_materia=form.save(commit=False)
+            new_materia.user=request.user
+            new_materia.save()
+            return redirect('/materias/')
+        except ValueError:
+            return render(request,'crearMateria.html',{
+                'form':newMateria,
+                'error':'dkssdjskdskdjk'
+            })
 
 @login_required
 def flashcard(request):
