@@ -72,22 +72,27 @@ def materias(request):
 
 @login_required
 def materia_detail(request, materia_id):
-    if request.method=='GET':
+    materia = get_object_or_404(Materia, pk=materia_id)
+    form=newMateria(instance=materia)
+    return render(request, 'materia_detail.html', {
+    'materia' : materia,
+    'form':form
+    })
+
+@login_required
+def cambiarMateria(request, materia_id):
+    if request.method == 'GET':
         materia = get_object_or_404(Materia, pk=materia_id)
         form=newMateria(instance=materia)
-        return render(request, 'materia_detail.html', {
-        'materia' : materia,
-        'form':form})
+        return render(request, 'cambiarMateria.html' , {
+            'form' : form
+        })
     else:
-        try:
-            materia = get_object_or_404(Materia, pk=materia_id)
-            form=newMateria(request.POST, instance=materia)
-            form.save()
-            return redirect('materias')
-        except ValueError:
-            return render(request, 'materia_detail.html', {
-        'materia' : materia,
-        'error':'dddfd'})
+        materia = get_object_or_404(Materia, pk=materia_id)
+        form=newMateria(request.POST, instance=materia)
+        form.save()
+        return redirect('materias')
+
 @login_required
 def crearMateria(request):
     if request.method == 'GET':
