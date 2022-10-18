@@ -4,7 +4,11 @@
 
 <p>Materias</p>
 
-<a href="/crearMateria/">Crear Materia</a>
+<form action = {% url 'crearMateria' %}>
+    <button>
+        Crear Materia
+    </button>
+</form>
 
 {% for materia in materias %} 
 

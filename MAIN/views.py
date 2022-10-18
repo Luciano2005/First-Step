@@ -94,6 +94,13 @@ def cambiarMateria(request, materia_id):
         return redirect('materias')
 
 @login_required
+def elmimiarMateria(request, materia_id):
+    if request.method == 'POST':
+        materia = get_object_or_404(Materia, pk=materia_id)
+        materia.delete()
+        return redirect('materias')
+
+@login_required
 def crearMateria(request):
     if request.method == 'GET':
         return render(request, 'crearMateria.html', {

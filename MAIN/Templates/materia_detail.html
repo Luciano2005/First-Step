@@ -8,6 +8,17 @@
 <p> {{materia.profesor}} </p>
 <p> {{materia.profesor_email}} </p>
 
-<a href = {% url 'cambiarMateria' materia.id %}>Actualizar</a>
+<form action = {% url 'cambiarMateria' materia.id %}>
+    <button>
+        Actualizar
+    </button>
+</form>
+
+<form action = {% url 'eliminarMateria' materia.id %} , method="POST">
+    {% csrf_token %}
+    <button>
+        Eliminar
+    </button>
+</form>
 
 {% endblock %}
