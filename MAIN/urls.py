@@ -12,5 +12,6 @@ urlpatterns = [
     path('materia_detail/<int:materia_id>',views.materia_detail, name = 'materia_detail'),
     path('cambiarMateria/<int:materia_id>',views.cambiarMateria, name = 'cambiarMateria'),
     path('eliminarMateria/<int:materia_id>', views.elmimiarMateria, name = 'eliminarMateria'),
+    path('crearSeccion/<int:materia_id>', views.crearSeccion, name = 'crearSeccion'),
     path('flashcard/',views.flashcard,name='flashcard')
 ]

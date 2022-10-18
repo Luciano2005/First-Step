@@ -1,5 +1,6 @@
+from ast import MatchSequence
 from django.db import IntegrityError
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import Registro, Loguearse, newMateria, newSeccion
 from django.contrib.auth.models import User
@@ -72,12 +73,15 @@ def materias(request):
 
 @login_required
 def materia_detail(request, materia_id):
-    materia = get_object_or_404(Materia, pk=materia_id)
-    form=newMateria(instance=materia)
-    return render(request, 'materia_detail.html', {
-    'materia' : materia,
-    'form':form
-    })
+        materia = get_object_or_404(Materia, pk=materia_id)
+        form=newMateria(instance=materia)
+        seccion = get_list_or_404(Seccion, materia_id = materia_id)
+        return render(request, 'materia_detail.html', {
+            'materia' : materia,
+            'form':form,
+            'seccions' : seccion
+        })
+        #Manejar para cuando no hayan secciones creadas
 
 @login_required
 def cambiarMateria(request, materia_id):
@@ -119,6 +123,16 @@ def crearMateria(request):
                 'form':newMateria,
                 'error':'dkssdjskdskdjk'
             })
+
+@login_required
+def crearSeccion(request, materia_id):
+    if request.method == 'GET':
+        return render(request, 'crearSeccion.html', {
+            'form' : newSeccion()
+        })
+    else:
+        Seccion.objects.create(user = request.user, name = request.POST['name'], materia_id = materia_id)    
+        return redirect('/materias/')
 
 @login_required
 def flashcard(request):

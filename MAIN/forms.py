@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from MAIN.models import Materia
+from MAIN.models import Materia, Seccion
 
 class Registro(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -37,6 +37,8 @@ class newMateria(forms.ModelForm):
         model=Materia
         fields=['name','hora','profesor','profesor_email']
 
-class newSeccion(forms.Form):
-    name = forms.CharField(label = "Nombre de la seccion", required = True)
+class newSeccion(forms.ModelForm):
+    class Meta:
+        model = Seccion
+        fields = ['name']
 

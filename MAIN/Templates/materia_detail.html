@@ -8,6 +8,12 @@
 <p> {{materia.profesor}} </p>
 <p> {{materia.profesor_email}} </p>
 
+<form action = {% url 'crearSeccion' materia.id %}>
+    <button>
+        Crear Seccion
+    </button>
+</form>
+
 <form action = {% url 'cambiarMateria' materia.id %}>
     <button>
         Actualizar
@@ -20,5 +26,13 @@
         Eliminar
     </button>
 </form>
+
+{% for seccion in seccions %} 
+
+    <div>
+        {{seccion.name}}
+    </div>
+
+{% endfor %}
 
 {% endblock %}
