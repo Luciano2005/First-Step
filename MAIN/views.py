@@ -1,7 +1,7 @@
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import Registro, Loguearse, newMateria
+from .forms import Registro, Loguearse, newMateria, newSeccion
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .models import Materia, Seccion
@@ -67,6 +67,13 @@ def materias(request):
     materias = Materia.objects.filter(user = request.user)
     return render(request, 'materias.html', {
         'materias' : materias
+    })
+
+@login_required
+def materia_detail(request, materia_id):
+    materia = get_object_or_404(Materia, pk=materia_id)
+    return render(request, 'materia_detail.html', {
+        'materia' : materia
     })
 
 @login_required

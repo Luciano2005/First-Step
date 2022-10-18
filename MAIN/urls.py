@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout/',views.logout2,name='logout'),
     path('materias/', views.materias, name = 'materias'),
     path('crearMateria/', views.crearMateria, name = 'crearMateria'),
+    path('materia_detail/<int:materia_id>',views.materia_detail, name = 'materia_detail'),
     path('flashcard/',views.flashcard,name='flashcard')
 ]

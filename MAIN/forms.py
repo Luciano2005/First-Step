@@ -36,3 +36,6 @@ class newMateria(forms.Form):
     profesor = forms.CharField(label = "Nombre del profesor", required = True)
     profesor_email = forms.EmailField(label = "Correo del profesor", required = True)
 
+class newSeccion(forms.Form):
+    name = forms.CharField(label = "Nombre de la seccion", required = True)
+

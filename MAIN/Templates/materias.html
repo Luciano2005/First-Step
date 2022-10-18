@@ -9,11 +9,12 @@
 {% for materia in materias %} 
 
 <div>
-
+    <a href={% url 'materia_detail' materia.id %}>
     <p>{{materia.name}}</p>
     <p>{{materia.hora}}</p>
     <p>{{materia.profesor}}</p>
     <p>{{materia.profesor_email}}</p>
+    </a>
 
 </div>
 
