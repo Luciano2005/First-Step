@@ -1,9 +1,10 @@
-<h1>Crear Flashcard</h1>
+<h1>Cambiar Pregunta</h1>
 
-<form method = 'POST'>
+<form method="POST">
     {% csrf_token %}
     {{form.as_p}}
+
     <button>
-        Crear
+        Guardar
     </button>
 </form>

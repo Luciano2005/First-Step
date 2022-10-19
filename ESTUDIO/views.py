@@ -7,14 +7,34 @@ from ESTUDIO.models import Pregunta
 from MAIN.forms import newSeccion
 
 # Create your views here.
+
+@login_required
 def crearFlashcard(request, seccion_id):
     if request.method == 'GET':
         return render(request, 'crearFlashcard.html', {
             'form' : newPregunta()
         })
     else:
-        form=newPregunta(request.POST)
-        nueva_pregunta=form.save(commit=False)
-        nueva_pregunta.user=request.user
-        nueva_pregunta.save()
+        Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion_id)
         return redirect('/materias/')
+
+@login_required
+def pregunta_detail(request, pregunta_id):
+    pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+    return render(request, 'pregunta_detail.html', {
+        'pregunta' : pregunta
+    })
+
+@login_required
+def cambiarPregunta(request, pregunta_id):
+    if request.method == 'GET':
+        pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+        form = newPregunta(instance=pregunta)
+        return render(request, 'cambiarPregunta.html', {
+            'form' : form
+        })
+"""    else:
+        pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+        form = newPregunta(request.POST, instance=pregunta)       
+        form.save()
+        return redirect('/materias/') """

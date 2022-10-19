@@ -2,6 +2,8 @@ from ast import MatchSequence
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
+
+from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -137,8 +139,10 @@ def crearSeccion(request, materia_id):
 @login_required
 def seccion_detail(request, seccion_id):
     seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+    pregunta = Pregunta.objects.filter(user = request.user, pk = seccion_id)
     return render(request, 'seccion_detail.html',{
-        'seccion':seccion
+        'seccion':seccion,
+        'preguntas':pregunta
     } )
     
 @login_required
@@ -154,6 +158,7 @@ def cambiarSeccion(request, seccion_id):
         form=newSeccion(request.POST,instance=seccion)
         form.save()
         return redirect('materias')
+        
 @login_required
 def eliminarSeccion(request, seccion_id):
     if request.method=='POST':
