@@ -75,7 +75,7 @@ def materias(request):
 def materia_detail(request, materia_id):
         materia = get_object_or_404(Materia, pk=materia_id)
         form=newMateria(instance=materia)
-        seccion = get_list_or_404(Seccion, materia_id = materia_id)
+        seccion = get_list_or_404(Seccion, materia = materia_id)
         return render(request, 'materia_detail.html', {
             'materia' : materia,
             'form':form,
