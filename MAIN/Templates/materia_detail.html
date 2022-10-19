@@ -10,7 +10,7 @@
 
 <form action = {% url 'crearSeccion' materia.id %}>
     <button>
-        Crear Seccion
+        Crear Tema
     </button>
 </form>
 
@@ -26,12 +26,18 @@
         Eliminar
     </button>
 </form>
-
-{% for seccion in seccions %} 
+<div>
+    <a href={% url 'crearSeccion' materia.id %}>
+        {% for seccion in seccions %} 
 
     <div>
-        {{seccion.name}}
+        <a href={% url 'seccion_detail' seccion.id %}>
+            {{seccion.name}}
+        </a>
     </div>
+
+</div>
+
 
 {% endfor %}
 

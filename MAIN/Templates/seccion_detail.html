@@ -1,0 +1,13 @@
+<h1>{{seccion.name}}</h1>
+<div>
+<form action={% url 'cambiarSeccion' seccion.id %}>
+    <button>Actualizar</button>
+</form>
+</div>
+
+<div>
+    <form action={% url 'eliminarSeccion' seccion.id %} method="POST">
+        {% csrf_token %}
+        <button>Eliminar</button>
+    </form>
+    </div>

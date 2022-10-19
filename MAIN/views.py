@@ -73,9 +73,9 @@ def materias(request):
 
 @login_required
 def materia_detail(request, materia_id):
-        materia = get_object_or_404(Materia, pk=materia_id)
+        materia = get_object_or_404(Materia, pk=materia_id,user=request.user)
         form=newMateria(instance=materia)
-        seccion = get_list_or_404(Seccion, materia = materia_id)
+        seccion = list(Seccion.objects.filter(user= request.user, materia=materia_id))
         return render(request, 'materia_detail.html', {
             'materia' : materia,
             'form':form,
@@ -92,7 +92,7 @@ def cambiarMateria(request, materia_id):
             'form' : form
         })
     else:
-        materia = get_object_or_404(Materia, pk=materia_id)
+        materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
         form=newMateria(request.POST, instance=materia)
         form.save()
         return redirect('materias')
@@ -100,7 +100,7 @@ def cambiarMateria(request, materia_id):
 @login_required
 def elmimiarMateria(request, materia_id):
     if request.method == 'POST':
-        materia = get_object_or_404(Materia, pk=materia_id)
+        materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
         materia.delete()
         return redirect('materias')
 
@@ -133,8 +133,29 @@ def crearSeccion(request, materia_id):
     else:
         Seccion.objects.create(user = request.user, name = request.POST['name'], materia_id = materia_id)    
         return redirect('/materias/')
-
 @login_required
-def flashcard(request):
-    return render(request,'flashcard.html')
+def seccion_detail(request, seccion_id):
+    seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+    return render(request, 'seccion_detail.html',{
+        'seccion':seccion
+    } )
+@login_required
+def cambiarSeccion(request, seccion_id):
+    if request.method=='GET':
+        seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+        form=newSeccion(instance=seccion)
+        return render(request,'cambiarSeccion.html',{
+            'form':form
+        })
+    else:
+        seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+        form=newSeccion(request.POST,instance=seccion)
+        form.save()
+        return redirect('materias')
+@login_required
+def eliminarSeccion(request, seccion_id):
+    if request.method=='POST':
+        seccion = get_object_or_404(Seccion, pk=seccion_id, user=request.user)
+        seccion.delete()
+        return redirect('materias')
 

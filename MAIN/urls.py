@@ -13,5 +13,8 @@ urlpatterns = [
     path('cambiarMateria/<int:materia_id>',views.cambiarMateria, name = 'cambiarMateria'),
     path('eliminarMateria/<int:materia_id>', views.elmimiarMateria, name = 'eliminarMateria'),
     path('crearSeccion/<int:materia_id>', views.crearSeccion, name = 'crearSeccion'),
-    path('flashcard/',views.flashcard,name='flashcard')
+    path('seccion_detail/<int:seccion_id>',views.seccion_detail ,name='seccion_detail'),
+    path('cambiarSeccion/<int:seccion_id>',views.cambiarSeccion ,name='cambiarSeccion'),
+    path('eliminarSeccion/<int:seccion_id>',views.eliminarSeccion ,name='eliminarSeccion')
+
 ]
