@@ -13,7 +13,7 @@ class Pregunta(models.Model):
         Facil = 4
 
     apropiacion = models.IntegerField(choices = nivel.choices, default = 1)
-    ultima_vez = models.DateTimeField(auto_now = True) #auto = true ??
+    ultima_vez = models.DateTimeField(null = True, blank=True) #auto = true ??
     seccion = models.ForeignKey("MAIN.Seccion", on_delete = models.CASCADE, null = True)
 
     def __str__(self):
