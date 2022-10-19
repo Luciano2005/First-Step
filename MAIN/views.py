@@ -133,12 +133,14 @@ def crearSeccion(request, materia_id):
     else:
         Seccion.objects.create(user = request.user, name = request.POST['name'], materia_id = materia_id)    
         return redirect('/materias/')
+
 @login_required
 def seccion_detail(request, seccion_id):
     seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
     return render(request, 'seccion_detail.html',{
         'seccion':seccion
     } )
+    
 @login_required
 def cambiarSeccion(request, seccion_id):
     if request.method=='GET':

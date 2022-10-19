@@ -10,4 +10,10 @@
         {% csrf_token %}
         <button>Eliminar</button>
     </form>
-    </div>
+</div>
+
+<form action = {% url 'crearFlashcard' seccion.id %}>
+    <button>
+        Crear Flashcard
+    </button>
+</form>
