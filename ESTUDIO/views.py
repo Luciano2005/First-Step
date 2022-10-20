@@ -33,8 +33,8 @@ def cambiarPregunta(request, pregunta_id):
         return render(request, 'cambiarPregunta.html', {
             'form' : form
         })
-"""    else:
+    else:
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         form = newPregunta(request.POST, instance=pregunta)       
         form.save()
-        return redirect('/materias/') """
+        return redirect('/materias/') 

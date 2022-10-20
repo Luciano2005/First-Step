@@ -139,7 +139,8 @@ def crearSeccion(request, materia_id):
 @login_required
 def seccion_detail(request, seccion_id):
     seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-    pregunta = Pregunta.objects.filter(user = request.user, pk = seccion_id)
+    pregunta = list(Pregunta.objects.filter(seccion_id=seccion_id, user = request.user))
+    
     return render(request, 'seccion_detail.html',{
         'seccion':seccion,
         'preguntas':pregunta

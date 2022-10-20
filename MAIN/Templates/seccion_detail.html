@@ -20,7 +20,7 @@
 
 {% for pregunta in preguntas %}
 <a href = {% url 'estudio:pregunta_detail' pregunta.id %}>
-    {{pregunta.name}}
+    <p>{{pregunta.name}}</p>
 </a>
 
 
