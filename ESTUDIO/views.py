@@ -38,3 +38,16 @@ def cambiarPregunta(request, pregunta_id):
         form = newPregunta(request.POST, instance=pregunta)       
         form.save()
         return redirect('/materias/') 
+
+@login_required
+def eliminarPregunta(request, pregunta_id):
+    if request.method == 'POST':
+        pregunta=get_object_or_404(Pregunta, user=request.user, pk=pregunta_id)
+        pregunta.delete()
+        return redirect('/materias/')
+@login_required
+def repasoFlashcard(request, seccion_id):
+    if request.method == 'GET':
+        preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id).order_by('?'))
+        print(preguntas)
+        return render(request, 'repaso.html')

@@ -18,6 +18,12 @@
     </button>
 </form>
 
+<form action={% url 'estudio:repaso' seccion.id %}>
+    <button>
+        Repaso
+    </button>
+</form>
+
 {% for pregunta in preguntas %}
 <a href = {% url 'estudio:pregunta_detail' pregunta.id %}>
     <p>{{pregunta.name}}</p>
