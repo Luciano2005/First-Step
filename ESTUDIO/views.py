@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 
 from ESTUDIO.forms import newPregunta
 from ESTUDIO.models import Pregunta
+from MAIN.models import Seccion
 from MAIN.forms import newSeccion
 
 # Create your views here.
@@ -45,9 +46,40 @@ def eliminarPregunta(request, pregunta_id):
         pregunta=get_object_or_404(Pregunta, user=request.user, pk=pregunta_id)
         pregunta.delete()
         return redirect('/materias/')
+
+contador=0
+preguntas=[]
 @login_required
 def repasoFlashcard(request, seccion_id):
+    global contador 
+    global preguntas
+    preguntas = crearPreguntas(request, seccion_id, contador, preguntas)
     if request.method == 'GET':
+           
+        contador+=1
+        seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+        
+        try:
+            return render(request, 'repaso.html',{
+                'pregunta':preguntas[contador-1],
+                'seccion':seccion
+                })
+        except:
+            contador=0
+            return redirect('/materias/')
+    else:
+        seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
+        return render(request, 'repaso.html',{
+                'pregunta':preguntas[contador-1],
+                'seccion':seccion,
+                'respuesta':preguntas[contador-1].respuesta
+                })
+        
+        
+def crearPreguntas(request, seccion_id, contador, preguntas):
+    if contador==0:
         preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id).order_by('?'))
         print(preguntas)
-        return render(request, 'repaso.html')
+    return preguntas
+
+            

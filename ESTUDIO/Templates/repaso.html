@@ -1,1 +1,24 @@
 <h1>REPASO</h1>
+{{pregunta}}
+
+<form>
+    <button>
+        Atras
+    </button>
+</form>
+
+<form>
+    <button>
+        Siguiente
+    </button>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <button>
+        Mostar respuesta
+    </button>
+</form>
+
+{{respuesta}}
+
