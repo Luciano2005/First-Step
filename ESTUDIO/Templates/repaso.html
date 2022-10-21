@@ -1,18 +1,7 @@
 <h1>REPASO</h1>
 {{pregunta}}
 
-<form>
-    <button>
-        Atras
-    </button>
-</form>
-
-<form>
-    <button>
-        Siguiente
-    </button>
-</form>
-
+{% if request.method == 'GET' %}
 <form method="POST">
     {% csrf_token %}
     <button>
@@ -20,5 +9,32 @@
     </button>
 </form>
 
-{{respuesta}}
+{% else %}
 
+<p>{{respuesta}}</p>
+
+<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 1 %}>
+    <button>
+        Otra vez
+    </button>
+</form>
+
+<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 2 %}>
+    <button>
+        Dificil
+    </button>
+</form>
+
+<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 3 %}>
+    <button>
+        Bien
+    </button>
+</form>
+
+<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 4 %}>
+    <button>
+        Facil
+    </button>
+</form>
+
+{% endif %}

@@ -76,10 +76,18 @@ def repasoFlashcard(request, seccion_id):
                 })
         
         
-def crearPreguntas(request, seccion_id, contador, preguntas):
+def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
     if contador==0:
         preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id).order_by('?'))
         print(preguntas)
     return preguntas
+
+@login_required
+def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
+    pregunta = get_object_or_404(Pregunta,pk=pregunta_id,user=request.user)
+    pregunta.apropiacion=numero
+    pregunta.save()
+    print(pregunta.apropiacion)
+    return repasoFlashcard(request, seccion_id)
 
             
