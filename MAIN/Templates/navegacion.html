@@ -10,23 +10,22 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="main.html">
+            <a class="navbar-brand" href="/">
             <img class="d-inline-block align-text-top" src="images/books.png" width="40px" alt="first step">
             First-Step
         </a>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 {% if user.is_authenticated %}
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
                 <li class="nav-item">
                     <a class="nav-link" href="/perfil">Mi Perfil</a>
                 </li>
@@ -49,7 +48,6 @@
         </div>
         
     </nav>
-
     {% block content %}
 
     {% endblock %}
