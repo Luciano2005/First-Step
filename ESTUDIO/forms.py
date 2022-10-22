@@ -1,5 +1,6 @@
 from django import forms
-from ESTUDIO.models import Pregunta
+from django.forms import ModelForm
+from ESTUDIO.models import Pregunta, RespuestasCerradas
 from django.forms.widgets import HiddenInput
 
 class newPregunta(forms.ModelForm):
@@ -11,3 +12,8 @@ class newPregunta(forms.ModelForm):
             'ultima_vez' : HiddenInput(),
             'seccion' : HiddenInput()
         } 
+
+class newRespuestaCerrada(forms.ModelForm):
+    class Meta:
+        model=RespuestasCerradas
+        fields=['respuesta_cerrada']

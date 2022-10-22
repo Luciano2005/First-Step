@@ -3,7 +3,30 @@
 <form method = 'POST'>
     {% csrf_token %}
     {{form.as_p}}
+
+    {% for respuesta in respuestas %}
+    
+        <p>{{respuesta}}</p>
+
+    {% endfor %}
+
     <button>
         Crear
     </button>
 </form>
+
+
+<form action={% url 'estudio:crearRespuestaCerrada' seccion %}>
+    <button>
+        Crear respuesta cerrada
+    </button>
+</form>
+
+{% if respuestas|length %}
+<form action={% url 'estudio:eliminarRespuestaCerrada' seccion %}>
+    <button>
+        Eliminar respuesta cerrada
+    </button>
+</form>
+{% endif %}
+

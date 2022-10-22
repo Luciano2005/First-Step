@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+    
+
 class Pregunta(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)
-    respuesta = models.TextField(max_length = 200, blank = False)
+    respuesta = models.TextField(max_length = 200, blank = True)
     
     class nivel(models.IntegerChoices):
         Otra_vez = 1
@@ -20,6 +22,14 @@ class Pregunta(models.Model):
 
     def __str__(self):
         return self.name
+
+class RespuestasCerradas(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+    respuesta_cerrada = models.CharField(max_length=30,blank=False)
+    pregunta = models.ForeignKey(Pregunta, on_delete = models.CASCADE, null = True)
+    
+    def __str__(self):
+        return self.respuesta_cerrada+' - '+self.pregunta.name
 
 class Tarea(models.Model):
     name = models.CharField(max_length = 30, blank = False)
