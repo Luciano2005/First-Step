@@ -25,7 +25,7 @@
 </form>
 
 {% for pregunta in preguntas %}
-<a href = {% url 'estudio:pregunta_detail' pregunta.id %}>
+<a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
     <p>{{pregunta.name}}</p>
 </a>
 
