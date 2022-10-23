@@ -121,9 +121,19 @@ def crearMateria(request):
             new_materia.save()
             return redirect('/materias/')
         except ValueError:
+            global x
+            a = request.POST['profesor_email']
+            if a.find(".") == -1:
+                x = "Correo Invalido"
+            else:
+                if len(a.split(".")[1]) == 1:
+                    x = "Correo Invalido"
+                else:
+                    x = "Eror en hora o en otra cosa diferente a correo"
+
             return render(request,'crearMateria.html',{
                 'form':newMateria,
-                'error':'dkssdjskdskdjk'
+                'error': x
             })
 
 @login_required

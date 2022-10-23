@@ -13,6 +13,17 @@ class newPregunta(forms.ModelForm):
             'seccion' : HiddenInput()
         } 
 
+class newPreguntaCerrada(forms.ModelForm):
+    class Meta:
+        model=Pregunta
+        fields=['name','respuesta','apropiacion','ultima_vez','seccion']
+        widgets = {
+            'apropiacion' : HiddenInput(),
+            'ultima_vez' : HiddenInput(),
+            'seccion' : HiddenInput(),
+            'respuesta' : HiddenInput()
+        } 
+
 class newRespuestaCerrada(forms.ModelForm):
     class Meta:
         model=RespuestasCerradas

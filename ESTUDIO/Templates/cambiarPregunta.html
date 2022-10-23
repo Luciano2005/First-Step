@@ -1,5 +1,10 @@
+{% extends 'navegacion.html' %}
+
+{% block content %}
+
 <h1>Cambiar Pregunta</h1>
 
+{% if not form_respuesta|length %}
 <form method="POST">
     {% csrf_token %}
     {{form.as_p}}
@@ -8,3 +13,20 @@
         Guardar
     </button>
 </form>
+{% else %}
+<form method="POST">
+    {% csrf_token %}
+    {{form_pregunta.as_p}}
+
+    {% for respuesta in form_respuesta %}
+        {{respuesta.as_p}}
+    {% endfor %}
+
+    <button>
+        Guardar
+    </button>
+</form>
+
+{% endif %}
+
+{% endblock %}

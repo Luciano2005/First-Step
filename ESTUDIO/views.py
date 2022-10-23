@@ -1,8 +1,10 @@
 from doctest import FAIL_FAST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.http import QueryDict
+from django.urls import reverse
 
-from ESTUDIO.forms import newPregunta,newRespuestaCerrada
+from ESTUDIO.forms import newPregunta,newRespuestaCerrada,newPreguntaCerrada
 from ESTUDIO.models import Pregunta,RespuestasCerradas
 from MAIN.models import Seccion
 from MAIN.forms import newSeccion
@@ -14,7 +16,8 @@ def crearFlashcard(request, seccion_id):
     global respuestas
     if request.method == 'GET':
         return render(request, 'crearFlashcard.html', {
-            'form' : newPregunta(), #Formulario de nueva pregunta
+            'form_pregunta' : newPregunta(), #Formulario de nueva pregunta
+            'form_pregunta_cerrada' : newPreguntaCerrada(),
             'seccion': seccion_id, #Pasamos seccion_id para que no haya error en la funcion de crearRespuestaCerrada
             'respuestas': respuestas
         })
@@ -24,7 +27,6 @@ def crearFlashcard(request, seccion_id):
         
         for respuesta in request.POST.getlist('respuesta_cerrada'): #Recorremos las respuestas cerradas.
             RespuestasCerradas.objects.create(user=request.user, respuesta_cerrada=respuesta, pregunta=pregunta) #Guardamos cada respuesta.
-        
 
         respuestas=[] #Reiniciamos la lista de respuestas cerradas
     
@@ -35,7 +37,7 @@ def crearRespuestaCerrada(request, seccion):
     global respuestas #Usamos la lista para guardar los nuevos campos de respuestas cerradas.
     respuestas.append(newRespuestaCerrada()) #Agregamos el formulario de respuestas.
     print(len(respuestas)) #Verificamos que se esten guardando las respuestas BORRAR LINEA.
-    return crearFlashcard(request,seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
+    return redirect('estudio:crearFlashcard', seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
 
 @login_required
 def eliminarRespuestaCerrada(request, seccion):
@@ -54,6 +56,23 @@ def pregunta_detail(request, pregunta_id):
         'pregunta' : pregunta
     })
 
+#-----------------------------PUEDE SERVIR PARA EL FUTURO------------------------------------------------
+# @login_required
+# def pregunta_cerrada_detail(request, pregunta_id):
+#     pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+#     respuestas= get_list_or_404(RespuestasCerradas, user=request.user, respuesta_cerrada=respuestas, pregunta_id=pregunta_id)
+#     print(respuestas)
+#     return render(request, 'pregunta_detail.html', {
+#         'pregunta' : pregunta
+#     })
+@login_required
+def redireccionarPregunta(request, pregunta_id):
+    respuestas = list(RespuestasCerradas.objects.filter(user=request.user, pregunta_id=pregunta_id))
+    if len(respuestas):
+        return redirect('estudio:pregunta_cerrada', pregunta_id)
+    else:
+        return redirect('estudio:cambiarPregunta', pregunta_id)
+
 @login_required
 def cambiarPregunta(request, pregunta_id):
     if request.method == 'GET':
@@ -66,6 +85,38 @@ def cambiarPregunta(request, pregunta_id):
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         form = newPregunta(request.POST, instance=pregunta)       
         form.save()
+        return redirect('/materias/') 
+
+
+@login_required
+def cambiarPreguntaCerrada(request, pregunta_id):
+    form_respuesta=[]
+    if request.method == 'GET':
+        pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+        respuestas = get_list_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id)
+        form_pregunta = newPreguntaCerrada(instance=pregunta)
+        
+        for respuesta in respuestas:
+            form_respuesta.append(newRespuestaCerrada(instance=respuesta))
+        
+        return render(request, 'cambiarPregunta.html', {
+            'form_pregunta' : form_pregunta,
+            'form_respuesta' : form_respuesta
+        })
+    else:
+        pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
+        respuestas = get_list_or_404(RespuestasCerradas, user=request.user,pregunta_id=pregunta_id)
+        form_pregunta = newPreguntaCerrada(request.POST, instance=pregunta)
+        form_pregunta.save()
+        n=request.POST.getlist('respuesta_cerrada')
+
+        for respuesta in respuestas:
+            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0))  
+            
+            
+            
+            
+            
         return redirect('/materias/') 
 
 @login_required
