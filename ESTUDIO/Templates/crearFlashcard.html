@@ -1,3 +1,7 @@
+{% extends 'navegacion.html' %}
+
+{% block content %}
+
 <h1>Crear Flashcard</h1>
 
 {% if not respuestas|length %}
@@ -46,3 +50,4 @@
     </form>
 {% endif %}
 
+{% endblock %}
