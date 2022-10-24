@@ -22,6 +22,12 @@
     </button>
 </form>
 
+<form action = {% url 'estudio:crearPreguntaCerrada' seccion.id %}>
+    <button>
+        Crear Pregunta Cerrada
+    </button>
+</form>
+
 <form action={% url 'estudio:repaso' seccion.id %}>
     <button>
         Repaso

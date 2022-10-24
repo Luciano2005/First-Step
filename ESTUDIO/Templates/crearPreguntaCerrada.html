@@ -1,0 +1,33 @@
+<h1>Pregunta cerrada</h1>
+<form method = 'POST'>
+    {% csrf_token %}
+    {{form_pregunta_cerrada.as_p}}
+
+    {% for respuesta in respuestas %}
+    
+        <p>{{respuesta}}</p>
+
+    {% endfor %}
+
+    <button>
+        Crear
+    </button>
+
+    
+</form>
+
+<form action={% url 'estudio:crearRespuestaCerrada' seccion %} , method="POST">
+    {% csrf_token %}
+    <button>
+        Crear respuesta cerrada
+    </button>
+</form>
+
+{% if respuestas|length > 2 %}
+    <form action={% url 'estudio:eliminarRespuestaCerrada' seccion %} , method="POST">
+        {% csrf_token %}
+        <button>
+            Eliminar respuesta cerrada
+        </button>
+    </form>
+{% endif %}

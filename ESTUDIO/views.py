@@ -17,37 +17,52 @@ def crearFlashcard(request, seccion_id):
     if request.method == 'GET':
         return render(request, 'crearFlashcard.html', {
             'form_pregunta' : newPregunta(), #Formulario de nueva pregunta
-            'form_pregunta_cerrada' : newPreguntaCerrada(),
             'seccion': seccion_id, #Pasamos seccion_id para que no haya error en la funcion de crearRespuestaCerrada
-            'respuestas': respuestas
         })
     else:
-        pregunta=Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion_id) #Se crea una nueva pregunta
+        Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion_id) #Se crea una nueva pregunta
+        
+        
+    
+        return redirect('/materias/')
+
+@login_required
+def crearPreguntaCerrada(request, seccion):
+    global respuestas #Usamos la lista para guardar los nuevos campos de respuestas cerradas.
+    if request.method=='GET':
+        return render(request, 'crearPreguntaCerrada.html',{
+            'form_pregunta_cerrada' : newPreguntaCerrada(),
+            'seccion':seccion,
+            'respuestas':respuestas
+        })
+    else:
+        pregunta=Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion) #Se crea una nueva pregunta
         pregunta.save()
         
         for respuesta in request.POST.getlist('respuesta_cerrada'): #Recorremos las respuestas cerradas.
             RespuestasCerradas.objects.create(user=request.user, respuesta_cerrada=respuesta, pregunta=pregunta) #Guardamos cada respuesta.
 
         respuestas=[] #Reiniciamos la lista de respuestas cerradas
-    
+        
         return redirect('/materias/')
+    
+
+
 
 @login_required
 def crearRespuestaCerrada(request, seccion):
     global respuestas #Usamos la lista para guardar los nuevos campos de respuestas cerradas.
     respuestas.append(newRespuestaCerrada()) #Agregamos el formulario de respuestas.
     print(len(respuestas)) #Verificamos que se esten guardando las respuestas BORRAR LINEA.
-    return redirect('estudio:crearFlashcard', seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
+    return redirect('estudio:crearPreguntaCerrada', seccion)
 
 @login_required
 def eliminarRespuestaCerrada(request, seccion):
     global respuestas
-    try:
+    if len(respuestas)>2:
         respuestas.pop() #eliminamos el último formulario de respuestas agregado.
         print(len(respuestas)) #Verificamos que se esten borrando las respuestas BORRAR LINEA.
-    except:
-        pass
-    return crearFlashcard(request,seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
+    return redirect('estudio:crearPreguntaCerrada', seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
 
 @login_required
 def pregunta_detail(request, pregunta_id):
