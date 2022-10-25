@@ -18,6 +18,8 @@
     {% csrf_token %}
     {{form_pregunta.as_p}}
 
+    <p>{{respuesta_verdadera}}</p>
+
     {% for respuesta in form_respuesta %}
         {{respuesta.as_p}}
     {% endfor %}

@@ -3,6 +3,8 @@
     {% csrf_token %}
     {{form_pregunta_cerrada.as_p}}
 
+    <p>{{respuesta_verdadera}}</p>
+
     {% for respuesta in respuestas %}
     
         <p>{{respuesta}}</p>
@@ -23,7 +25,7 @@
     </button>
 </form>
 
-{% if respuestas|length > 2 %}
+{% if respuestas|length > 1 %}
     <form action={% url 'estudio:eliminarRespuestaCerrada' seccion %} , method="POST">
         {% csrf_token %}
         <button>

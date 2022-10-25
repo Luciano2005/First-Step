@@ -28,3 +28,9 @@ class newRespuestaCerrada(forms.ModelForm):
     class Meta:
         model=RespuestasCerradas
         fields=['respuesta_cerrada']
+
+class newRespuestaCerradaVerdadera(forms.ModelForm):
+    class Meta:
+        model=RespuestasCerradas
+        fields=['respuesta_verdadera']
+        

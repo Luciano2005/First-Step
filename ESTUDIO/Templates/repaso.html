@@ -5,6 +5,12 @@
 <h1>REPASO</h1>
 {{pregunta}}
 
+{% if respuestas_cerradas|length %}
+    {% for respuesta_c in respuestas_cerradas %}
+        <p>{{respuesta_c.respuesta_cerrada}}</p>
+    {% endfor %}
+{% endif %}
+
 {% if request.method == 'GET' %}
 <form method="POST">
     {% csrf_token %}
