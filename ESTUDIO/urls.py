@@ -3,8 +3,9 @@ from . import views
 
 urlpatterns=[
     path('<int:seccion_id>',views.crearFlashcard,name='crearFlashcard'),
-    path('<int:seccion>/',views.crearRespuestaCerrada,name='crearRespuestaCerrada'),
-    path('<int:seccion>/eliminarFlashcard',views.eliminarRespuestaCerrada,name='eliminarRespuestaCerrada'),
+    path('crearPreguntaCerrada/<int:seccion>/',views.crearPreguntaCerrada,name='crearPreguntaCerrada'),
+    path('crearPreguntaCerrada/<int:seccion>/crearRespuestaCerrada',views.crearRespuestaCerrada,name='crearRespuestaCerrada'),
+    path('crearPreguntaCerrada/<int:seccion>/eliminarRespuestaCerrada',views.eliminarRespuestaCerrada,name='eliminarRespuestaCerrada'),
     path('pregunta_detail/<int:pregunta_id>', views.pregunta_detail, name = 'pregunta_detail'),
     path('cambiarPregunta/redireccionando/<int:pregunta_id>', views.redireccionarPregunta, name = 'redireccionarPregunta'),
     path('cambiarPregunta/<int:pregunta_id>', views.cambiarPregunta, name = 'cambiarPregunta'),

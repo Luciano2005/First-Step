@@ -25,8 +25,10 @@ class Pregunta(models.Model):
 
 class RespuestasCerradas(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
-    respuesta_cerrada = models.CharField(max_length=30,blank=False)
+    respuesta_cerrada = models.CharField(max_length=30,blank=False, null=True)
+    respuesta_verdadera = models.CharField(max_length=30,blank=False, null=True)
     pregunta = models.ForeignKey(Pregunta, on_delete = models.CASCADE, null = True)
+    
     
     def __str__(self):
         return self.respuesta_cerrada+' - '+self.pregunta.name

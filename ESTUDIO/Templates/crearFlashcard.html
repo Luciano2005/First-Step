@@ -4,50 +4,21 @@
 
 <h1>Crear Flashcard</h1>
 
-{% if not respuestas|length %}
-    <form method = 'POST'>
-        {% csrf_token %}
-        {{form_pregunta.as_p}}
+<form method = 'POST'>
+    {% csrf_token %}
+    {{form_pregunta.as_p}}
 
-        {% for respuesta in respuestas %}
-        
-            <p>{{respuesta}}</p>
+    {% for respuesta in respuestas %}
+    
+        <p>{{respuesta}}</p>
 
-        {% endfor %}
+    {% endfor %}
 
-        <button>
-            Crear
-        </button>
-    </form>
-{% else %}
-    <form method = 'POST'>
-        {% csrf_token %}
-        {{form_pregunta_cerrada.as_p}}
-
-        {% for respuesta in respuestas %}
-        
-            <p>{{respuesta}}</p>
-
-        {% endfor %}
-
-        <button>
-            Crear
-        </button>
-    </form>
-{% endif %}
-
-<form action={% url 'estudio:crearRespuestaCerrada' seccion %}>
     <button>
-        Crear respuesta cerrada
+        Crear
     </button>
 </form>
 
-{% if respuestas|length %}
-    <form action={% url 'estudio:eliminarRespuestaCerrada' seccion %}>
-        <button>
-            Eliminar respuesta cerrada
-        </button>
-    </form>
-{% endif %}
-
 {% endblock %}
+
+
