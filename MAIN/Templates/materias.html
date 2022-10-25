@@ -2,26 +2,47 @@
 
 {% block content %}
 
-<p>Materias</p>
-
-<form action = {% url 'crearMateria' %}>
-    <button>
-        Crear Materia
-    </button>
-</form>
-
-{% for materia in materias %} 
-
-<div>
-    <a href={% url 'materia_detail' materia.id %}>
-    <p>{{materia.name}}</p>
-    <p>{{materia.hora}}</p>
-    <p>{{materia.profesor}}</p>
-    <p>{{materia.profesor_email}}</p>
-    </a>
-
-</div>
-
-{% endfor %}
+<div class="container-md justify-content-around py-4 px-4">
+    <p class="h1 text-decoration-underline">Materias</p>
+    
+    <form action = {% url 'crearMateria' %}>
+        <button>
+            Crear Materia
+        </button>
+    </form>
+    
+    <div class="container-fluid">
+        <div class="row justify-content-sm-evenly justify-content-xl-start justify-content-start">
+            {% for materia in materias %}
+            <div class="col-8 col-sm-6 col-md-6 col-xxl-3 col-xl-4 col-lg-5 py-4">
+                <div class="card" style="height: 23rem; width: 19rem;">
+                    <a href={% url 'materia_detail' materia.id %}>
+                    <img class="card-img-top" src="https://prod-discovery.edx-cdn.org/media/course/image/f42bce09-2533-48fb-a9c4-8053aedf941b-798c36769d88.small.png" alt="materia" style="height: 150px;">
+                    </a>
+                    <div class="card-body" style="height: 5rem;">
+                        <h4 class="cardtitle">{{materia.name}}</h5>
+                    </div>
+                        <div class="list-group" style="height: 10rem;">
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-4 col-xl-4 col-sm-5"><h6 class="cardtitle text-start">{{materia.profesor}}</h6></div>
+                                        <div class="col-7 col-xl-8 col-sm-6 "><p class="card-text text-start">{{materia.profesor_email}}</p></div>
+                                    </div>   
+                                </li>
+                                <li>
+                                    <div class="row">
+                                            <div class="col-4 col-xl-4 col-sm-5"><p class="card-text text-start">{{materia.hora}}</p></div>
+                                            <div class="col-8 col-xl-8 col-sm-6"><a href="#" class="btn btn-primary">Ver temario</a></div>
+                                    </div>
+                                </li>
+                            </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
 
 {% endblock %}
