@@ -126,12 +126,11 @@ def cambiarPreguntaCerrada(request, pregunta_id):
         respuestas = get_list_or_404(RespuestasCerradas, user=request.user,pregunta_id=pregunta_id)
         form_pregunta = newPreguntaCerrada(request.POST, instance=pregunta)
         form_pregunta.save()
-        # respuesta_verdadera = newRespuestaCerradaVerdadera(request.POST,instance=respuestas[0]) Recordar Guardar
 
         n=request.POST.getlist('respuesta_cerrada')
 
         for respuesta in respuestas:
-            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0))  
+            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])  
             
             
             
@@ -157,7 +156,7 @@ def repasoFlashcard(request, seccion_id):
            
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]))
+        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
         try:
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],
