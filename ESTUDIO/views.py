@@ -168,26 +168,38 @@ def repasoFlashcard(request, seccion_id):
            
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
+        
+        
         try:
+            respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],
                 'seccion':seccion,
                 'respuestas_cerradas':respuestas_cerradas
                 })
-        except:
+        except IndexError:
             contador=0
             return redirect('/materias/')
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]))
+        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
         print(respuestas_cerradas)
-        return render(request, 'repaso.html',{
-                'pregunta':preguntas[contador-1],
-                'seccion':seccion,
-                'respuesta':preguntas[contador-1].respuesta,
-                'respuestas_cerradas':respuestas_cerradas
-                })
+        try:
+            return render(request, 'repaso.html',{
+                    'pregunta':preguntas[contador-1],
+                    'seccion':seccion,
+                    'respuesta':preguntas[contador-1].respuesta,
+                    'respuestas_cerradas':respuestas_cerradas,
+                    'verdadera':respuestas_cerradas[0].respuesta_verdadera
+                    })
+        except IndexError:
+            return render(request, 'repaso.html',{
+                    'pregunta':preguntas[contador-1],
+                    'seccion':seccion,
+                    'respuesta':preguntas[contador-1].respuesta,
+                    'respuestas_cerradas':respuestas_cerradas,
+                    #'verdadera':respuestas_cerradas[0].respuesta_verdadera
+                    })
         
 @login_required     
 def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
