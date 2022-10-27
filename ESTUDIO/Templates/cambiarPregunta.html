@@ -23,11 +23,31 @@
     {% for respuesta in form_respuesta %}
         {{respuesta.as_p}}
     {% endfor %}
+    
+    {% for respuestaa in nueva_respuesta %}
+        {{respuestaa.as_p}}
+    {% endfor %}
 
     <button>
         Guardar
     </button>
 </form>
+
+<form action={% url 'estudio:nueva_respuesta_cerrada' pregunta.id size %} , method="GET">
+    {% csrf_token %}
+    <button>
+        Crear respuesta cerrada
+    </button>
+</form>
+
+{% if respuestas|length > 1 %}
+    <form action="" , method="POST">
+        {% csrf_token %}
+        <button>
+            Eliminar respuesta cerrada
+        </button>
+    </form>
+{% endif %}
 
 {% endif %}
 
