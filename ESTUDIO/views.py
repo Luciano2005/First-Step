@@ -105,7 +105,7 @@ def cambiarPregunta(request, pregunta_id):
 
 
 @login_required
-def cambiarPreguntaCerrada(request, pregunta_id, size=None):
+def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
     form_respuesta=[]
     if request.method == 'GET':
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
@@ -117,19 +117,24 @@ def cambiarPreguntaCerrada(request, pregunta_id, size=None):
         
         if size==None:
             size=0
+        if eliminar==None:
+            eliminar=0
+
         lista_nuevas_respuestas=[]
         for i in range(0,size):
             lista_nuevas_respuestas.append(newRespuestaCerrada())
 
-
+        
         return render(request, 'cambiarPregunta.html', {
             'form_pregunta' : form_pregunta,
             'form_respuesta' : form_respuesta,
             'respuesta_verdadera': respuesta_verdadera,
             'pregunta':pregunta,
             'nueva_respuesta':lista_nuevas_respuestas,
-            'size':size+1
+            'size':size+1,
+            'eliminar':size-1
         })
+        
     else:
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         respuestas = get_list_or_404(RespuestasCerradas, user=request.user,pregunta_id=pregunta_id)
@@ -168,7 +173,6 @@ def repasoFlashcard(request, seccion_id):
            
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        
         
         try:
             respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
