@@ -105,36 +105,22 @@ def cambiarPregunta(request, pregunta_id):
 
 
 @login_required
-def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
+def cambiarPreguntaCerrada(request, pregunta_id):
     form_respuesta=[]
     if request.method == 'GET':
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
-        lista_respuestas = get_list_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id)
+        respuestas = get_list_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id)
         form_pregunta = newPreguntaCerrada(instance=pregunta)
         respuesta_verdadera = newRespuestaCerradaVerdadera(instance=lista_respuestas[0])
-        for respuesta in lista_respuestas:
+        for respuesta in respuestas:
             form_respuesta.append(newRespuestaCerrada(instance=respuesta))
         
-        if size==None:
-            size=0
-        if eliminar==None:
-            eliminar=0
-
-        lista_nuevas_respuestas=[]
-        for i in range(0,size):
-            lista_nuevas_respuestas.append(newRespuestaCerrada())
-
         
         return render(request, 'cambiarPregunta.html', {
             'form_pregunta' : form_pregunta,
             'form_respuesta' : form_respuesta,
             'respuesta_verdadera': respuesta_verdadera,
-            'pregunta':pregunta,
-            'nueva_respuesta':lista_nuevas_respuestas,
-            'size':size+1,
-            'eliminar':size-1
-        })
-        
+        })     
     else:
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         respuestas = get_list_or_404(RespuestasCerradas, user=request.user,pregunta_id=pregunta_id)
@@ -144,16 +130,13 @@ def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
         n=request.POST.getlist('respuesta_cerrada')
 
         for respuesta in respuestas:
-            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])        
-            
+            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])       
+
+
+
+
         return redirect('/materias/') 
 
-# @login_required
-# def crearMasRespuestasCerradas(request, pregunta_id):
-#     global respuestas #Usamos la lista para guardar los nuevos campos de respuestas cerradas.
-#     respuestas.append(newRespuestaCerrada()) #Agregamos el formulario de respuestas.
-#     print(len(respuestas)) #Verificamos que se esten guardando las respuestas BORRAR LINEA.
-#     return redirect('estudio:pregunta_cerrada', pregunta_id)        
 
 @login_required
 def eliminarPregunta(request, pregunta_id):
@@ -173,38 +156,27 @@ def repasoFlashcard(request, seccion_id):
            
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        
+        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
         try:
-            respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],
                 'seccion':seccion,
                 'respuestas_cerradas':respuestas_cerradas
                 })
-        except IndexError:
+        except:
             contador=0
             return redirect('/materias/')
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
+        respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]))
         print(respuestas_cerradas)
-        try:
-            return render(request, 'repaso.html',{
-                    'pregunta':preguntas[contador-1],
-                    'seccion':seccion,
-                    'respuesta':preguntas[contador-1].respuesta,
-                    'respuestas_cerradas':respuestas_cerradas,
-                    'verdadera':respuestas_cerradas[0].respuesta_verdadera
-                    })
-        except IndexError:
-            return render(request, 'repaso.html',{
-                    'pregunta':preguntas[contador-1],
-                    'seccion':seccion,
-                    'respuesta':preguntas[contador-1].respuesta,
-                    'respuestas_cerradas':respuestas_cerradas,
-                    #'verdadera':respuestas_cerradas[0].respuesta_verdadera
-                    })
-        
+        return render(request, 'repaso.html',{
+                'pregunta':preguntas[contador-1],
+                'seccion':seccion,
+                'respuesta':preguntas[contador-1].respuesta,
+                'respuestas_cerradas':respuestas_cerradas
+                })
+          
 @login_required     
 def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
     if contador==0:

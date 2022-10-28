@@ -7,7 +7,7 @@
 
 {% if respuestas_cerradas|length %}
     {% for respuesta_c in respuestas_cerradas %}
-        <p>{{respuesta_c.respuesta_cerrada}}</p>
+        <p>{{respuesta_c}}</p>
     {% endfor %}
 {% endif %}
 
@@ -22,7 +22,6 @@
 {% else %}
 
 <p>{{respuesta}}</p>
-<p>{{verdadera}}</p>
 
 <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 1 %}>
     <button>
