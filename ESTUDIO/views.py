@@ -8,6 +8,7 @@ from ESTUDIO.forms import newPregunta,newRespuestaCerrada,newPreguntaCerrada,new
 from ESTUDIO.models import Pregunta,RespuestasCerradas
 from MAIN.models import Seccion
 from MAIN.forms import newSeccion
+import random
 
 # Create your views here.
 respuestas=[] #Lista para guardar las respuestas cerradas que el usuario ingresa.
@@ -164,18 +165,26 @@ def eliminarPregunta(request, pregunta_id):
 
 contador=0
 preguntas=[]
+respuestas_cerradas=[]
+num=0
 @login_required
 def repasoFlashcard(request, seccion_id):
     global contador 
     global preguntas
     preguntas = crearPreguntas(request, seccion_id, contador, preguntas)
     if request.method == 'GET':
-           
+        global respuestas_cerradas
+        global num
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         
         try:
-            respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
+            if len(respuestas_cerradas)>=0:
+                respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?'))
+                if len(respuestas_cerradas)!=0:
+                    num=random.randint(0, len(respuestas_cerradas)-1)
+                    respuestas_cerradas.insert(num,respuestas_cerradas[1].respuesta_verdadera)
+
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],
                 'seccion':seccion,
@@ -186,7 +195,7 @@ def repasoFlashcard(request, seccion_id):
             return redirect('/materias/')
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
+        # respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
         print(respuestas_cerradas)
         try:
             return render(request, 'repaso.html',{
@@ -194,7 +203,7 @@ def repasoFlashcard(request, seccion_id):
                     'seccion':seccion,
                     'respuesta':preguntas[contador-1].respuesta,
                     'respuestas_cerradas':respuestas_cerradas,
-                    'verdadera':respuestas_cerradas[0].respuesta_verdadera
+                    'verdadera': respuestas_cerradas[0] if num==0 else respuestas_cerradas[0].respuesta_verdadera
                     })
         except IndexError:
             return render(request, 'repaso.html',{
