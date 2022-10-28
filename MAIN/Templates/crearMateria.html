@@ -11,19 +11,19 @@
     <form method = "POST">
         {% csrf_token %}
         <div class="row justify-content-center">
-            <div class="col-6" >{{ form.name|as_crispy_field }}</div>
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.name|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-6">{{ form.profesor|as_crispy_field }}</div>
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.profesor|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-6">{{ form.profesor_email|as_crispy_field }}</div>
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.profesor_email|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-6">{{ form.hora|as_crispy_field }}</div>
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.hora|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-dark col-3">Crear</button>
+            <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
         </div>
     </form>
 </div>
