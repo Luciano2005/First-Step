@@ -1,17 +1,31 @@
 {% extends 'navegacion.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 {{error}}
-<p>Crear Materia</p>
 
-<form method = "POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>
-        Crear
-    </button>
-</form>
-
+<div class="container-md justify-content-around py-4 px-4">
+    <p class="h1 text-decoration-underline text-center">Crear Materia</p>
+    <form method = "POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-6" >{{ form.name|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">{{ form.profesor|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">{{ form.profesor_email|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">{{ form.hora|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-dark col-3">Crear</button>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

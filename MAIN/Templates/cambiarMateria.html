@@ -1,12 +1,14 @@
 {% extends 'navegacion.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
 
 <p>Cambiar Materia</p>
 
 <form method = 'POST'>
     {% csrf_token %}
-    {{form.as_p}}
+    {% crispy form %}
     <button>
         Guardar
     </button>
