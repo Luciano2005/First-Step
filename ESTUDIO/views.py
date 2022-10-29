@@ -8,6 +8,7 @@ from ESTUDIO.forms import newPregunta,newRespuestaCerrada,newPreguntaCerrada,new
 from ESTUDIO.models import Pregunta,RespuestasCerradas
 from MAIN.models import Seccion
 from MAIN.forms import newSeccion
+import random
 
 # Create your views here.
 respuestas=[] #Lista para guardar las respuestas cerradas que el usuario ingresa.
@@ -111,7 +112,7 @@ def cambiarPreguntaCerrada(request, pregunta_id):
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         respuestas = get_list_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id)
         form_pregunta = newPreguntaCerrada(instance=pregunta)
-        respuesta_verdadera = newRespuestaCerradaVerdadera(instance=lista_respuestas[0])
+        respuesta_verdadera = newRespuestaCerradaVerdadera(instance=respuestas[0])
         for respuesta in respuestas:
             form_respuesta.append(newRespuestaCerrada(instance=respuesta))
         
@@ -147,17 +148,26 @@ def eliminarPregunta(request, pregunta_id):
 
 contador=0
 preguntas=[]
+respuestas_cerradas=[]
+num=0
 @login_required
 def repasoFlashcard(request, seccion_id):
     global contador 
     global preguntas
     preguntas = crearPreguntas(request, seccion_id, contador, preguntas)
     if request.method == 'GET':
-           
+        global respuestas_cerradas
+        global num
         contador+=1
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?')
+        
         try:
+            if len(respuestas_cerradas)>=0:
+                respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?'))
+                if len(respuestas_cerradas)!=0:
+                    num=random.randint(0, len(respuestas_cerradas)-1)
+                    respuestas_cerradas.insert(num,respuestas_cerradas[1].respuesta_verdadera)
+
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],
                 'seccion':seccion,
@@ -168,15 +178,25 @@ def repasoFlashcard(request, seccion_id):
             return redirect('/materias/')
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
-        respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]))
+        # respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
         print(respuestas_cerradas)
-        return render(request, 'repaso.html',{
-                'pregunta':preguntas[contador-1],
-                'seccion':seccion,
-                'respuesta':preguntas[contador-1].respuesta,
-                'respuestas_cerradas':respuestas_cerradas
-                })
-          
+        try:
+            return render(request, 'repaso.html',{
+                    'pregunta':preguntas[contador-1],
+                    'seccion':seccion,
+                    'respuesta':preguntas[contador-1].respuesta,
+                    'respuestas_cerradas':respuestas_cerradas,
+                    'verdadera': respuestas_cerradas[0] if num==0 else respuestas_cerradas[0].respuesta_verdadera
+                    })
+        except IndexError:
+            return render(request, 'repaso.html',{
+                    'pregunta':preguntas[contador-1],
+                    'seccion':seccion,
+                    'respuesta':preguntas[contador-1].respuesta,
+                    'respuestas_cerradas':respuestas_cerradas,
+                    #'verdadera':respuestas_cerradas[0].respuesta_verdadera
+                    })
+        
 @login_required     
 def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
     if contador==0:

@@ -21,7 +21,8 @@
 
 {% else %}
 
-<p>{{respuesta}}</p>
+<strong><p>{{respuesta}}</p></strong>
+<strong><p>{{verdadera}}</p></strong>
 
 <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 1 %}>
     <button>
