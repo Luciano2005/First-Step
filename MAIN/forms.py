@@ -51,6 +51,11 @@ class newSeccion(forms.ModelForm):
         fields = ['name']
 
 class newTarea(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+       user = kwargs.pop('user', None)
+       super().__init__(*args, **kwargs)
+       if user:
+           self.fields['materia'].queryset = Materia.objects.filter(user=user)
     class Meta:
         model = Tarea
         fields = ['name','materia','prioridad','fecha']

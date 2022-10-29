@@ -20,6 +20,7 @@ urlpatterns = [
     #Vista de Tareas
     path('tareas/', views.mostrarTareas, name='mostrarTareas'),
     path('tareas/<int:tarea_id>', views.tarea_detail, name='tarea_detail'),
-    path('tareas/crearTarea',views.crearTarea,name='crearTarea')
-
+    path('tareas/crearTarea',views.crearTarea,name='crearTarea'),
+    path('actualizarTarea/<int:tarea_id>', views.actualizarTarea, name='actualizarTarea'),
+    path('eliminarTarea/<int:tarea_id>', views.eliminarTarea, name='eliminarTarea')
 ]
