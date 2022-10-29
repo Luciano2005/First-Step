@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib.auth.decorators import login_required
 
 from ESTUDIO.models import Pregunta
-from .forms import Registro, Loguearse, newMateria, newSeccion
+from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .models import Materia, Seccion
+from .models import Materia, Seccion, Tarea
 
 # Create your views here.
 
@@ -177,3 +177,32 @@ def eliminarSeccion(request, seccion_id):
         seccion.delete()
         return redirect('materias')
 
+#---------------------VISTA TAREAS------------------------------------------------
+
+@login_required
+def mostrarTareas(request):
+    tareas = get_list_or_404(Tarea, user=request.user)
+    return render(request, 'mostrarTareas.html',{
+        'tareas':tareas
+    })
+
+
+@login_required
+def tarea_detail(request, tarea_id):
+    tarea = get_object_or_404(Tarea, pk=tarea_id,user=request.user)
+    return render(request, 'tarea_detail.html', {
+       'tarea':tarea
+    })
+
+def crearTarea(request):
+    if request.method == 'GET':
+        #tarea=newTarea()
+
+        return render(request, 'crearTarea.html', {
+            'form' : newTarea()
+        })
+    else:
+        tarea=newTarea(request.POST)
+        tarea.user=request.user
+        tarea.save()
+        return redirect('mostrarTareas')

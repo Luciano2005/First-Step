@@ -4,7 +4,7 @@ from django.forms import ModelForm, Widget
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
-from MAIN.models import Materia, Seccion
+from MAIN.models import Materia, Seccion, Tarea
 
 class Registro(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -41,7 +41,7 @@ class newMateria(forms.ModelForm):
         widgets = {
             'name' : forms.TextInput(attrs=({'placeholder':'Nombre de la materia', 'class':'form-control'})),
             'profesor' : forms.TextInput(attrs=({'placeholder':'Nombre del profesor', 'class':'form-control'})),
-            'profesor_email' : forms.EmailInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
+            'profesor_email' : forms.TextInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
             'hora' : forms.TimeInput(attrs=({'type':'time'})),
         } 
 
@@ -50,3 +50,7 @@ class newSeccion(forms.ModelForm):
         model = Seccion
         fields = ['name']
 
+class newTarea(forms.ModelForm):
+    class Meta:
+        model = Tarea
+        fields = ['name','materia','prioridad','fecha']

@@ -15,6 +15,11 @@ urlpatterns = [
     path('crearSeccion/<int:materia_id>', views.crearSeccion, name = 'crearSeccion'),
     path('seccion_detail/<int:seccion_id>',views.seccion_detail ,name='seccion_detail'),
     path('cambiarSeccion/<int:seccion_id>',views.cambiarSeccion ,name='cambiarSeccion'),
-    path('eliminarSeccion/<int:seccion_id>',views.eliminarSeccion ,name='eliminarSeccion')
+    path('eliminarSeccion/<int:seccion_id>',views.eliminarSeccion ,name='eliminarSeccion'),
+
+    #Vista de Tareas
+    path('tareas/', views.mostrarTareas, name='mostrarTareas'),
+    path('tareas/<int:tarea_id>', views.tarea_detail, name='tarea_detail'),
+    path('tareas/crearTarea',views.crearTarea,name='crearTarea')
 
 ]

@@ -1,0 +1,14 @@
+<h1>Tareas</h1>
+<form action={% url 'crearTarea' %}>
+    <button>
+        Crear nueva tarea
+    </button>
+</form>
+
+{% for tarea in tareas %}
+    <a href={% url 'tarea_detail' tarea.id %}>
+        <p>{{tarea.name}}</p>
+        <p>{{tarea.materia}}</p>
+        <p>{{tarea.prioridad}}</p>
+    </a>
+{% endfor %}
