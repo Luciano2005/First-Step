@@ -17,7 +17,7 @@ def main(request):
 def register(request):
     if request.method == 'GET':
         return render(request, 'register.html',{
-            'forms':Registro
+            'form':Registro
     })
     else:
         if request.POST['password1']==request.POST['password2']: 

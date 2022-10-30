@@ -3,12 +3,6 @@ from ESTUDIO.models import Pregunta
 from django.contrib.auth.models import User
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
-class Register(models.Model):
-    username=models.CharField(max_length= 30, blank= False)
-    name=models.CharField(max_length=60, blank=False) 
-    password=models.CharField(max_length=30, blank=False)
-    email=models.EmailField(blank=False)
-
 class Materia(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)

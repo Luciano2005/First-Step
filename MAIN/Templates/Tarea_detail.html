@@ -1,3 +1,7 @@
+{% extends 'navegacion.html' %}
+
+{% block content %}
+
 <h1>{{tarea.name}}</h1>
 
 <p>{{tarea.materia}}</p>
@@ -18,3 +22,5 @@
         Marcar como realizada
     </button>
 </form>
+
+{% endblock %}
