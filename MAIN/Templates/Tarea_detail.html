@@ -8,13 +8,14 @@
 <p>{{tarea.prioridad}}</p>
 <p>{{tarea.fecha}}</p>
 
-<form action="">
+<form action={% url 'actualizarTarea' tarea.id %}>
     <button>
         Editar
     </button>
 </form>
 
-<form action="" method="POST">
+<form action={% url 'eliminarTarea' tarea.id %} , method="POST">
+    {% csrf_token %}
     <button>
         Eliminar
     </button>

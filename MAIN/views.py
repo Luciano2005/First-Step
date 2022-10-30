@@ -181,7 +181,7 @@ def eliminarSeccion(request, seccion_id):
 
 @login_required
 def mostrarTareas(request):
-    tareas = get_list_or_404(Tarea, user=request.user)
+    tareas = list(Tarea.objects.filter(user=request.user))
     return render(request, 'mostrarTareas.html',{
         'tareas':tareas
     })
@@ -199,10 +199,33 @@ def crearTarea(request):
         #tarea=newTarea()
 
         return render(request, 'crearTarea.html', {
-            'form' : newTarea()
+            'form' : newTarea(user=request.user)
         })
     else:
-        tarea=newTarea(request.POST)
-        tarea.user=request.user
-        tarea.save()
-        return redirect('mostrarTareas')
+        form= newTarea(request.POST)
+        new_tarea=form.save(commit=False)
+        new_tarea.user=request.user
+        new_tarea.save()
+        return redirect('/tareas/')
+
+@login_required
+def actualizarTarea(request, tarea_id):
+    if request.method=='GET':
+        tarea=get_object_or_404(Tarea,pk=tarea_id)
+        form=newTarea(user=request.user,instance=tarea)
+        return render(request, 'actualizarTarea.html',{
+            'form':form
+        })
+    else:
+        tarea=get_object_or_404(Tarea,pk=tarea_id,user=request.user)
+        form=newTarea(request.POST, instance=tarea)
+        form.save()
+        return redirect('/tareas/')
+
+@login_required
+def eliminarTarea(request, tarea_id):
+    if request.method=='POST':
+        tarea=get_object_or_404(Tarea, pk=tarea_id, user=request.user)
+        print(tarea.name)
+        tarea.delete()
+        return redirect('/tareas/')

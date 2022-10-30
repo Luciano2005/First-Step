@@ -1,0 +1,6 @@
+<h1>MODIFICAR TAREA</h1>
+<form method="POST" tarea.id>
+    {% csrf_token %}
+    {{form.as_p}}
+    <button>Guardar</button>
+</form>

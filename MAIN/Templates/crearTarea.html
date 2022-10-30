@@ -1,9 +1,8 @@
 <h1>Crear tarea</h1>
 
-{{form.as_p}}
-
 <form method="POST">
     {% csrf_token %}
+    {{form.as_p}}
     <button>
         Guardar
     </button>
