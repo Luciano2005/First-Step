@@ -1,31 +1,7 @@
-{% extends 'ingreso.html' %}
-
-{% load crispy_forms_tags %}
-
-{% block content %}
-
-    <div class="container-md justify-content-around pb-4 px-4" style="background-color: white;">
-        <div class="row justify-content-center">
-            <p class="h6 py-2 justify-content-center col-9">Inicio de sesion</p>
-        </div>
-        <form method = "POST">
-            {% csrf_token %}
-            <div class="row justify-content-center">
-                <div class="col-9" >{{ form.username|as_crispy_field }}</div>
-                <div class="form-text col-9">
-                    <p class="text-center" style="color: red;">{{error}}</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-9">{{ form.password|as_crispy_field }}</div>
-                <div class="form-text col-9">
-                    <p class="text-center" style="color: red;">{{error}}</p>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <button type="submit" class="btn btn-dark" style="width: 120px;">Ingresar</button>
-            </div>
-        </form>
-    </div>
-
-{% endblock %}
+<p>Login</p>
+<h1>{{error}}</h1>
+<form method="POST">
+{% csrf_token %}
+{{form}}
+<button>Login</button>
+</form>
