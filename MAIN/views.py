@@ -181,9 +181,14 @@ def eliminarSeccion(request, seccion_id):
 
 @login_required
 def mostrarTareas(request):
-    tareas = list(Tarea.objects.filter(user=request.user))
+    prioridadA= Tarea.objects.filter(user=request.user,prioridad='Alto').order_by('fecha')
+    prioridadM= Tarea.objects.filter(user=request.user,prioridad='Medio').order_by('fecha')
+    prioridadB= Tarea.objects.filter(user=request.user,prioridad='Bajo').order_by('fecha')
+
     return render(request, 'mostrarTareas.html',{
-        'tareas':tareas
+        'tareas_a':prioridadA,
+        'tareas_m':prioridadM,
+        'tareas_b':prioridadB
     })
 
 

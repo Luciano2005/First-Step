@@ -33,14 +33,6 @@ class RespuestasCerradas(models.Model):
     def __str__(self):
         return self.respuesta_cerrada
 
-class Tarea(models.Model):
-    
-    name = models.CharField(max_length = 30, blank = False)
-    #materia=models.ForeignKey("Main.Materia", on_delete = models.CASCADE, null = True)
-    realizado = models.BooleanField(default = False)
-    def __str__(self):
-        return self.name
-
 #clase pomodoro hay un dato tipo duration
 
 class Pomodoro(models.Model):

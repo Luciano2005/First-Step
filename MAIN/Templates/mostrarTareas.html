@@ -5,10 +5,26 @@
     </button>
 </form>
 
-{% for tarea in tareas %}
-    <a href={% url 'tarea_detail' tarea.id %}>
-        <p>{{tarea.name}}</p>
-        <p>{{tarea.materia}}</p>
-        <p>{{tarea.prioridad}}</p>
+{% for tarea_a in tareas_a %}
+    <a href={% url 'tarea_detail' tarea_a.id %}>
+        <p>{{tarea_a.name}}</p>
+        <p>{{tarea_a.materia}}</p>
+        <p>{{tarea_a.prioridad}}</p>
+    </a>
+{% endfor %}
+
+{% for tarea_m in tareas_m %}
+    <a href={% url 'tarea_detail' tarea_m.id %}>
+        <p>{{tarea_m.name}}</p>
+        <p>{{tarea_m.materia}}</p>
+        <p>{{tarea_m.prioridad}}</p>
+    </a>
+{% endfor %}
+
+{% for tarea_b in tareas_b %}
+    <a href={% url 'tarea_detail' tarea_b.id %}>
+        <p>{{tarea_b.name}}</p>
+        <p>{{tarea_b.materia}}</p>
+        <p>{{tarea_b.prioridad}}</p>
     </a>
 {% endfor %}
