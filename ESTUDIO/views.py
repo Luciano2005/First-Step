@@ -35,7 +35,8 @@ def crearPreguntaCerrada(request, seccion):
             'form_pregunta_cerrada' : newPreguntaCerrada(),
             'seccion':seccion,
             'respuestas':respuestas,
-            'respuesta_verdadera': newRespuestaCerradaVerdadera()
+            'respuesta_verdadera': newRespuestaCerradaVerdadera(),
+            'respuesta_por_defecto':newRespuestaCerrada()
         })
     else:
         pregunta=Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion) #Se crea una nueva pregunta
@@ -61,7 +62,7 @@ def crearRespuestaCerrada(request, seccion):
 @login_required
 def eliminarRespuestaCerrada(request, seccion):
     global respuestas
-    if len(respuestas)>1:
+    if len(respuestas)>0:
         respuestas.pop() #eliminamos el último formulario de respuestas agregado.
         print(len(respuestas)) #Verificamos que se esten borrando las respuestas BORRAR LINEA.
     return redirect('estudio:crearPreguntaCerrada', seccion) #Devolvemos la vista con el nuevo campo de respuesta cerrada.
