@@ -21,6 +21,13 @@ class Registro(UserCreationForm):
     class Meta:
         model=User
         fields=['username','first_name','email','password1','password2']
+        widgets = {
+            'username' : forms.TextInput(attrs=({'placeholder':'Username/tagname/apodo', 'class':'form-control'})),
+            'first_name' : forms.TextInput(attrs=({'placeholder':'Primer nombre', 'class':'form-control'})),
+            'email' : forms.TextInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
+            'password1' : forms.PasswordInput(),
+            'password2' : forms.PasswordInput()
+        } 
 
 class Loguearse(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -33,6 +40,9 @@ class Loguearse(AuthenticationForm):
     class Meta:
         model=User
         fields=['username','password']
+        widgets={
+            'username' : forms.TextInput(attrs=({'placeholder':'Username/tagname/apodo', 'class':'form-control'}))
+        }
 
 class newMateria(forms.ModelForm):
     class Meta:

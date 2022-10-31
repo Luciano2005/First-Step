@@ -1,33 +1,39 @@
-{% extends 'navegacion.html' %}
+{% extends 'ingreso.html' %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
 
 
-<div class="container-md justify-content-around py-4 px-4">
-    <p class="h1 text-decoration-underline text-center">Register</p>
+<div class="container-md justify-content-around py-4 px-4" style="background-color: white;">
+    <div class="row justify-content-center">
+        <p class="h6 py-2 justify-content-center col-9">¡Registratate para mejorar tus habitos de estudio!</p>
+    </div>
     <form method = "POST">
         {% csrf_token %}
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.username|as_crispy_field }}</div>
+            <div class="col-9" >{{ form.username|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.first_name|as_crispy_field }}</div>
+            <div class="col-9">{{ form.first_name|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.email|as_crispy_field }}</div>
+            <div class="col-9">{{ form.email|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.password1|as_crispy_field }}</div>
+            <div class="col-9">{{ form.password1|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.password2|as_crispy_field }}</div>
+            <div class="col-9">{{ form.password2|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
+            <div class="form-text col-9">
+                <p class="text-center" style="color: red;">{{error}}</p>
+            </div>
         </div>
-        {{error}}
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-dark" style="width: 120px;">Registarse</button>
+        </div>
     </form>
 </div>
 

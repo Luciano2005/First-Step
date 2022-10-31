@@ -1,3 +1,5 @@
+{% extends 'navegacion.html' %}
+{% block content %}
 <h1>Tareas</h1>
 <form action={% url 'crearTarea' %}>
     <button>
@@ -12,3 +14,5 @@
         <p>{{tarea.prioridad}}</p>
     </a>
 {% endfor %}
+
+{% endblock %}
