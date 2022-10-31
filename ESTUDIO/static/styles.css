@@ -1,3 +1,11 @@
 .titulo{
     color:red;
 }
+
+#login{
+    background-image: url("img/loginbackground.jpg");
+    background-position: top;
+    background-repeat: no-repeat;
+    flex-direction: column;
+    background-color: #2C3333;
+}
