@@ -10,11 +10,11 @@
             Crear Materia
         </button>
     </form>
-    
+    <hr>
     <div class="container-fluid">
         <div class="row justify-content-sm-evenly justify-content-xl-start justify-content-start">
             {% for materia in materias %}
-            <div class="col-8 col-sm-6 col-md-6 col-xxl-3 col-xl-4 col-lg-5 py-4">
+            <div class="col-8 col-sm-6 col-md-6 col-xxl-3 col-xl-4 col-lg-5 py-2">
                 <div class="card" style="height: 23rem; width: 19rem;">
                     <a style="color: black; text-decoration: none;" href={% url 'materia_detail' materia.id %}>
                     <img class="card-img-top" src="https://prod-discovery.edx-cdn.org/media/course/image/f42bce09-2533-48fb-a9c4-8053aedf941b-798c36769d88.small.png" alt="materia" style="height: 150px;">

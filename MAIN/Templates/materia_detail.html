@@ -1,44 +1,70 @@
 {% extends 'navegacion.html' %}
 
 {% block content %}
-
-<h1> Materia en detalle </h1>
-<p> {{materia.name}} </p>
-<p> {{materia.hora}} </p>
-<p> {{materia.profesor}} </p>
-<p> {{materia.profesor_email}} </p>
-
-<form action = {% url 'crearSeccion' materia.id %}>
-    <button>
-        Crear Tema
-    </button>
-</form>
-
-<form action = {% url 'cambiarMateria' materia.id %}>
-    <button>
-        Actualizar
-    </button>
-</form>
-
-<form action = {% url 'eliminarMateria' materia.id %} , method="POST">
-    {% csrf_token %}
-    <button>
-        Eliminar
-    </button>
-</form>
-<div>
-    <a href={% url 'crearSeccion' materia.id %}>
-        {% for seccion in seccions %} 
-
-    <div>
-        <a href={% url 'seccion_detail' seccion.id %}>
-            {{seccion.name}}
-        </a>
+<div class="container-md justify-content-around py-4 px-4">
+    <p class="h1">{{materia.name}}</p>
+    <form class="d-inline" action = {% url 'cambiarMateria' materia.id %}>
+        <button class="btn btn-dark btn-sm">
+            Editar
+        </button>
+    </form>
+    <form class="d-inline" action = {% url 'eliminarMateria' materia.id %} , method="POST">
+        {% csrf_token %}
+        <button class="btn btn-dark btn-sm">
+            Eliminar
+        </button>
+    </form>
+    <hr>
+    <div class="row">
+        <div class="col-1">
+            <ul><li><p class="h6">Profesor: </p></li></ul>
+        </div>
+        <div class="col-2">
+            {{materia.profesor}}
+        </div>
+        <div class="col-2">
+            <ul><li><p class="h6">Correo Electronico: </p></li></ul>
+        </div>
+        <div class="col-2">
+            {{materia.profesor_email}}
+        </div>
     </div>
-
+    <div class="row">
+        <div class="col-1">
+            <ul><li><p class="h6">Horario: </p></li></ul>
+        </div>
+        <div class="col-2">
+            <p>Jueves - {{materia.hora}}</p>
+        </div>
+        <div class="col-2">
+            <ul><li><p class="h6">Aula: </p></li></ul>
+        </div>
+        <div class="col-2">
+            <p>CyT 402</p>
+        </div>
+    </div>
+    <hr>
+    <form action = {% url 'crearSeccion' materia.id %}>
+        <button class="btn btn-dark btn-sm">
+            Crear Tema
+        </button>
+    </form>
+    
+    <div class="container-fluid">
+        <div class="row justify-content-sm-evenly justify-content-xl-start justify-content-start">
+            {% for seccion in seccions %} 
+            <div class="col-8 col-sm-6 col-md-6 col-xxl-3 col-xl-4 col-lg-5 py-2 d-inline">
+                <div class="card" style="height: 13rem; width: 19rem;">
+                    <a style="color: black; text-decoration: none;" href={% url 'seccion_detail' seccion.id %}>
+                    <img class="card-img-top" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.grinnell.edu%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fcarousel__image_feature%2Fpublic%2Fimages%2F2020-01%2Fmathboard.jpg%3Fh%3D8fad2c98%26itok%3DO82VnrU_&f=1&nofb=1&ipt=0d8e8258bf7e7ea9097da3abd8ad15220c6f2920ceba7d13d6075411967d4ed5&ipo=images" alt="materia" style="height: 150px;">
+                    <div class="card-body" style="height: 5rem;">
+                        <h4 class="cardtitle">{{seccion.name}}</h5>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-
-
-{% endfor %}
-
 {% endblock %}
