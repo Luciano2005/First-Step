@@ -1,15 +1,32 @@
 {% extends 'navegacion.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<p>Crear Tema</p>
-
+{{error}}
+<div class="container-md justify-content-around py-4 px-4">
 <form method = 'POST'>
     {% csrf_token %}
-    {{form.as_p}}
-    <button>
-        Crear 
-    </button>
+
+<div class="row justify-content-center">
+<div class="col-lg-4 col-md-6 col-sm-7 col-9">
+    <figure class="text-center">
+        <blockquote class="blockquote" style="margin-bottom:30px">
+            <p class="h1">Crear Tema</p>
+        </blockquote>
+        <figcaption class="blockquote-footer" style="margin-bottom:30px">
+            HOLA! Aquí podrás crear los temas que quiras repasar posteriormente, <cite title="Título fuente">¡ANÍMATE!</cite>
+        </figcaption>
+      </figure>
+      
+      <label class="form-label requiredField row justify-content-center" for="id_name">Nombre del tema*<span class="form-text col-9" style="color: red:">{{error}}</span></label>
+      <input class="form-control" type="text" name="name" required id=id_name placeholder="Ejemplo: Polimorfismo">
+    <div class="row justify-content-center">
+        <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">Crear</button>
+    </div>
+</div>
+</div>
+</div>
 </form>
 
 {% endblock %}
