@@ -2,44 +2,88 @@
 
 {% block content %}
 
-<h1>{{seccion.name}}</h1>
-<div>
-<form action={% url 'cambiarSeccion' seccion.id %}>
-    <button>Actualizar</button>
-</form>
+<div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+        <figure class="text-center" style="margin-top:30px">
+            
+            <blockquote class="blockquote" style="margin-bottom:30px">
+                <h1 class="h1">{{seccion.name}}</h1>
+            </blockquote>
+            <figcaption class="blockquote-footer" style="margin-bottom:30px">
+               <h4>"Todos nuestros sueños se pueden hacer realidad si tenemos el coraje de perseguirlos"</h4> <h5>Walt Disney.</h5>
+            </figcaption>
+          </figure>
+    </div>
 </div>
 
-<div>
-    <form action={% url 'eliminarSeccion' seccion.id %} method="POST">
+<div class="container-sm justify-content-left py-4 px-4 bg-black text-white" style="margin-top:70px; margin-bottom:70px; ">
+    <div class="row row-cols-5 text-center">
+        <div class="col">
+            <h5>Cambia el nombre de este tema ({{seccion.name}})</h5>
+            <form action={% url 'cambiarSeccion' seccion.id %}>
+                <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">Actualizar</button>
+            </form>
+        </div>
+        
+        <div class="col">
+            <h5>Crea una Flashcard </h5>
+        <form action = {% url 'estudio:crearFlashcard' seccion.id %}>
+            <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 45px">
+                Crear Flash
+            </button>
+        </form>
+    </div>
+    <div class="col">
+        <h5>Crea una pregunta cerrada </h5>
+        <form action = {% url 'estudio:crearPreguntaCerrada' seccion.id %}>
+            <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 22px">
+                Crear
+            </button>
+        </form>
+    </div>
+    <div class="col">
+        <h5>Ir al repaso del tema </h5>
+        <form action={% url 'estudio:repaso' seccion.id %}>
+            <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 40px">
+                Repaso
+            </button>
+        </form>
+    </div>
+    <div class="col">
+        <h5>Eliminar este tema </h5>
+        <form action={% url 'eliminarSeccion' seccion.id %} method="POST">
         {% csrf_token %}
-        <button>Eliminar</button>
+        <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
     </form>
+    </div>
+</div>
 </div>
 
-<form action = {% url 'estudio:crearFlashcard' seccion.id %}>
-    <button>
-        Crear Flashcard
-    </button>
-</form>
-
-<form action = {% url 'estudio:crearPreguntaCerrada' seccion.id %}>
-    <button>
-        Crear Pregunta Cerrada
-    </button>
-</form>
-
-<form action={% url 'estudio:repaso' seccion.id %}>
-    <button>
-        Repaso
-    </button>
-</form>
-
-{% for pregunta in preguntas %}
-<a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
-    <p>{{pregunta.name}}</p>
-</a>
 
 
-{% endfor %}
-
+<div class="row justify-content-center">
+<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+    {% for pregunta in preguntas %}
+    <div class="card-header">{{pregunta.name}}</div>
+        <div class="card-body">
+            <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
+                <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">{{pregunta.name}}</button>
+            </a>
+           
+        </div>
+    </div>
+</div>
+</div>
+<div class="row justify-content-center">
+<div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+    <div class="card-header">
+        {{flascard.name}}
+    </div>
+        <div class="card-body">
+            <a href = "#" class="card-link">{% endfor %}</a>
+            </a>
+           
+        </div>
+    </div>
+        
 {% endblock %}
