@@ -34,10 +34,9 @@ class Tarea(models.Model):
     user=models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     name = models.CharField(max_length = 30, blank = False)
     materia=models.ForeignKey(Materia, on_delete = models.CASCADE, null = True)
-    nivel_prioridad=(('Bajo', 'Bajo'),('Media','Medio'),('Alto','Alto'))
+    nivel_prioridad=(('Bajo', 'Bajo'),('Medio','Medio'),('Alto','Alto'))
     prioridad=models.CharField(max_length=20,choices = nivel_prioridad, default = 'Bajo')
     fecha=models.DateField(blank=False, null=True)
-    realizado = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name

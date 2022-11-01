@@ -4,10 +4,8 @@
 
 {% block content %}
 
-{{error}}
-
 <div class="container-md justify-content-around py-4 px-4">
-    <p class="h1 text-decoration-underline text-center">Crear Materia</p>
+    <p class="h1 text-center">Crear Materia</p>
     <form method = "POST">
         {% csrf_token %}
         <div class="row justify-content-center">
@@ -17,7 +15,10 @@
             <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.profesor|as_crispy_field }}</div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.profesor_email|as_crispy_field }}</div>
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
+                <label for="id_profesor_email" class="form-label requiredField">Profesor Email *<span class="form-text col-9" style="color: red;">   {{error}}</span></label>
+                <input type="text" name="profesor_email" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name">
+            </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.hora|as_crispy_field }}</div>

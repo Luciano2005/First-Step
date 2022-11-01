@@ -1,12 +1,30 @@
 {% extends 'navegacion.html' %}
-{% block content %}
-<h1>Crear tarea</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>
-        Guardar
-    </button>
-</form>
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-md justify-content-around py-4 px-4">
+    <p class="h1 text-center">Crear Tarea</p>
+    <form method = "POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.name|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.materia|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center ">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.prioridad|as_crispy_field }}</div>
+        </div>
+        <div class="row justify-content-center pb-3">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+                <label for="id_fecha" class="form-label requiredField">Fecha de entrega</label>
+                <input type="date" name="fecha" class="form-control" requiered id="id_fecha">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

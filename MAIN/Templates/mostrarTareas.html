@@ -1,34 +1,156 @@
 {% extends 'navegacion.html' %}
 {% block content %}
-<h1>Tareas</h1>
-<form action={% url 'crearTarea' %}>
-    <button>
-        Crear nueva tarea
-    </button>
-</form>
+<div class="container-md justify-content-around py-4 px-4">
+    <p class="h1">Tareas</p>
+    <form action={% url 'crearTarea' %}>
+        <button class="btn btn-dark my-2">
+            Crear nueva tarea
+        </button>
+    </form>
+    <hr>
+    <div class="card my-2">
+        <div class="card-header text-center">⚡ Prioridad Alta ⚡</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Concluida</th>  
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Fecha de entrega</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarea_a in tareas_a %}
+                        <tr>
+                            <td class="col-2">
+                                <form action={% url 'eliminarTarea' tarea_a.id %} , method="POST">
+                                    <input type="checkbox" class="form-check-input"> 
+                                </form>
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_a.name}}</p>
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_a.materia}}</p>
+                            </td>
+                            <td class="col-2">
+                                <p>{{tarea_a.fecha}}</p>
+                            </td>
+                            <td class="col-1">
+                                <a href={% url 'actualizarTarea' tarea_a.id %}>Editar</a>
+                            </td>
+                            <td class="col-1">
+                                <form action={% url 'eliminarTarea' tarea_a.id %} , method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-link" style="padding: 0;">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-{% for tarea_a in tareas_a %}
-    <a href={% url 'tarea_detail' tarea_a.id %}>
-        <p>{{tarea_a.name}}</p>
-        <p>{{tarea_a.materia}}</p>
-        <p>{{tarea_a.prioridad}}</p>
-    </a>
-{% endfor %}
+    <div class="card my-2">
+        <div class="card-header text-center">🔋 Prioridad Media 🔋</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Concluida</th>  
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Fecha de entrega</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarea_m in tareas_m %}
+                        <tr>
+                            <td class="col-2">
+                                <form action={% url 'eliminarTarea' tarea_m.id %} , method="POST">
+                                    <input type="checkbox" class="form-check-input"> 
+                                </form>
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_m.name}}</p>
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_m.materia}}</p>
+                            </td>
+                            <td class="col-2">
+                                <p>{{tarea_m.fecha}}</p>
+                            </td>
+                            <td class="col-1">
+                                <a href={% url 'actualizarTarea' tarea_m.id %}>Editar</a>
+                            </td>
+                            <td class="col-1">
+                                <form action={% url 'eliminarTarea' tarea_m.id %} , method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-link link" style="padding: 0;">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-{% for tarea_m in tareas_m %}
-    <a href={% url 'tarea_detail' tarea_m.id %}>
-        <p>{{tarea_m.name}}</p>
-        <p>{{tarea_m.materia}}</p>
-        <p>{{tarea_m.prioridad}}</p>
-    </a>
-{% endfor %}
-
-{% for tarea_b in tareas_b %}
-    <a href={% url 'tarea_detail' tarea_b.id %}>
-        <p>{{tarea_b.name}}</p>
-        <p>{{tarea_b.materia}}</p>
-        <p>{{tarea_b.prioridad}}</p>
-    </a>
-{% endfor %}
+    <div class="card my-2">
+        <div class="card-header text-center">📉 Prioridad Baja 📉</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Concluida</th>  
+                        <th scope="col">Tarea</th>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Fecha de entrega</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tarea_b in tareas_b %}
+                        <tr>
+                            <td class="col-2">
+                               <input type="checkbox" class="form-check-input"> 
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_b.name}}</p>
+                            </td>
+                            <td class="col-3">
+                                <p>{{tarea_b.materia}}</p>
+                            </td>
+                            <td class="col-2">
+                                <p>{{tarea_b.fecha}}</p>
+                            </td>
+                            <td class="col-1">
+                                <a href={% url 'actualizarTarea' tarea_b.id %}>Editar</a>
+                            </td>
+                            <td class="col-1">
+                                <form action={% url 'eliminarTarea' tarea_b.id %} , method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-link link" style="padding: 0;">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 {% endblock %}
