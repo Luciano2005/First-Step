@@ -61,7 +61,7 @@
 
 
 
-
+<div class="row justify-content-center">
 <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
     {% for pregunta in preguntas %}
     <div class="card-header">{{pregunta.name}}</div>
@@ -73,7 +73,8 @@
         </div>
     </div>
 </div>
-
+</div>
+<div class="row justify-content-center">
 <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
     <div class="card-header">
         {{flascard.name}}
@@ -83,5 +84,6 @@
             </a>
            
         </div>
+    </div>
         
 {% endblock %}
