@@ -47,7 +47,7 @@ class Loguearse(AuthenticationForm):
 class newMateria(forms.ModelForm):
     class Meta:
         model=Materia
-        fields=['name','hora','profesor','profesor_email']
+        fields=['name','hora','profesor','profesor_email','horario']
         widgets = {
             'name' : forms.TextInput(attrs=({'placeholder':'Nombre de la materia', 'class':'form-control'})),
             'profesor' : forms.TextInput(attrs=({'placeholder':'Nombre del profesor', 'class':'form-control'})),

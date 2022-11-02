@@ -113,28 +113,32 @@ def crearMateria(request):
         'form' : newMateria()
     })
     else:
-        try:
+        #try:
+        print(request.POST)
+        # form= newMateria(request.POST)
+        # new_materia=form.save(commit=False)
+        # new_materia.user=request.user
 
-            form= newMateria(request.POST)
-            new_materia=form.save(commit=False)
-            new_materia.user=request.user
-            new_materia.save()
-            return redirect('/materias/')
-        except ValueError:
-            global x
-            a = request.POST['profesor_email']
-            if a.find(".") == -1:
-                x = "Correo Invalido"
-            else:
-                if len(a.split(".")[1]) == 1:
-                    x = "Correo Invalido"
-                else:
-                    x = "Eror en hora o en otra cosa diferente a correo"
 
-            return render(request,'crearMateria.html',{
-                'form':newMateria,
-                'error': x
-            })
+        #new_materia.save()
+
+        Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
+        return redirect('/materias/')
+        # except ValueError:
+        #     global x
+        #     a = request.POST['profesor_email']
+        #     if a.find(".") == -1:
+        #         x = "Correo Invalido"
+        #     else:
+        #         if len(a.split(".")[1]) == 1:
+        #             x = "Correo Invalido"
+        #         else:
+        #             x = "Eror en hora o en otra cosa diferente a correo"
+
+        #     return render(request,'crearMateria.html',{
+        #         'form':newMateria,
+        #         'error': x
+        #     })
 
 @login_required
 def crearSeccion(request, materia_id):

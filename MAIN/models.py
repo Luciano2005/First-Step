@@ -1,6 +1,8 @@
+from random import choices
 from django.db import models
 from ESTUDIO.models import Pregunta
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
 class Materia(models.Model):
@@ -9,6 +11,17 @@ class Materia(models.Model):
     hora = models.TimeField(blank = False)
     profesor = models.CharField(max_length = 30, blank = False)
     profesor_email = models.EmailField(blank = False)
+    OPTIONS = (
+        ("Lunes", "Lunes"),
+        ("Martes", "Martes"),
+        ("Miércoles", "Miércoles"),
+        ("Jueves", "Jueves"),
+        ("Viernes", "Viernes"),
+        ("Sábado", "Sábado"),
+        ("Domingo", "Domingo"),
+    )
+    horario = MultiSelectField(choices=OPTIONS, max_length=9, null=True)
+
     def __str__(self):
         return self.name
     #UNAL vs NO UNAL

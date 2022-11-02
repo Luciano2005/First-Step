@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'COMUNIDAD',
     "crispy_forms",
     "crispy_bootstrap5",
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
