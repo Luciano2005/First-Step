@@ -121,7 +121,7 @@ def crearMateria(request):
 
         #new_materia.save()
 
-        Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
+        Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), archivos=request.FILES.getlist('archivos []'), imagen=request.FILES['imagen'])
         return redirect('/materias/')
         # except ValueError:
         #     global x

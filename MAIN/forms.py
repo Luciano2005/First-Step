@@ -47,12 +47,13 @@ class Loguearse(AuthenticationForm):
 class newMateria(forms.ModelForm):
     class Meta:
         model=Materia
-        fields=['name','hora','profesor','profesor_email','horario']
+        fields=['name','hora','profesor','profesor_email','horario','imagen','archivos']
         widgets = {
             'name' : forms.TextInput(attrs=({'placeholder':'Nombre de la materia', 'class':'form-control'})),
             'profesor' : forms.TextInput(attrs=({'placeholder':'Nombre del profesor', 'class':'form-control'})),
             'profesor_email' : forms.TextInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
             'hora' : forms.TimeInput(attrs=({'type':'time'})),
+            'archivos':forms.FileInput(attrs={'multiple': True})
         } 
 
 class newSeccion(forms.ModelForm):
