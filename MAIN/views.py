@@ -95,8 +95,7 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-        form=newMateria(request.POST, instance=materia)
-        form.save()
+        Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
         return redirect('materias')
 
 @login_required

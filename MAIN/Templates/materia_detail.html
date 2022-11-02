@@ -34,7 +34,10 @@
             <ul><li><p class="h6">Horario: </p></li></ul>
         </div>
         <div class="col-2">
-            <p>Jueves - {{materia.hora}}</p>
+            <p>{% for dia in materia.horario %}
+                {{dia}} - {{materia.hora}}
+                {% endfor %}
+            </p>
         </div>
         <div class="col-2">
             <ul><li><p class="h6">Aula: </p></li></ul>
