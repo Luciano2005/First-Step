@@ -27,16 +27,28 @@
             <div>{{form.horario}}</div> <!--PARA LOS DEL FRONTEND-->
         </div>
         <div>
-            <div>Ingrese sus archivos pdf aquí: {{form.archivos}}</div> <!--PARA LOS DEL FRONTEND-->
-        </div>
-        <div>
             <div>Ingrese una imagen para su materia: {{form.imagen}}</div> <!--PARA LOS DEL FRONTEND-->
         </div>
-        
-
+        <div>
+            <div>
+                Ingrese sus archivos pdf aquí: {{docForm}}
+            </div>
+        </div>
+        {% for doc in docs %}
+        <div>
+            <div>Ingrese sus archivos pdf aquí: {{doc}}</div> <!--PARA LOS DEL FRONTEND-->
+        </div>
+        {% endfor %}
         <div class="row justify-content-center">
             <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
         </div>
+    </form>
+
+    <form action = {% url 'crearDoc' %} method = 'POST'>
+        <button >
+            {% csrf_token %}
+            Agregar mas archivos
+        </button>
     </form>
 </div>
 

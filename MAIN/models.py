@@ -23,7 +23,7 @@ class Materia(models.Model):
     )
     horario = MultiSelectField(choices=OPTIONS, max_length=100, null=True)
     imagen = models.ImageField(null=True, blank=True, upload_to="images/")
-    archivos = models.FileField(null=True, blank=True, upload_to="images/")
+    #archivos = models.FileField(null=True, blank=True, upload_to="images/")
 
     def __str__(self):
         return self.name
@@ -37,10 +37,12 @@ class Seccion(models.Model):
         return self.name
 
 class Documento(models.Model):
-    documento=models.FileField() #Establecer un lugar donde cargar los documentos
-    Materia=models.ForeignKey(Materia, blank = True, on_delete=models.CASCADE, null=True)
-    Seccion=models.ForeignKey(Seccion, blank = True, on_delete=models.CASCADE, null=True )
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+    documento = models.FileField(null=True, blank=True, upload_to="images/") 
+    materia=models.ForeignKey(Materia, blank = True, on_delete=models.CASCADE, null=True)
+    #Seccion=models.ForeignKey(Seccion, blank = True, on_delete=models.CASCADE, null=True )
     docPregunta=models.ForeignKey(Pregunta, blank = True, on_delete=models.CASCADE, null=True)
+
 
     #prioridad se puede hacer con un models.Field.choices
 
