@@ -1,0 +1,7 @@
+<h1>Archivos</h1>
+
+<ul>
+    {% for archivo in archivos %}
+        <li><a href={{archivo.documento.url}}>{{archivo.filename}}</a></li>
+    {% endfor %}
+</ul>

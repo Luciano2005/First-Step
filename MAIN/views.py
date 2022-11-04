@@ -1,7 +1,9 @@
 from ast import MatchSequence
 from django.db import IntegrityError
-from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
+import pathlib
 
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento
@@ -10,6 +12,8 @@ from django.contrib.auth import login, logout, authenticate
 from .models import Materia, Seccion, Tarea, Documento
 
 # Create your views here.
+
+#---------------------------------------------------Login y Register-----------------------------------------
 
 def main(request):
     return render(request, 'main.html')
@@ -65,6 +69,9 @@ def logout2(request):
 @login_required
 def perfil(request):
     return render(request, 'perfil.html')
+
+
+#---------------------------------------------------Materias-----------------------------------------
 
 @login_required
 def materias(request):
@@ -146,6 +153,10 @@ def crearMateria(request):
         #         'form':newMateria,
         #         'error': x
         #     })
+
+
+
+#---------------------------------------------------Crear Sección-----------------------------------------
 
 @login_required
 def crearSeccion(request, materia_id):
@@ -245,4 +256,15 @@ def eliminarTarea(request, tarea_id):
         print(tarea.name)
         tarea.delete()
         return redirect('/tareas/')
+
+
+#---------------------------------------------------Ver Temario-----------------------------------------
+def verTemario(request, materia_id):
+    if request.method == 'GET':
+        lista_archivos=list(Documento.objects.filter(user=request.user, materia_id=materia_id))
+        return render(request, 'verTemario.html',{
+            'archivos':lista_archivos
+        })
+
+    
 

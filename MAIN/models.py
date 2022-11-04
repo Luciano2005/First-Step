@@ -4,6 +4,7 @@ from django.db import models
 from ESTUDIO.models import Pregunta
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+import os
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
 class Materia(models.Model):
@@ -42,6 +43,9 @@ class Documento(models.Model):
     materia=models.ForeignKey(Materia, blank = True, on_delete=models.CASCADE, null=True)
     #Seccion=models.ForeignKey(Seccion, blank = True, on_delete=models.CASCADE, null=True )
     docPregunta=models.ForeignKey(Pregunta, blank = True, on_delete=models.CASCADE, null=True)
+
+    def filename(self):
+        return os.path.basename(self.documento.name)
 
 
     #prioridad se puede hacer con un models.Field.choices
