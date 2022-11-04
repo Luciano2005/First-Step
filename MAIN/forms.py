@@ -4,7 +4,7 @@ from django.forms import ModelForm, Widget
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
-from MAIN.models import Materia, Seccion, Tarea
+from MAIN.models import Materia, Seccion, Tarea, Documento
 
 class Registro(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -47,12 +47,12 @@ class Loguearse(AuthenticationForm):
 class newMateria(forms.ModelForm):
     class Meta:
         model=Materia
-        fields=['name','hora','profesor','profesor_email']
+        fields=['name','hora','profesor','profesor_email','horario','imagen']
         widgets = {
             'name' : forms.TextInput(attrs=({'placeholder':'Nombre de la materia', 'class':'form-control'})),
             'profesor' : forms.TextInput(attrs=({'placeholder':'Nombre del profesor', 'class':'form-control'})),
             'profesor_email' : forms.TextInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
-            'hora' : forms.TimeInput(attrs=({'type':'time'})),
+            'hora' : forms.TimeInput(attrs=({'type':'time'}))
         } 
 
 class newSeccion(forms.ModelForm):
@@ -69,3 +69,11 @@ class newTarea(forms.ModelForm):
     class Meta:
         model = Tarea
         fields = ['name','materia','prioridad','fecha']
+
+class newDocumento(forms.ModelForm):
+    class Meta:
+        model = Documento
+        fields = ['documento']
+        widgets={
+            'documento':forms.FileInput(attrs={'multiple': True})
+        }

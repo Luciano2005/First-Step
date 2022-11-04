@@ -6,7 +6,7 @@
 
 <div class="container-md justify-content-around py-4 px-4">
     <p class="h1 text-center">Crear Materia</p>
-    <form method = "POST">
+    <form method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.name|as_crispy_field }}</div>
@@ -23,10 +23,22 @@
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.hora|as_crispy_field }}</div>
         </div>
+        <div>
+            <div>{{form.horario}}</div> <!--PARA LOS DEL FRONTEND-->
+        </div>
+        <div>
+            <div>Ingrese una imagen para su materia: {{form.imagen}}</div> <!--PARA LOS DEL FRONTEND-->
+        </div>
+        <div>
+            <div>
+                Ingrese sus archivos pdf aquí: {{docForm}}
+            </div>
+        </div>
         <div class="row justify-content-center">
             <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
         </div>
     </form>
+
 </div>
 
 {% endblock %}

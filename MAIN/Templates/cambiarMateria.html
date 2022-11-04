@@ -8,7 +8,15 @@
 
 <form method = 'POST'>
     {% csrf_token %}
-    {% crispy form %}
+    <!-- {% crispy form %}  No esta dejando guardar el formulario -->
+    {{form}}
+
+    {% for doc in form_doc %}
+
+    {{doc.as_p}}
+
+    {% endfor %}
+
     <button>
         Guardar
     </button>

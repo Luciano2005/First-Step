@@ -1,15 +1,19 @@
 from ast import MatchSequence
 from django.db import IntegrityError
-from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
+import pathlib
 
 from ESTUDIO.models import Pregunta
-from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea
+from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .models import Materia, Seccion, Tarea
+from .models import Materia, Seccion, Tarea, Documento
 
 # Create your views here.
+
+#---------------------------------------------------Login y Register-----------------------------------------
 
 def main(request):
     return render(request, 'main.html')
@@ -66,6 +70,9 @@ def logout2(request):
 def perfil(request):
     return render(request, 'perfil.html')
 
+
+#---------------------------------------------------Materias-----------------------------------------
+
 @login_required
 def materias(request):
     materias = Materia.objects.filter(user = request.user)
@@ -95,8 +102,7 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-        form=newMateria(request.POST, instance=materia)
-        form.save()
+        Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
         return redirect('materias')
 
 @login_required
@@ -108,33 +114,49 @@ def elmimiarMateria(request, materia_id):
 
 @login_required
 def crearMateria(request):
+    
     if request.method == 'GET':
         return render(request, 'crearMateria.html', {
-        'form' : newMateria()
+        'form' : newMateria(),
+        'docForm' : newDocumento(),
     })
     else:
-        try:
+        #try:
+        print(request.POST)
+        # form= newMateria(request.POST)
+        # new_materia=form.save(commit=False)
+        # new_materia.user=request.user
 
-            form= newMateria(request.POST)
-            new_materia=form.save(commit=False)
-            new_materia.user=request.user
-            new_materia.save()
-            return redirect('/materias/')
-        except ValueError:
-            global x
-            a = request.POST['profesor_email']
-            if a.find(".") == -1:
-                x = "Correo Invalido"
-            else:
-                if len(a.split(".")[1]) == 1:
-                    x = "Correo Invalido"
-                else:
-                    x = "Eror en hora o en otra cosa diferente a correo"
 
-            return render(request,'crearMateria.html',{
-                'form':newMateria,
-                'error': x
-            })
+        #new_materia.save()
+
+        materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'])
+        materia.save()
+        for doc in request.FILES.getlist('documento'):
+            Documento.objects.create(user = request.user, documento = doc, materia = materia)
+         
+        
+
+        return redirect('/materias/')
+        # except ValueError:
+        #     global x
+        #     a = request.POST['profesor_email']
+        #     if a.find(".") == -1:
+        #         x = "Correo Invalido"
+        #     else:
+        #         if len(a.split(".")[1]) == 1:
+        #             x = "Correo Invalido"
+        #         else:
+        #             x = "Eror en hora o en otra cosa diferente a correo"
+
+        #     return render(request,'crearMateria.html',{
+        #         'form':newMateria,
+        #         'error': x
+        #     })
+
+
+
+#---------------------------------------------------Crear Sección-----------------------------------------
 
 @login_required
 def crearSeccion(request, materia_id):
@@ -234,3 +256,15 @@ def eliminarTarea(request, tarea_id):
         print(tarea.name)
         tarea.delete()
         return redirect('/tareas/')
+
+
+#---------------------------------------------------Ver Temario-----------------------------------------
+def verTemario(request, materia_id):
+    if request.method == 'GET':
+        lista_archivos=list(Documento.objects.filter(user=request.user, materia_id=materia_id))
+        return render(request, 'verTemario.html',{
+            'archivos':lista_archivos
+        })
+
+    
+

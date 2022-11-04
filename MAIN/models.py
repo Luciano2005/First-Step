@@ -1,6 +1,10 @@
+from distutils.command.upload import upload
+from random import choices
 from django.db import models
 from ESTUDIO.models import Pregunta
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
+import os
 # Create your models here.
 #Creamos la clase Register para realizar el registro del usuario
 class Materia(models.Model):
@@ -9,6 +13,19 @@ class Materia(models.Model):
     hora = models.TimeField(blank = False)
     profesor = models.CharField(max_length = 30, blank = False)
     profesor_email = models.EmailField(blank = False)
+    OPTIONS = (
+        ("Lunes", "Lunes"),
+        ("Martes", "Martes"),
+        ("Miércoles", "Miércoles"),
+        ("Jueves", "Jueves"),
+        ("Viernes", "Viernes"),
+        ("Sábado", "Sábado"),
+        ("Domingo", "Domingo"),
+    )
+    horario = MultiSelectField(choices=OPTIONS, max_length=100, null=True)
+    imagen = models.ImageField(null=True, blank=True, upload_to="images/")
+    #archivos = models.FileField(null=True, blank=True, upload_to="images/")
+
     def __str__(self):
         return self.name
     #UNAL vs NO UNAL
@@ -21,10 +38,15 @@ class Seccion(models.Model):
         return self.name
 
 class Documento(models.Model):
-    documento=models.FileField() #Establecer un lugar donde cargar los documentos
-    Materia=models.ForeignKey(Materia, blank = True, on_delete=models.CASCADE, null=True)
-    Seccion=models.ForeignKey(Seccion, blank = True, on_delete=models.CASCADE, null=True )
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+    documento = models.FileField(null=True, blank=True, upload_to="images/") 
+    materia=models.ForeignKey(Materia, blank = True, on_delete=models.CASCADE, null=True)
+    #Seccion=models.ForeignKey(Seccion, blank = True, on_delete=models.CASCADE, null=True )
     docPregunta=models.ForeignKey(Pregunta, blank = True, on_delete=models.CASCADE, null=True)
+
+    def filename(self):
+        return os.path.basename(self.documento.name)
+
 
     #prioridad se puede hacer con un models.Field.choices
 
