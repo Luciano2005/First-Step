@@ -166,7 +166,7 @@ def crearSeccion(request, materia_id):
         })
     else:
         Seccion.objects.create(user = request.user, name = request.POST['name'], materia_id = materia_id)    
-        return redirect('/materias/')
+        return redirect('materia_detail', materia_id)
 
 @login_required
 def seccion_detail(request, seccion_id):
@@ -180,6 +180,7 @@ def seccion_detail(request, seccion_id):
     
 @login_required
 def cambiarSeccion(request, seccion_id):
+
     if request.method=='GET':
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         form=newSeccion(instance=seccion)
@@ -190,14 +191,14 @@ def cambiarSeccion(request, seccion_id):
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         form=newSeccion(request.POST,instance=seccion)
         form.save()
-        return redirect('materias')
+        return redirect('materia_detail', seccion.materia_id)
         
 @login_required
 def eliminarSeccion(request, seccion_id):
     if request.method=='POST':
         seccion = get_object_or_404(Seccion, pk=seccion_id, user=request.user)
         seccion.delete()
-        return redirect('materias')
+        return redirect('materia_detail', seccion.materia_id)
 
 #---------------------VISTA TAREAS------------------------------------------------
 
@@ -267,4 +268,5 @@ def verTemario(request, materia_id):
         })
 
     
-
+def perfil(request):
+    return render(request, 'perfil.html')
