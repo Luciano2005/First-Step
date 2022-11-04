@@ -129,8 +129,11 @@ def crearMateria(request):
 
 
         #new_materia.save()
+        if len(request.POST['imagen']) == 0:
+            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
+        else:
+            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'])
 
-        materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'])
         materia.save()
         for doc in request.FILES.getlist('documento'):
             Documento.objects.create(user = request.user, documento = doc, materia = materia)
