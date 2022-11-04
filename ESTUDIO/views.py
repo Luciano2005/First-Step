@@ -25,7 +25,7 @@ def crearFlashcard(request, seccion_id):
         
         
     
-        return redirect('/materias/')
+        return redirect('seccion_detail',seccion_id)
 
 @login_required
 def crearPreguntaCerrada(request, seccion):
