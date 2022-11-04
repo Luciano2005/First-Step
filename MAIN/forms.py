@@ -52,8 +52,7 @@ class newMateria(forms.ModelForm):
             'name' : forms.TextInput(attrs=({'placeholder':'Nombre de la materia', 'class':'form-control'})),
             'profesor' : forms.TextInput(attrs=({'placeholder':'Nombre del profesor', 'class':'form-control'})),
             'profesor_email' : forms.TextInput(attrs=({'placeholder':'name@unal.edu.co', 'class':'form-control'})),
-            'hora' : forms.TimeInput(attrs=({'type':'time'})),
-            'archivos':forms.FileInput(attrs={'multiple': True})
+            'hora' : forms.TimeInput(attrs=({'type':'time'}))
         } 
 
 class newSeccion(forms.ModelForm):
@@ -75,3 +74,6 @@ class newDocumento(forms.ModelForm):
     class Meta:
         model = Documento
         fields = ['documento']
+        widgets={
+            'documento':forms.FileInput(attrs={'multiple': True})
+        }

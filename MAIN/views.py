@@ -10,7 +10,6 @@ from django.contrib.auth import login, logout, authenticate
 from .models import Materia, Seccion, Tarea, Documento
 
 # Create your views here.
-docs = []
 
 def main(request):
     return render(request, 'main.html')
@@ -108,12 +107,11 @@ def elmimiarMateria(request, materia_id):
 
 @login_required
 def crearMateria(request):
-    global docs
+    
     if request.method == 'GET':
         return render(request, 'crearMateria.html', {
         'form' : newMateria(),
         'docForm' : newDocumento(),
-        'docs' : docs
     })
     else:
         #try:
@@ -128,9 +126,9 @@ def crearMateria(request):
         materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'])
         materia.save()
         for doc in request.FILES.getlist('documento'):
-            a = Documento.objects.create(user = request.user, documento = doc, materia = materia)
+            Documento.objects.create(user = request.user, documento = doc, materia = materia)
          
-        docs = []
+        
 
         return redirect('/materias/')
         # except ValueError:
@@ -248,9 +246,3 @@ def eliminarTarea(request, tarea_id):
         tarea.delete()
         return redirect('/tareas/')
 
-@login_required
-def crearDoc(request):
-    global docs
-    docs.append(newDocumento())
-    print(len(docs))
-    return redirect('crearMateria')
