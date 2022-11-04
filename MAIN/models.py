@@ -24,7 +24,7 @@ class Materia(models.Model):
     )
     horario = MultiSelectField(choices=OPTIONS, max_length=100, null=True)
     imagen = models.ImageField(null=True, blank=True, upload_to="images/")
-    #archivos = models.FileField(null=True, blank=True, upload_to="images/")
+    aula = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.name
