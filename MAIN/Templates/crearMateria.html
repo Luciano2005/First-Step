@@ -16,27 +16,60 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
-                <label for="id_profesor_email" class="form-label requiredField">Profesor Email *<span class="form-text col-9" style="color: red;">   {{error}}</span></label>
+                <label for="id_profesor_email" class="form-label requiredField">Profesor Email *<span class="form-text col-9" style="color: red;">{{error}}</span></label>
                 <input type="text" name="profesor_email" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
+                <label for="id_imagen" class="form-label">Ingresa una imagen para tu materia</label>
+                <input type="file" class="form-control" accept="image/*" id="id_imagen">
+            </div>
+        </div>
+        <div class="row justify-content-center pb-2">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+                <label for="id_documento" class="form-label">Ingresa tus documentos</label>
+                <input type="file" class="form-control" accept="image/*" id="id_documento">
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.hora|as_crispy_field }}</div>
         </div>
-        <div>
-            <div>{{form.horario}}</div> <!--PARA LOS DEL FRONTEND-->
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.hora|as_crispy_field }}</div>
         </div>
-        <div>
-            <div>Ingrese una imagen para su materia: {{form.imagen}}</div> <!--PARA LOS DEL FRONTEND-->
+        <div class="row justify-content-center">
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_0">Lunes</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_0" value="Lunes">
+            </div>
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_1">Martes</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_1" value="Martes">
+            </div>
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_2">Miercoles</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_2" value="Miercoles">
+            </div>
         </div>
-        <div>
-            <div>
-                Ingrese sus archivos pdf aquí: {{docForm}}
+        <div class="row justify-content-center pb-2">
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_3">Jueves</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_3" value="Jueves">
+            </div>
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_4">Viernes</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_4" value="Viernes">
+            </div>
+            <div class="form-check col-1">
+                <label class="form-check-label" for="id_horario_5">Sabado</label>
+                <input class="form-check-input" type="checkbox" id="id_horario_5" value="Sabado">
             </div>
         </div>
         <div class="row justify-content-center">
             <button type="submit" class="btn btn-dark" style="width: 120px;">Crear</button>
         </div>
+        
     </form>
 
 </div>
