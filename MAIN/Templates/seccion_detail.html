@@ -74,6 +74,12 @@
                             <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
                         </a>  
                     </div>
+                    <div>
+                        <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
+                            {% csrf_token %}
+                            <button>Eliminar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             {% else %}
@@ -85,6 +91,12 @@
                         <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
                             <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
                         </a>  
+                    </div>
+                    <div>
+                        <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
+                            {% csrf_token %}
+                            <button>Eliminar</button>
+                        </form>
                     </div>
                 </div>
             </div>

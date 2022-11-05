@@ -1,9 +1,0 @@
-<h1>{{pregunta.name}}</h1>
-
-<form action = {% url 'estudio:cambiarPregunta' pregunta.id %}>
-    <button>Actualizar</button>
-</form>
-<form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
-    {% csrf_token %}
-    <button>Eliminar</button>
-</form>

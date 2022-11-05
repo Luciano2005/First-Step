@@ -47,7 +47,7 @@ def crearPreguntaCerrada(request, seccion):
 
         respuestas=[] #Reiniciamos la lista de respuestas cerradas
         
-        return redirect('/materias/')
+        return redirect('seccion_detail', seccion)
     
 
 
@@ -103,7 +103,7 @@ def cambiarPregunta(request, pregunta_id):
         pregunta = get_object_or_404(Pregunta, user = request.user, pk = pregunta_id)
         form = newPregunta(request.POST, instance=pregunta)       
         form.save()
-        return redirect('/materias/') 
+        return redirect('seccion_detail', pregunta.seccion_id) 
 
 
 @login_required
@@ -148,7 +148,7 @@ def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
             RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])                 
 
 
-        return redirect('/materias/') 
+        return redirect('seccion_detail', pregunta.seccion_id)  
 
 # @login_required
 # def crearMasRespuestasCerradas(request, pregunta_id):
@@ -162,7 +162,7 @@ def eliminarPregunta(request, pregunta_id):
     if request.method == 'POST':
         pregunta=get_object_or_404(Pregunta, user=request.user, pk=pregunta_id)
         pregunta.delete()
-        return redirect('/materias/')
+        return redirect('seccion_detail', pregunta.seccion_id) 
 
 contador=0
 preguntas=[]
