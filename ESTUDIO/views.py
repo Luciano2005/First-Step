@@ -39,7 +39,7 @@ def crearPreguntaCerrada(request, seccion):
             'respuesta_por_defecto':newRespuestaCerrada()
         })
     else:
-        pregunta=Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = request.POST['respuesta'], apropiacion = 1, seccion_id = seccion) #Se crea una nueva pregunta
+        pregunta=Pregunta.objects.create(user = request.user, name = request.POST['name'], respuesta = '', apropiacion = 1, seccion_id = seccion) #Se crea una nueva pregunta
         pregunta.save()
         
         for respuesta in request.POST.getlist('respuesta_cerrada'): #Recorremos las respuestas cerradas.

@@ -30,6 +30,9 @@ class newRespuestaCerrada(forms.ModelForm):
     class Meta:
         model=RespuestasCerradas
         fields=['respuesta_cerrada']
+        widgets={
+            'respuesta_cerrada' : forms.TextInput(attrs=({'class':'form-control'}))
+        }
 
 class newRespuestaCerradaVerdadera(forms.ModelForm):
     class Meta:

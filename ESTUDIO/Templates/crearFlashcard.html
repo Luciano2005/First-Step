@@ -14,21 +14,26 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Crear Flashcard</h1>
+    <div class="container-md justify-content-around py-4 px-4">
+        <form method = 'POST'>
+            {% csrf_token %}
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+                    <figure class="text-center">
+                        <blockquote class="blockquote" style="margin-bottom:30px">
+                            <p class="h1">Crear Flashcard</p>
+                        </blockquote>
+                    </figure>
+                    <label class="form-label requiredField row justify-content-center" for="id_name">Pregunta<span class="form-text col-9" style="color: red:">{{error}}</span></label>
+                <input class="form-control" type="text" name="name" required id="id_name" placeholder="Ejemplo: ¿Cuánto es 2+2?">
+                <label class="form-label requiredField row justify-content-center" for="id_respuesta">Respuesta<span class="form-text col-9" style="color: red:">{{error}}</span></label>
+                <input class="form-control" type="text" name="respuesta" required id="id_respuesta" placeholder="Ejemplo: ¿Cuánto es 4?">
 
-<form method = 'POST'>
-    {% csrf_token %}
-    {{form_pregunta.as_p}}
 
-    {% for respuesta in respuestas %}
-    
-        <p>{{respuesta}}</p>
 
-    {% endfor %}
-
-    <button>
-        Crear
-    </button>
+                <div class="row justify-content-center">
+                <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">Crear</button>
+            </div>
 </form>
 </body>
 </html>
