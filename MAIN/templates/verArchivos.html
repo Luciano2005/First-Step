@@ -1,0 +1,15 @@
+<h1>Archivos</h1>
+
+<ul>
+    {% for archivo in archivos %}
+        <li>
+            <a href={{archivo.documento.url}}>{{archivo.filename}}</a>
+            <form action={% url 'eliminarArchivo' archivo.id %} method="POST">
+                {% csrf_token %}
+                <button>
+                    Eliminar
+                </button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
