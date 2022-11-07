@@ -4,13 +4,14 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from django.conf.global_settings import MEDIA_ROOT
+from django.contrib import messages
 import pathlib
 import os
 
 from ESTUDIO.models import Pregunta
-from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento
+from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .models import Materia, Seccion, Tarea, Documento
 
 # Create your views here.
@@ -287,6 +288,11 @@ def eliminarArchivo(request, archivo_id):
     
 #-------------------------------------------------Mi Perfil-------------------------------------------------
 def perfil(request):
-    return render(request, 'perfil.html')
+    form=editUser(instance=request.user)
+    cambiar_contrasena=editPassword(request.user)
+    return render(request, 'perfil.html',{
+        'form':form,
+        'cambiar_contrasena':cambiar_contrasena
+    })
 
 

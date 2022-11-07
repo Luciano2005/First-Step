@@ -1,7 +1,7 @@
 from time import time
 from django import forms
 from django.forms import ModelForm, Widget
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from MAIN.models import Materia, Seccion, Tarea, Documento
@@ -77,3 +77,27 @@ class newDocumento(forms.ModelForm):
         widgets={
             'documento':forms.FileInput(attrs={'multiple': True})
         }
+
+class editUser(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label='Nombre de usuario'
+        self.fields['email'].label='Email'
+        self.fields['email'].required=True
+        for fieldname in ['username']:
+            self.fields[fieldname].help_text = None
+    class Meta:
+        model=User
+        fields=['username', 'email']
+
+class editPassword(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].label='Contraseña antigua'
+        self.fields['new_password1'].label='Nueva contraseña'
+        self.fields['new_password2'].label='Confirma contraseña'
+        for fieldname in ['new_password1']:
+            self.fields[fieldname].help_text = None
+    class Meta:
+        model=User
+        fields=['old_password','new_password1','new_password2']

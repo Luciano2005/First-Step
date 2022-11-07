@@ -1,9 +1,13 @@
 {% extends 'navegacion.html' %}
 
 {% block content %}
-
-<p>{{user.username}}</p>
-<p>{{user.email}}</p>
-
+<form method="POST">
+    {% csrf_token %}
+    <p>{{form.as_p}}</p>
+    <p>{{cambiar_contrasena.as_p}}</p>
+    <button>
+        Guardar
+    </button>
+</form>
 
 {% endblock %}
