@@ -288,11 +288,31 @@ def eliminarArchivo(request, archivo_id):
     
 #-------------------------------------------------Mi Perfil-------------------------------------------------
 def perfil(request):
-    form=editUser(instance=request.user)
-    cambiar_contrasena=editPassword(request.user)
-    return render(request, 'perfil.html',{
-        'form':form,
-        'cambiar_contrasena':cambiar_contrasena
-    })
+    if request.method=='GET':
+        form=editUser(instance=request.user)
+        cambiar_contrasena=editPassword(request.user)
+        return render(request, 'perfil.html',{
+            'form':form,
+            'cambiar_contrasena':cambiar_contrasena
+        })
+    else:
+        form=editUser(request.POST, instance=request.user)
+        form.save()
+        messages.success(request,"HAS CAMBIADO TU USUARIO")
+        cambiar_contrasena=""
+        if request.POST['new_password1']==request.POST['new_password2']:
+            cambiar_contrasena=editPassword(request.user, request.POST)
+            if cambiar_contrasena.is_valid():
+                user=cambiar_contrasena.save()
+                update_session_auth_hash(request, user)
+                messages.success(request,"HAS CAMBIADO TU CONTRASEÑA EXITOSAMENTE")
+                return redirect('perfil')
+            else:
+                messages.error(request,"Las contraseñas no coinciden")
+        return render(request, 'perfil.html',{
+            'form':form,
+            'cambiar_contrasena':cambiar_contrasena
+        })
+
 
 

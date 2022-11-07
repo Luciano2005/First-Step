@@ -1,6 +1,7 @@
 {% extends 'navegacion.html' %}
 
 {% block content %}
+    <h3>{{message}}</h3>
 <form method="POST">
     {% csrf_token %}
     <p>{{form.as_p}}</p>

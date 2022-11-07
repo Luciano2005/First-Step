@@ -96,8 +96,12 @@ class editPassword(PasswordChangeForm):
         self.fields['old_password'].label='Contraseña antigua'
         self.fields['new_password1'].label='Nueva contraseña'
         self.fields['new_password2'].label='Confirma contraseña'
-        for fieldname in ['new_password1']:
+        self.fields['old_password'].required=False
+        self.fields['new_password1'].required=False
+        self.fields['new_password2'].required=False
+        for fieldname in ['new_password1','new_password2','old_password']:
             self.fields[fieldname].help_text = None
+            self.fields[fieldname].error_text = None
     class Meta:
         model=User
         fields=['old_password','new_password1','new_password2']
