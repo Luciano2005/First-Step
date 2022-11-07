@@ -299,9 +299,8 @@ def perfil(request):
         form=editUser(request.POST, instance=request.user)
         form.save()
         messages.success(request,"HAS CAMBIADO TU USUARIO")
-        cambiar_contrasena=""
-        if request.POST['new_password1']==request.POST['new_password2']:
-            cambiar_contrasena=editPassword(request.user, request.POST)
+        cambiar_contrasena=editPassword(request.user, request.POST)
+        if request.POST['new_password1']==request.POST['new_password2'] and request.POST['old_password'] != request.POST['new_password1']:
             if cambiar_contrasena.is_valid():
                 user=cambiar_contrasena.save()
                 update_session_auth_hash(request, user)

@@ -101,7 +101,7 @@ class editPassword(PasswordChangeForm):
         self.fields['new_password2'].required=False
         for fieldname in ['new_password1','new_password2','old_password']:
             self.fields[fieldname].help_text = None
-            self.fields[fieldname].error_text = None
+            
     class Meta:
         model=User
         fields=['old_password','new_password1','new_password2']
