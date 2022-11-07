@@ -184,7 +184,7 @@ def repasoFlashcard(request, seccion_id):
                 respuestas_cerradas=list(RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1]).order_by('?'))
                 if len(respuestas_cerradas)!=0:
                     num=random.randint(0, len(respuestas_cerradas)-1)
-                    respuestas_cerradas.insert(num,respuestas_cerradas[1].respuesta_verdadera)
+                    respuestas_cerradas.insert(num,respuestas_cerradas[num].respuesta_verdadera)
 
             return render(request, 'repaso.html',{
                 'pregunta':preguntas[contador-1],

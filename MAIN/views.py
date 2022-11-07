@@ -3,7 +3,9 @@ from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
+from django.conf.global_settings import MEDIA_ROOT
 import pathlib
+import os
 
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento
@@ -108,6 +110,9 @@ def cambiarMateria(request, materia_id):
 @login_required
 def elmimiarMateria(request, materia_id):
     if request.method == 'POST':
+        archivos = list(Documento.objects.filter(user=request.user,materia_id=materia_id))
+        for archivo in archivos:
+            os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
         materia.delete()
         return redirect('materias')
@@ -130,9 +135,9 @@ def crearMateria(request):
 
         #new_materia.save()
         if 'imagen' in request.POST:
-            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
+            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
         else:
-            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'])
+            materia = Materia.objects.create(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'],aula=request.POST['aula'])
 
         materia.save()
         for doc in request.FILES.getlist('documento'):
@@ -262,14 +267,26 @@ def eliminarTarea(request, tarea_id):
         return redirect('/tareas/')
 
 
-#---------------------------------------------------Ver Temario-----------------------------------------
-def verTemario(request, materia_id):
+#---------------------------------------------------Archivos-----------------------------------------
+def verArchivos(request, materia_id):
     if request.method == 'GET':
         lista_archivos=list(Documento.objects.filter(user=request.user, materia_id=materia_id))
-        return render(request, 'verTemario.html',{
+        return render(request, 'verArchivos.html',{
             'archivos':lista_archivos
         })
 
+def eliminarArchivo(request, archivo_id):
+    archivo=get_object_or_404(Documento,user=request.user, pk=archivo_id)
+    materia_id=archivo.materia.id
+    os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
+    archivo.delete()
+    return redirect('verArchivos', materia_id)
+
+
+
     
+#-------------------------------------------------Mi Perfil-------------------------------------------------
 def perfil(request):
     return render(request, 'perfil.html')
+
+
