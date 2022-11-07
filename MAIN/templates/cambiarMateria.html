@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container-md justify-content-around py-4 px-4">
-    <p class="h1 text-center">Editar {{materia.name}}</p>
-    <form method = "POST">
+    <p class="h1 text-center">Editar</p>
+    <form method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.name|as_crispy_field }}</div>
@@ -16,25 +16,22 @@
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
                 <label for="id_profesor_email" class="form-label requiredField">Profesor Email *<span class="form-text col-9" style="color: red;">{{error}}</span></label>
-                <input type="text" name="profesor_email" value="{{ materia.profesor_email }}" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name">
+                <!-- <input type="text" name="profesor_email" value="{{ form.profesor_email }}" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name"> -->
+                <p>{{form.profesor_email}}</p>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
                 <label for="id_aula" class="form-label">Aula</label>
-                <input type="text" name="aula" value="{{materia.aula}}" maxlength="100" class="textinput textInput form-control" placeholder="Ubicación de tu aula/link de aula virtual" id="id_aula">
+                <!-- <input type="text" name="aula" value="{{form.aula}}" maxlength="100" class="textinput textInput form-control" placeholder="Ubicación de tu aula/link de aula virtual" id="id_aula"> -->
+                <p>{{form.aula}}</p>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
                 <label for="id_imagen" class="form-label">Ingresa una imagen para tu materia</label>
-                <input type="file" name="imagen" class="form-control" accept="image/*" id="id_imagen" value="{{ materia.imagen }}">
-            </div>
-        </div>
-        <div class="row justify-content-center pb-2">
-            <div class="col-lg-4 col-md-6 col-sm-7 col-9">
-                <label for="id_documento" class="form-label">Ingresa tus documentos</label>
-                <input type="file" name="documento" class="form-control" accept=".doc,.pdf" id="id_documento">
+                <!-- <input type="file" name="imagen" class="form-control" accept="image/*" id="id_imagen" value="{{materia.imagen}}"> -->
+                <p>{{form.imagen}}</p>
             </div>
         </div>
         <div class="row justify-content-center">
