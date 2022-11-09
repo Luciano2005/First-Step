@@ -302,21 +302,31 @@ def perfil(request):
         })
     else:
         form=editUser(request.POST, instance=request.user)
+        # user=get_object_or_404(User,pk=request.user)
         form.save()
-        messages.success(request,"HAS CAMBIADO TU USUARIO")
+        if request.POST['username']==request.user.username and request.POST['email']==request.user.email:
+            return redirect('materias')
+
+        # messages.success(request,"HAS CAMBIADO TU USUARIO")
         cambiar_contrasena=editPassword(request.user, request.POST)
-        if request.POST['new_password1']==request.POST['new_password2'] and request.POST['old_password'] != request.POST['new_password1']:
+        if request.POST['new_password1']==request.POST['new_password2'] and request.POST['old_password'] != request.POST['new_password1'] and len(request.POST['new_password1']) != 0:
             if cambiar_contrasena.is_valid():
+                # new_password1_id=cambiar_contrasena.cleaned_data['new_password1']
                 user=cambiar_contrasena.save()
                 update_session_auth_hash(request, user)
-                messages.success(request,"HAS CAMBIADO TU CONTRASEÑA EXITOSAMENTE")
-                return redirect('perfil')
+                # messages.success(request,"HAS CAMBIADO TU CONTRASEÑA EXITOSAMENTE")
             else:
-                messages.error(request,"Las contraseñas no coinciden")
-        return render(request, 'perfil.html',{
-            'form':form,
-            'cambiar_contrasena':cambiar_contrasena
-        })
+                return render(request, 'perfil.html',{
+                    'form':form,
+                    'cambiar_contrasena':cambiar_contrasena,
+                })
+            return redirect('perfil')
+        else:
+        #     messages.error(request,"Las contraseñas es muy corta")
+            return render(request, 'perfil.html',{
+                'form':form,
+                'cambiar_contrasena':cambiar_contrasena
+            })
 
 
 

@@ -5,17 +5,15 @@
 <form method="POST">
     {% csrf_token %}
     <p>{{form.as_p}}</p>
+    <button>
+        Guardar
+    </button>
     <p>{{cambiar_contrasena.as_p}}</p>
     <button>
         Guardar
     </button>
 </form>
 
-<ul class="errorlist">
-    <li>Sender is required.</li>
-</ul>
-<style>
-    ul.errorlist {display:none;}
-</style>
+
 
 {% endblock %}
