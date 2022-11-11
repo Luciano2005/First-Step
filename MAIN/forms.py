@@ -1,7 +1,7 @@
 from time import time
 from django import forms
 from django.forms import ModelForm, Widget
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from MAIN.models import Materia, Seccion, Tarea, Documento
@@ -77,3 +77,56 @@ class newDocumento(forms.ModelForm):
         widgets={
             'documento':forms.FileInput(attrs={'multiple': True})
         }
+
+class editUser(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label='Nombre de usuario'
+        self.fields['email'].label='Email'
+        self.fields['email'].required=True
+        for fieldname in ['username']:
+            self.fields[fieldname].help_text = None
+    class Meta:
+        model=User
+        fields=['username', 'email']
+
+class editPassword(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].label='Contraseña antigua'
+        self.fields['new_password1'].label='Nueva contraseña'
+        self.fields['new_password2'].label='Confirma contraseña'
+        self.fields['old_password'].required=False
+        self.fields['new_password1'].required=False
+        self.fields['new_password2'].required=False
+        for fieldname in ['new_password1','new_password2','old_password']:
+            self.fields[fieldname].help_text = None
+            
+    # def clean_new_password1(self):
+    #     data = self.cleaned_data['new_password1']
+    #     if len(data) < 8 or len(data) > 64:
+    #         raise editPassword.ValidationError("New password should have minimum 8 characters and maximum 64 characters")
+    #     return data
+    def clean_old_password(self):
+        try:
+            return super(editPassword, self).clean_old_password()
+        except forms.ValidationError:
+            raise forms.ValidationError("La contraseña ingresada no es la correcta")
+
+    # def clean_new_password1(self):
+    #     data = self.cleaned_data['new_password1']
+    #     if len(data) == 0:
+    #         raise forms.ValidationError("New password should have minimum 8 characters and maximum 64 characters")
+    #     return data
+    
+    def clean_new_password2(self):
+        try:
+            return super(editPassword, self).clean_new_password2()
+        except forms.ValidationError:
+            raise forms.ValidationError("Las contraseñas no son iguales o la nueva contraseña no tiene minimo 8 caracteres diferentes")
+            
+
+
+    class Meta:
+        model=User
+        fields=['old_password','new_password1','new_password2']

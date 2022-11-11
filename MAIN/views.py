@@ -4,13 +4,14 @@ from django.shortcuts import render, redirect, get_object_or_404, get_list_or_40
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 from django.conf.global_settings import MEDIA_ROOT
+from django.contrib import messages
 import pathlib
 import os
 
 from ESTUDIO.models import Pregunta
-from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento
+from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .models import Materia, Seccion, Tarea, Documento
 
 # Create your views here.
@@ -104,7 +105,12 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-        Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'))
+
+        if 'imagen' in request.POST:
+            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
+        else:
+            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
+
         return redirect('materias')
 
 @login_required
@@ -287,6 +293,42 @@ def eliminarArchivo(request, archivo_id):
     
 #-------------------------------------------------Mi Perfil-------------------------------------------------
 def perfil(request):
-    return render(request, 'perfil.html')
+    if request.method=='GET':
+        form=editUser(instance=request.user)
+        cambiar_contrasena=editPassword(request.user)
+        return render(request, 'perfil.html',{
+            'form':form,
+            'cambiar_contrasena':cambiar_contrasena
+        })
+    else:
+        form=editUser(request.POST, instance=request.user)
+
+        # messages.success(request,"HAS CAMBIADO TU USUARIO")
+        cambiar_contrasena=editPassword(request.user, request.POST)
+        if request.POST['new_password1']==request.POST['new_password2'] and request.POST['old_password'] != request.POST['new_password1'] and len(request.POST['new_password1']) != 0:
+            if cambiar_contrasena.is_valid():
+                # new_password1_id=cambiar_contrasena.cleaned_data['new_password1']
+                user=cambiar_contrasena.save()
+                update_session_auth_hash(request, user)
+                form.save()
+                # messages.success(request,"HAS CAMBIADO TU CONTRASEÑA EXITOSAMENTE")
+            else:
+                return render(request, 'perfil.html',{
+                    'form':form,
+                    'cambiar_contrasena':cambiar_contrasena,
+                })
+            return redirect('perfil')
+        else:
+        #     messages.error(request,"Las contraseñas es muy corta")
+            if request.POST['username']!=request.user.username or request.POST['email']!=request.user.email:
+                form.save()
+                return redirect('materias')
+            return render(request, 'perfil.html',{
+                'form':form,
+                'cambiar_contrasena':cambiar_contrasena
+            })
+
+        
+
 
 

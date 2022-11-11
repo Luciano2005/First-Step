@@ -230,4 +230,8 @@ def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
     print(pregunta.apropiacion)
     return repasoFlashcard(request, seccion_id)
 
+
+#--------------------------------------------Pomodoro------------------------------------------------------
+def pomodoro(request):
+    return render(request, 'pomodoro.html')
             

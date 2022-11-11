@@ -14,7 +14,6 @@
           </figure>
     </div>
 </div>
-
 <div class="container-sm justify-content-left py-4 px-4 bg-black text-white" style="margin-top:70px; margin-bottom:70px; ">
     <div class="row row-cols-xxl-5 row-cols-sm-2 row-cols-lg-3 row-cols-1 py-sm-3 text-center">
         <div class="col">
@@ -26,12 +25,11 @@
         <div class="col">
             <h5>Crea una Flashcard </h5>
                 <form action = {% url 'estudio:crearFlashcard' seccion.id %}>
-                    <button type="submit" class="btn text-white" style="width: 120px; margin-top: 45px; background-color:#7858A6">
+                    <button type="submit" class="btn text-white" style="width: 120px; margin-top: 45px; background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple);">
                         Crear Flash
                     </button>
                 </form>
         </div>
-
         <div class="col">
             <h5>Crea una pregunta cerrada </h5>
                 <form action = {% url 'estudio:crearPreguntaCerrada' seccion.id %}>
@@ -39,65 +37,61 @@
                         Crear
                     </button>
                 </form>
-        </div>
-
-        <div class="col">
-            <h5>Ir al repaso del tema </h5>
+            </div>
+            <div class="col">
+                <h5>Ir al repaso del tema </h5>
                 <form action={% url 'estudio:repaso' seccion.id %}>
                     <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 40px">
                         Repaso
                     </button>
                 </form>
-        </div>
-
-    <div class="col">
-        <h5>Eliminar este tema </h5>
-            <form action={% url 'eliminarSeccion' seccion.id %} method="POST">
-                {% csrf_token %}
+            </div>
+            <div class="col">
+                <h5>Eliminar este tema </h5>
+                <form action={% url 'eliminarSeccion' seccion.id %} method="POST">
+                    {% csrf_token %}
                     <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-
-<div class="container-md">
+    <div class="container-md">
     <div class="row justify-content-center">
         {% for pregunta in preguntas %}
         {% if pregunta.respuesta|length %}
         <div class="col-8 col-sm-6 col-md-6 col-xxl-2 col-xl-3 col-lg-3 py-2">
-                <div class="card text-white mb-3" style="width: 12rem; background-color: #7858A6">
+                <div class="card text-white mb-3" style="width: 12rem; background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple);">
+                    <div class="text-center">
                     <div class="card-header">{{pregunta.name}}
                     </div>
                     <div class="card-body">
                         <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
                             <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
-                        </a>  
-                    </div>
-                    <div>
+                        </a> 
                         <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
                             {% csrf_token %}
-                            <button>Eliminar</button>
-                        </form>
+                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
+                        </form> 
                     </div>
+                </div>
                 </div>
             </div>
             {% else %}
             <div class="col-8 col-sm-6 col-md-6 col-xxl-2 col-xl-3 col-lg-3 py-2">
                 <div class="card mb-3 text-white" style="width: 12rem; background-color: #371B58">
+                    <div class="text-center">
                     <div class="card-header">{{pregunta.name}}
                     </div>
                     <div class="card-body">
                         <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
                             <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
                         </a>  
-                    </div>
-                    <div>
                         <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
                             {% csrf_token %}
-                            <button>Eliminar</button>
+                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
                         </form>
                     </div>
+                </div>
                 </div>
             </div>
             {% endif %}

@@ -14,5 +14,8 @@ urlpatterns=[
     path('cambiarPreguntaCerrada/<int:pregunta_id>/<int:eliminar>', views.cambiarPreguntaCerrada, name = 'eliminar_nueva_respuesta_cerrada'),
     path('eliminarPregunta/<int:pregunta_id>', views.eliminarPregunta, name = 'eliminarPregunta'),
     path('repaso/<int:seccion_id>', views.repasoFlashcard, name = 'repaso'),
-    path('repaso/<int:seccion_id>/<int:pregunta_id>/<int:numero>', views.apropiacionPregunta, name='apropiacionPregunta')
+    path('repaso/<int:seccion_id>/<int:pregunta_id>/<int:numero>', views.apropiacionPregunta, name='apropiacionPregunta'),
+
+    #Pomodoro
+    path('pomodoro', views.pomodoro, name='pomodoro')
 ]

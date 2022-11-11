@@ -1,5 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,9 +10,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/6f3103b13c.js" crossorigin="anonymous"></script>
+
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #150050;">
+        <nav class="navbar navbar-expand-md navbar-dark" style="background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple)">
             <div class="container-fluid mx-lg-5">
                 <a class="navbar-brand" href="/" style="font-family: 'Inter Tight', sans-serif;">
                     <img class="d-inline-block align-text-top" src="https://cdn-icons-png.flaticon.com/512/3145/3145765.png" width="40px" alt="first step">
@@ -27,7 +32,7 @@
                             <a class="nav-link" href="/materias">Materias</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/pomodoro">Pomodoro</a>
+                            <a class="nav-link" href="/estudio/pomodoro">Pomodoro</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/tareas">Tareas</a>
