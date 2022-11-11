@@ -2,52 +2,64 @@
 
 {% block content %}
 
-<h1>REPASO</h1>
-{{pregunta}}
-
-{% if respuestas_cerradas|length %}
-    {% for respuesta_c in respuestas_cerradas %}
-        <p>{{respuesta_c}}</p>
-    {% endfor %}
+<div class="container-md justify-content-around py-4 px-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+                <figure class="text-center">
+                    <blockquote class="blockquote" style="margin-bottom:30px">
+                        <p class="h1">Repaso</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer" style="margin-bottom:30px">
+                        Este es el repaso para tu pregunta <cite title="Título fuente">¡A ser el mejor!</cite>
+                    </figcaption>
+                    <p>Pregunta:</p>
+                    <blockquote class="blockquote" style="margin-bottom:30px">
+                        <p class="h1">{{pregunta}}</p>
+                    </blockquote>
+                    <p>¿Cuál es la respuesta correcta?</p>
+                {% if respuestas_cerradas|length %}
+                {% for respuesta_c in respuestas_cerradas %}
+                <blockquote class="blockquote" style="margin-bottom:30px">
+                    <p class="h3">{{respuesta_c}}</p>
+                </blockquote>
+                {% endfor %}
+                {% endif %}
+                {% if request.method == 'GET' %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">
+                            Mostar respuesta
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <strong><p>Respuesta Correcta: {{respuesta}}</p></strong>
+                <strong><p>{{verdadera}}</p></strong>
+                <p>¿ACERTASTE?</p>
+                <p>Para ti, ¿Qué tal estuvo la pregunta?</p>
+                <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 1 %}>
+                    <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">
+                        Otra vez
+                    </button>
+                    <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 2 %}>
+                        <button type="submit" class="btn btn-warning" style="width: 120px; margin-top: 20px">
+                            Dificil
+                        </button>
+                    </form>
+                    <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 3 %}>
+                        <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
+                            Bien
+                        </button>
+                        <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 4 %}>
+                            <button type="submit" class="btn btn-success" style="width: 120px; margin-top: 20px">
+                                Fácil
+                            </button>
+                        </form>
+                    </form>
+                </form>
+            </figure>
+        </div>
+</div>
 {% endif %}
-
-{% if request.method == 'GET' %}
-<form method="POST">
-    {% csrf_token %}
-    <button>
-        Mostar respuesta
-    </button>
-</form>
-
-{% else %}
-
-<strong><p>{{respuesta}}</p></strong>
-<strong><p>{{verdadera}}</p></strong>
-
-<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 1 %}>
-    <button>
-        Otra vez
-    </button>
-</form>
-
-<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 2 %}>
-    <button>
-        Dificil
-    </button>
-</form>
-
-<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 3 %}>
-    <button>
-        Bien
-    </button>
-</form>
-
-<form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 4 %}>
-    <button>
-        Facil
-    </button>
-</form>
-
-{% endif %}
-
 {% endblock %}
