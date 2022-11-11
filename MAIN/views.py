@@ -302,10 +302,6 @@ def perfil(request):
         })
     else:
         form=editUser(request.POST, instance=request.user)
-        # user=get_object_or_404(User,pk=request.user)
-        form.save()
-        if request.POST['username']==request.user.username and request.POST['email']==request.user.email:
-            return redirect('materias')
 
         # messages.success(request,"HAS CAMBIADO TU USUARIO")
         cambiar_contrasena=editPassword(request.user, request.POST)
@@ -314,6 +310,7 @@ def perfil(request):
                 # new_password1_id=cambiar_contrasena.cleaned_data['new_password1']
                 user=cambiar_contrasena.save()
                 update_session_auth_hash(request, user)
+                form.save()
                 # messages.success(request,"HAS CAMBIADO TU CONTRASEÑA EXITOSAMENTE")
             else:
                 return render(request, 'perfil.html',{
@@ -323,10 +320,15 @@ def perfil(request):
             return redirect('perfil')
         else:
         #     messages.error(request,"Las contraseñas es muy corta")
+            if request.POST['username']!=request.user.username or request.POST['email']!=request.user.email:
+                form.save()
+                return redirect('materias')
             return render(request, 'perfil.html',{
                 'form':form,
                 'cambiar_contrasena':cambiar_contrasena
             })
+
+        
 
 
 
