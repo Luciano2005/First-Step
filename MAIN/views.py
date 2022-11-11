@@ -7,6 +7,7 @@ from django.conf.global_settings import MEDIA_ROOT
 from django.contrib import messages
 import pathlib
 import os
+from django.conf import settings
 
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
@@ -105,10 +106,13 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-
+        print(request.FILES)
         if 'imagen' in request.POST:
             Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
         else:
+            # image_path = materia.imagen.path
+            # if os.path.exists(image_path):
+            #     os.remove(image_path)
             Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
 
         return redirect('materias')
@@ -133,7 +137,7 @@ def crearMateria(request):
     })
     else:
         #try:
-        print(request.POST)
+        print(request.FILES)
         # form= newMateria(request.POST)
         # new_materia=form.save(commit=False)
         # new_materia.user=request.user
