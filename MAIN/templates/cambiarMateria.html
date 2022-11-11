@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container-md justify-content-around py-4 px-4">
-    <p class="h1 text-center">Editar</p>
+    <p class="h1 text-center">Editar {{ form.name.value }}</p>
     <form method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row justify-content-center">
@@ -16,22 +16,22 @@
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
                 <label for="id_profesor_email" class="form-label requiredField">Profesor Email *<span class="form-text col-9" style="color: red;">{{error}}</span></label>
-                <!-- <input type="text" name="profesor_email" value="{{ form.profesor_email }}" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name"> -->
-                <p>{{form.profesor_email}}</p>
+                <input type="text" name="profesor_email" value="{{ form.profesor_email.value }}" placeholder="Nombre de la materia" class="form-control textinput textInput" maxlength="30" required="" id="id_name">
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
                 <label for="id_aula" class="form-label">Aula</label>
-                <!-- <input type="text" name="aula" value="{{form.aula}}" maxlength="100" class="textinput textInput form-control" placeholder="Ubicación de tu aula/link de aula virtual" id="id_aula"> -->
-                <p>{{form.aula}}</p>
+                <input type="text" name="aula" value="{{ form.aula.value }}" maxlength="100" class="textinput textInput form-control" placeholder="Ubicación de tu aula/link de aula virtual" id="id_aula">
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 col-sm-7 col-9 pb-2">
-                <label for="id_imagen" class="form-label">Ingresa una imagen para tu materia</label>
-                <!-- <input type="file" name="imagen" class="form-control" accept="image/*" id="id_imagen" value="{{materia.imagen}}"> -->
-                <p>{{form.imagen}}</p>
+                <label class="form-check-label" for="id_horario_0">¿Deseas cambiar el banner de {{ form.name.value }}?</label>
+                <input class="form-check-input" type="checkbox" id="imagen-clear_id" name="imagen-clear">
+                <br>
+                <p><span class="h6">Imagen actual: </span><a href="{{ form.imagen.value }}">{{ form.imagen.value }}</a></p>
+                <input class="form-control" type="file" name="imagen" accept="image/*" id="id_imagen">
             </div>
         </div>
         <div class="row justify-content-center">
