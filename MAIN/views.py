@@ -7,6 +7,7 @@ from django.conf.global_settings import MEDIA_ROOT
 from django.contrib import messages
 import pathlib
 import os
+from django.conf import settings
 
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
@@ -105,11 +106,32 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-
+        print(request.POST)
+        print(request.FILES)
         if 'imagen' in request.POST:
-            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
+            if materia.imagen != '' and 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
+                image_path = materia.imagen.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            form = newMateria(request.POST, instance=materia)
+            # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
+            form.save()
         else:
-            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
+            
+            if materia.imagen != '':
+                image_path = materia.imagen.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            if 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
+                envio = request.POST.copy()
+                envio.pop('imagen-clear')
+                print(envio)
+                form = newMateria(envio, request.FILES, instance=materia)
+                form.save()
+            else:
+                form = newMateria(request.POST, request.FILES, instance=materia)
+                form.save()
+            # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
 
         return redirect('materias')
 
@@ -133,7 +155,7 @@ def crearMateria(request):
     })
     else:
         #try:
-        print(request.POST)
+        print(request.FILES)
         # form= newMateria(request.POST)
         # new_materia=form.save(commit=False)
         # new_materia.user=request.user
