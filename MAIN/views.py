@@ -109,7 +109,7 @@ def cambiarMateria(request, materia_id):
         print(request.POST)
         print(request.FILES)
         if 'imagen' in request.POST:
-            if materia.imagen != '':
+            if materia.imagen != '' and 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
                 image_path = materia.imagen.path
                 if os.path.exists(image_path):
                     os.remove(image_path)
@@ -117,16 +117,20 @@ def cambiarMateria(request, materia_id):
             # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
             form.save()
         else:
-            pass
-            # if materia.imagen != '':
-            #     image_path = materia.imagen.path
-            #     if os.path.exists(image_path):
-            #         os.remove(image_path)
-            # if request.POST['imagen-clear']=='on':
-            #     envio = list(request.POST)
-            #     envio.pop('')
-            # form = newMateria(request.POST, request.FILES, instance=materia)
-            # form.save()
+            
+            if materia.imagen != '':
+                image_path = materia.imagen.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            if 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
+                envio = request.POST.copy()
+                envio.pop('imagen-clear')
+                print(envio)
+                form = newMateria(envio, request.FILES, instance=materia)
+                form.save()
+            else:
+                form = newMateria(request.POST, request.FILES, instance=materia)
+                form.save()
             # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
 
         return redirect('materias')
