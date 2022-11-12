@@ -28,24 +28,30 @@ def register(request):
             'form':Registro
     })
     else:
-        if request.POST['password1']==request.POST['password2']: 
-            try:
-                user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
-                user.save()
-                login(request, user)
-                return redirect("login")
-            except IntegrityError:
-                return render(request, 'register.html',{
-                    'forms':Registro,
-                    'error':'El nombre de usuario que registró, ya existe'
-                    })
-            except ValueError:
-                return render(request, 'register.html',{
-            'forms':Registro,
-            'error':'Existe por lo menos un campo sin completar'
-    })
+        if User.objects.filter(email = request.POST['email']).exists():
+            return render(request, 'register.html',{
+                  'form':Registro,
+                  'error':'El correo que está usando ya existe'
+                 })  
+        else:    
+            if request.POST['password1']==request.POST['password2']: 
+                try:
+                    user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
+                    user.save()
+                    login(request, user)
+                    return redirect("login")
+                except IntegrityError:
+                    return render(request, 'register.html',{
+                        'form':Registro,
+                        'error':'El nombre de usuario que registró, ya existe'
+                        })
+                except ValueError:
+                    return render(request, 'register.html',{
+                'form':Registro,
+                'error':'Existe por lo menos un campo sin completar'
+        })
         return render(request, 'register.html',{
-            'forms':Registro,
+            'form':Registro,
             'error':'Las contraseñas no coindicen'
     })
 
