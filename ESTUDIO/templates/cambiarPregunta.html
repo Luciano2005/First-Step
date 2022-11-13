@@ -1,53 +1,75 @@
 {% extends 'navegacion.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
+{{error}}
 
-<h1>Cambiar Pregunta</h1>
+<div class="container-md justify-content-around py-4 px-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+            <figure class="text-center">
+                <blockquote class="blockquote" style="margin-bottom:30px">
+                    <p class="h1">Editar Pregunta</p>
+                </blockquote>
+            </figure>
+            {% if not form_respuesta|length %}
+            <form method="POST">
+                {% csrf_token %}
+                <label class="form-label requiredField row justify-content-center" for="id_name"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
+                <input class="form-control" type="text" name="name" required id="id_name" placeholder="Pregunta" value="{{form.name.value}}">
+                <label class="form-label requiredField row justify-content-center" for="id_respuesta"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
+                <textarea class="form-control" type="a" name="respuesta" required id="id_respuesta" placeholder="Respuesta">{{form.respuesta.value}}</textarea>
+                <input type="hidden" name="apropiacion" value="{{form.apropiacion.value}}" id="id_apropiacion">
+                <input type="hidden" name="ultima_vez" id="id_ultima_vez">
+                <input type="hidden" name="seccion" value="{{form.seccion.value}}" id="id_seccion">
 
-{% if not form_respuesta|length %}
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">Guardar Cambios</button>
+                </div>
+            </form>  
+            {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                <label class="form-label requiredField row justify-content-center" for="id_name"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
+                <input class="form-control" type="text" name="name"   required="" id="id_name" placeholder="Pregunta" value="{{form_pregunta.name.value}}">
+                <input type="hidden" name="respuesta" id="id_respuesta">
+                <input type="hidden" name="apropiacion" value="{{form_pregunta.apropiacion.value}}" id="id_apropiacion">
+                <input type="hidden" name="ultima_vez" id="id_ultima_vez">
+                <input type="hidden" name="seccion" value="{{form_pregunta.seccion.value}}" id="id_seccion">
 
-    <button>
-        Guardar
-    </button>
-</form>
-{% else %}
-<form method="POST">
-    {% csrf_token %}
-    {{form_pregunta.as_p}}
-
-    <p>{{respuesta_verdadera}}</p>
-
-    {% for respuesta in form_respuesta %}
-        {{respuesta.as_p}}
-    {% endfor %}
-
-    {% for respuesta_cerrad in nueva_respuesta %}
-        {{respuesta_cerrad.as_p}}
-    {% endfor %}
-
-    <button>
-        Guardar
-    </button>
-</form>
-
-<form action={% url 'estudio:nueva_respuesta_cerrada' pregunta.id size %} , method="GET">
-    {% csrf_token %}
-    <button>
-        Crear respuesta cerrada
-    </button>
-</form>
-
-{% if nueva_respuesta|length > 0 %}
-    <form action={% url 'estudio:eliminar_nueva_respuesta_cerrada' pregunta.id eliminar %} , method="GET">
-        {% csrf_token %}
-        <button>
-            Eliminar respuesta cerrada
-        </button>
-    </form>
-{% endif %}
-{% endif %}
-
+                <label class="form-label requiredField row justify-content-center" for="id_respuesta_verdadera"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
+                <input class="form-control" type="text" name="respuesta_verdadera"  maxlength="30" required="" id="id_respuesta_verdadera" placeholder="Respuesta Verdadera" value="{{respuesta_verdadera.respuesta_verdadera.value}}">
+                
+                {% for respuesta in form_respuesta %}
+                {{respuesta.as_p}}
+                {% endfor %}
+                {% for respuesta_cerrad in nueva_respuesta %}
+                {{respuesta_cerrad.as_p}}
+                {% endfor %}
+                <div class="row justify-content-center">
+                <button type="submit" class="btn btn-dark" style="width: 120px; margin-top: 20px">
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+            <form action={% url 'estudio:nueva_respuesta_cerrada' pregunta.id size %} , method="GET">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
+                        Crear respuesta cerrada
+                    </button>
+            </form>
+            {% if nueva_respuesta|length > 0 %}
+            <form action={% url 'estudio:eliminar_nueva_respuesta_cerrada' pregunta.id eliminar %} , method="GET">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">
+                        Eliminar respuesta cerrada
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

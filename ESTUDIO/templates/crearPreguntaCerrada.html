@@ -30,18 +30,23 @@
                         </form>
                         <form class="d-inline" action={% url 'estudio:crearRespuestaCerrada' seccion %} , method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
-                                Añadir respuesta cerrada
-                            </button>
+                            <div class="row justify-content-center">
+                                <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
+                                    Añadir respuesta cerrada
+                                </button>
+                            </div>
                         </form>
                         {% if respuestas|length > 0 %}
                         <form class="d-inline" action={% url 'estudio:eliminarRespuestaCerrada' seccion %} , method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">
-                                Eliminar respuesta cerrada
-                            </button>
+                            <div class="row justify-content-center">
+                                <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">
+                                    Eliminar respuesta cerrada
+                                </button>
+                            </div>
                         </form>
                         {% endif %}
+                </div>
                     </div>
                 </div>    
             </div>

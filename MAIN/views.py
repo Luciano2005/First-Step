@@ -7,6 +7,7 @@ from django.conf.global_settings import MEDIA_ROOT
 from django.contrib import messages
 import pathlib
 import os
+from django.conf import settings
 
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
@@ -27,24 +28,30 @@ def register(request):
             'form':Registro
     })
     else:
-        if request.POST['password1']==request.POST['password2']: 
-            try:
-                user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
-                user.save()
-                login(request, user)
-                return redirect("login")
-            except IntegrityError:
-                return render(request, 'register.html',{
-                    'forms':Registro,
-                    'error':'El nombre de usuario que registró, ya existe'
-                    })
-            except ValueError:
-                return render(request, 'register.html',{
-            'forms':Registro,
-            'error':'Existe por lo menos un campo sin completar'
-    })
+        if User.objects.filter(email = request.POST['email']).exists():
+            return render(request, 'register.html',{
+                  'form':Registro,
+                  'error':'El correo que está usando ya existe'
+                 })  
+        else:    
+            if request.POST['password1']==request.POST['password2']: 
+                try:
+                    user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
+                    user.save()
+                    login(request, user)
+                    return redirect("login")
+                except IntegrityError:
+                    return render(request, 'register.html',{
+                        'form':Registro,
+                        'error':'El nombre de usuario que registró, ya existe'
+                        })
+                except ValueError:
+                    return render(request, 'register.html',{
+                'form':Registro,
+                'error':'Existe por lo menos un campo sin completar'
+        })
         return render(request, 'register.html',{
-            'forms':Registro,
+            'form':Registro,
             'error':'Las contraseñas no coindicen'
     })
 
@@ -105,11 +112,32 @@ def cambiarMateria(request, materia_id):
         })
     else:
         materia = get_object_or_404(Materia, pk=materia_id, user=request.user)
-
+        print(request.POST)
+        print(request.FILES)
         if 'imagen' in request.POST:
-            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
+            if materia.imagen != '' and 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
+                image_path = materia.imagen.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            form = newMateria(request.POST, instance=materia)
+            # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), aula=request.POST['aula'])
+            form.save()
         else:
-            Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
+            
+            if materia.imagen != '':
+                image_path = materia.imagen.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+            if 'imagen-clear' in request.POST and request.POST['imagen-clear']=='on':
+                envio = request.POST.copy()
+                envio.pop('imagen-clear')
+                print(envio)
+                form = newMateria(envio, request.FILES, instance=materia)
+                form.save()
+            else:
+                form = newMateria(request.POST, request.FILES, instance=materia)
+                form.save()
+            # Materia.objects.filter(id = materia.id).update(user=request.user, name=request.POST['name'], hora=request.POST['hora'], profesor=request.POST['profesor'], profesor_email=request.POST['profesor_email'], horario=request.POST.getlist('horario'), imagen=request.FILES['imagen'], aula=request.POST['aula'])
 
         return redirect('materias')
 
@@ -133,7 +161,7 @@ def crearMateria(request):
     })
     else:
         #try:
-        print(request.POST)
+        print(request.FILES)
         # form= newMateria(request.POST)
         # new_materia=form.save(commit=False)
         # new_materia.user=request.user
@@ -278,7 +306,9 @@ def verArchivos(request, materia_id):
     if request.method == 'GET':
         lista_archivos=list(Documento.objects.filter(user=request.user, materia_id=materia_id))
         return render(request, 'verArchivos.html',{
-            'archivos':lista_archivos
+            'archivos':lista_archivos,
+            'materia_id':materia_id,
+            'agregar':newDocumento()
         })
 
 def eliminarArchivo(request, archivo_id):
@@ -286,6 +316,11 @@ def eliminarArchivo(request, archivo_id):
     materia_id=archivo.materia.id
     os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
     archivo.delete()
+    return redirect('verArchivos', materia_id)
+
+def agregarArchivos(request, materia_id):
+    for doc in request.FILES.getlist('documento'):
+        Documento.objects.create(user = request.user, documento = doc, materia_id = materia_id)
     return redirect('verArchivos', materia_id)
 
 

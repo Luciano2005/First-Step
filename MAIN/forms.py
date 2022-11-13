@@ -102,30 +102,17 @@ class editPassword(PasswordChangeForm):
         for fieldname in ['new_password1','new_password2','old_password']:
             self.fields[fieldname].help_text = None
             
-    # def clean_new_password1(self):
-    #     data = self.cleaned_data['new_password1']
-    #     if len(data) < 8 or len(data) > 64:
-    #         raise editPassword.ValidationError("New password should have minimum 8 characters and maximum 64 characters")
-    #     return data
     def clean_old_password(self):
         try:
             return super(editPassword, self).clean_old_password()
         except forms.ValidationError:
             raise forms.ValidationError("La contraseña ingresada no es la correcta")
-
-    # def clean_new_password1(self):
-    #     data = self.cleaned_data['new_password1']
-    #     if len(data) == 0:
-    #         raise forms.ValidationError("New password should have minimum 8 characters and maximum 64 characters")
-    #     return data
     
     def clean_new_password2(self):
         try:
             return super(editPassword, self).clean_new_password2()
         except forms.ValidationError:
             raise forms.ValidationError("Las contraseñas no son iguales o la nueva contraseña no tiene minimo 8 caracteres diferentes")
-            
-
 
     class Meta:
         model=User
