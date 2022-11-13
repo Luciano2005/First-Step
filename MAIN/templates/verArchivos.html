@@ -1,5 +1,13 @@
 <h1>Archivos</h1>
 
+<form action={% url 'agregarArchivos' materia_id %} method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{agregar}}
+    <button>
+        Guardar
+    </button>
+</form>
+
 <ul>
     {% for archivo in archivos %}
         <li>

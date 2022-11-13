@@ -306,7 +306,9 @@ def verArchivos(request, materia_id):
     if request.method == 'GET':
         lista_archivos=list(Documento.objects.filter(user=request.user, materia_id=materia_id))
         return render(request, 'verArchivos.html',{
-            'archivos':lista_archivos
+            'archivos':lista_archivos,
+            'materia_id':materia_id,
+            'agregar':newDocumento()
         })
 
 def eliminarArchivo(request, archivo_id):
@@ -314,6 +316,11 @@ def eliminarArchivo(request, archivo_id):
     materia_id=archivo.materia.id
     os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
     archivo.delete()
+    return redirect('verArchivos', materia_id)
+
+def agregarArchivos(request, materia_id):
+    for doc in request.FILES.getlist('documento'):
+        Documento.objects.create(user = request.user, documento = doc, materia_id = materia_id)
     return redirect('verArchivos', materia_id)
 
 

@@ -5,15 +5,16 @@ from . import views
 urlpatterns = [
     #Login y Register
     path('', views.main, name='main'),
-    path('formlogin/' , views.formlogin, name="login"),
-    path('register/' , views.register, name="register"),
-    path('perfil/' , views.perfil, name="perfil"),
+    path('formlogin/' , views.formlogin, name='login'),
+    path('register/' , views.register, name='register'),
+    path('perfil/' , views.perfil, name='perfil'),
     path('logout/',views.logout2,name='logout'),
-
-    path('resetPassword/', auth_views.PasswordResetView.as_view(template_name = "resetPassword.html"), name = 'reset_password'),
-    path('resetPasswordSent/', auth_views.PasswordResetDoneView.as_view(template_name = "resetPasswordSent.html"), name = 'password_reset_done'),
+    
+    #Recuperar contraseña
+    path('resetPassword/', auth_views.PasswordResetView.as_view(template_name = 'resetPassword.html'), name = 'reset_password'),
+    path('resetPasswordSent/', auth_views.PasswordResetDoneView.as_view(template_name = 'resetPasswordSent.html'), name = 'password_reset_done'),
     path('resetPasswordConfirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name = "resetPasswordForm.html"), name = 'password_reset_confirm'),
-    path('resetPasswordComplete/', auth_views.PasswordResetCompleteView.as_view(template_name = "resetPasswordComplete.html"), name = 'password_reset_complete'),
+    path('resetPasswordComplete/', auth_views.PasswordResetCompleteView.as_view(template_name = 'resetPasswordComplete.html'), name = 'password_reset_complete'),
     
     #Materias
     path('materias/', views.materias, name = 'materias'),
@@ -23,8 +24,9 @@ urlpatterns = [
     path('eliminarMateria/<int:materia_id>', views.elmimiarMateria, name = 'eliminarMateria'),
 
     #Archivos
-    path('materias/<int:materia_id>/verArchivos', views.verArchivos, name="verArchivos"),
-    path('materias/<int:archivo_id>/eliminarArchivo', views.eliminarArchivo, name="eliminarArchivo"),
+    path('materias/<int:materia_id>/verArchivos', views.verArchivos, name='verArchivos'),
+    path('materias/<int:materia_id>/agregarArchivos', views.agregarArchivos, name='agregarArchivos'),
+    path('materias/<int:archivo_id>/eliminarArchivo', views.eliminarArchivo, name='eliminarArchivo'),
 
     #Sección
     path('crearSeccion/<int:materia_id>', views.crearSeccion, name = 'crearSeccion'),
