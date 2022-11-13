@@ -5,7 +5,7 @@
 - Nicolas Hinestroza.
 - Luciano Manrique.
 - Samuel Miranda.
-- Steven Osorio.
+- Sebastian Osorio.
 
 ## Problemática
 > Muchos universitarios encuentran dificil hallar un balance entre sus actividades académicas y su vida cotidiana.
