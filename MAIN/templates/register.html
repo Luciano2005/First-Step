@@ -26,6 +26,9 @@
         <div class="row justify-content-center">
             <div class="col-9">{{ form.password2|as_crispy_field }}</div>
         </div>
+        <div>
+            {{ form.captcha }}
+        </div>
         <div class="row justify-content-center">
             <div class="form-text col-9">
                 <p class="text-center" style="color: red;">{{error}}</p>

@@ -4,9 +4,12 @@ from django.forms import ModelForm, Widget
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from MAIN.models import Materia, Seccion, Tarea, Documento
 
 class Registro(UserCreationForm):
+    captcha = ReCaptchaField(widget = ReCaptchaV2Checkbox())
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label='Nombre de usuario'
@@ -19,8 +22,8 @@ class Registro(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
     class Meta:
-        model=User
-        fields=['username','first_name','email','password1','password2']
+        model=User        
+        fields=['username','first_name','email','password1','password2','captcha']
         widgets = {
             'username' : forms.TextInput(attrs=({'placeholder':'Username/tagname/apodo', 'class':'form-control'})),
             'first_name' : forms.TextInput(attrs=({'placeholder':'Primer nombre', 'class':'form-control'})),
@@ -30,6 +33,7 @@ class Registro(UserCreationForm):
         } 
 
 class Loguearse(AuthenticationForm):
+    captcha = ReCaptchaField(widget = ReCaptchaV2Checkbox())
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label='Nombre de usuario'
@@ -39,7 +43,7 @@ class Loguearse(AuthenticationForm):
             
     class Meta:
         model=User
-        fields=['username','password']
+        fields=['username','password', 'captcha']
         widgets={
             'username' : forms.TextInput(attrs=({'placeholder':'Username/tagname/apodo', 'class':'form-control'}))
         }

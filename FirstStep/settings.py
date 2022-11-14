@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'multiselectfield',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -177,3 +178,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'firststepunal@gmail.com'
 EMAIL_HOST_PASSWORD = 'zvywuktayqqtpfgt'
+
+RECAPTCHA_PUBLIC_KEY = '6Lf3hQgjAAAAAFEUiXo6gxQYwrGg51i-k3DYb_De'
+RECAPTCHA_PRIVATE_KEY = '6Lf3hQgjAAAAAM4tkcdL4oUAh50eCeByDazcb41k'
+
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error'] #Quitar esto en produccion
