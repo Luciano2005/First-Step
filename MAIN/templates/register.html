@@ -26,19 +26,21 @@
         <div class="row justify-content-center">
             <div class="col-9">{{ form.password2|as_crispy_field }}</div>
         </div>
-        <div>
-            {{ form.captcha }}
+        <div class="row justify-content-center">
+            <div class="col-9">{{ form.captcha}}</div>
         </div>
         <div class="row justify-content-center">
             <div class="form-text col-9">
                 <p class="text-center" style="color: red;">{{error}}</p>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <button type="submit" class="btn btn-dark" style="width: 120px;">Registarse</button>
+        <div class="row justify-content-center pb-2">
+            <button type="submit" class="btn btn-dark" style="width: 13rem;">Registarse</button>
+        </div>
+        <div class="text-center">
+            <a class="text-decoration-none" href="/formlogin">¿Ya tienes cuenta?</a> <!--FRONTEND!!!-->
         </div>
     </form>
-    <a href="/formlogin">Ingreso</a> <!--FRONTEND!!!-->
 </div>
 
 {% endblock %}
