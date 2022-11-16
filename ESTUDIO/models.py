@@ -19,6 +19,7 @@ class Pregunta(models.Model):
     apropiacion = models.IntegerField(choices = nivel.choices, default = 1)
     ultima_vez = models.DateTimeField(null = True, blank=True) #auto = true ??
     seccion = models.ForeignKey("MAIN.Seccion", on_delete = models.CASCADE, null = True)
+    num_repaso = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return self.name
