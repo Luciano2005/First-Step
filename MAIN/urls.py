@@ -41,4 +41,6 @@ urlpatterns = [
     path('actualizarTarea/<int:tarea_id>', views.actualizarTarea, name='actualizarTarea'),
     path('eliminarTarea/<int:tarea_id>', views.eliminarTarea, name='eliminarTarea'),
     
+    #Correo
+    path('verificar/<uidb64>/<token>', views.verificar, name='verificar'),
 ]
