@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class Pregunta(models.Model):
         Facil = 4
 
     apropiacion = models.IntegerField(choices = nivel.choices, default = 1)
-    ultima_vez = models.DateTimeField(null = True, blank=True) #auto = true ??
+    ultima_vez = models.DateTimeField(null = True, blank=True, default = timezone.now) #auto = true ??
     seccion = models.ForeignKey("MAIN.Seccion", on_delete = models.CASCADE, null = True)
     num_repaso = models.PositiveSmallIntegerField(default=0)
 

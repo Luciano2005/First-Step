@@ -199,10 +199,10 @@ def repasoFlashcard(request, seccion_id):
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         #respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
         pregunta=get_object_or_404(Pregunta, pk=preguntas[contador-1].id)
-        pregunta.ultima_vez = datetime.now()
-        num=pregunta.apropiacion
+        # creo que el error es que la lista de preguntas que usa no tiene las preguntas con los cambios en 
+        # apropiacion, tambien, no entiendo muy bien como funcionan los 2 post, el de mostrar respuetas
+        # y el de seleccionar el nivel de apropiacion
         multi=0
-        print(respuestas_cerradas)
 
         if pregunta.num_repaso <= 5:
             multi = 1
@@ -210,19 +210,20 @@ def repasoFlashcard(request, seccion_id):
             multi = 2
         else:
             multi = 3
+            
+        pregunta.num_repaso += 1
 
-        match num:
+        pregunta.ultima_vez = datetime.now()
+        match pregunta.apropiacion:
             case 1:
-                pregunta.ultima_vez += timedelta(minutes=10*multi) 
+                pregunta.ultima_vez += timedelta(minutes=10*multi)
             case 2:
-                pregunta.ultima_vez += timedelta(hours=1*multi) 
+                pregunta.ultima_vez += timedelta(hours=1*multi)
             case 3:
                 pregunta.ultima_vez += timedelta(days=1*multi) 
             case 4:
                 pregunta.ultima_vez += timedelta(days=3*multi) 
         pregunta.save()
-            
-
 
         try:
             return render(request, 'repaso.html',{
@@ -244,8 +245,7 @@ def repasoFlashcard(request, seccion_id):
 @login_required     
 def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
     if contador==0:
-        preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id).order_by('?'))
-        print(preguntas)
+        preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id, ultima_vez__lt = datetime.now()).order_by('?'))
     return preguntas
 
 @login_required
@@ -253,7 +253,6 @@ def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
     pregunta = get_object_or_404(Pregunta,pk=pregunta_id,user=request.user)
     pregunta.apropiacion=numero
     pregunta.save()
-    print(pregunta.apropiacion)
     return repasoFlashcard(request, seccion_id)
 
 
