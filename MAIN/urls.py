@@ -40,5 +40,8 @@ urlpatterns = [
     path('tareas/crearTarea',views.crearTarea,name='crearTarea'),
     path('actualizarTarea/<int:tarea_id>', views.actualizarTarea, name='actualizarTarea'),
     path('eliminarTarea/<int:tarea_id>', views.eliminarTarea, name='eliminarTarea'),
+
+    #Calendar
+    path('calendar/', views.calendar, name="calendar"),
     
 ]

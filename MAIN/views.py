@@ -15,6 +15,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .models import Materia, Seccion, Tarea, Documento
 
+from pprint import pprint
+from Google import Create_Service
+
 # Create your views here.
 
 #---------------------------------------------------Login y Register-----------------------------------------
@@ -375,6 +378,21 @@ def perfil(request):
                 'cambiar_contrasena':cambiar_contrasena
             })
 
+
+#-------------------------------------------Calendar----------------------------------------------------------------
+
+def calendar(request):
+    if request.method == 'POST':
+        solicitud_calendar(request)
+    return render(request, 'calendar.html')
+
+def solicitud_calendar(request):
+    CLIENT_SECRET_FILE = 'client_secret_883464149952-j83ui7qf98nsu8o1q8jbir4aacqv80gq.apps.googleusercontent.com.json'
+    API_NAME = 'calendar'
+    API_VERSION = 'v3'
+    SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
         
 
 
