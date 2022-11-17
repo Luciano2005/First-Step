@@ -198,11 +198,7 @@ def repasoFlashcard(request, seccion_id):
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         #respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
-        # pregunta=get_object_or_404(Pregunta, pk=preguntas[contador-1].id)
-        # creo que el error es que la lista de preguntas que usa no tiene las preguntas con los cambios en 
-        # apropiacion, tambien, no entiendo muy bien como funcionan los 2 post, el de mostrar respuetas
-        # y el de seleccionar el nivel de apropiacion
-        
+        # pregunta=get_object_or_404(Pregunta, pk=preguntas[contador-1].id)        
         # pregunta.save()
 
         try:
