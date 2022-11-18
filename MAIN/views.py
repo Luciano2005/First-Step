@@ -134,7 +134,7 @@ def formlogin(request):
 
 @login_required
 def logout2(request):
-    os.remove(os.path.join('token files/token_calendar_v3.pickle'))
+    #os.remove(os.path.join('token files/token_calendar_v3.pickle'))
     logout(request)
     return redirect('login')
 
