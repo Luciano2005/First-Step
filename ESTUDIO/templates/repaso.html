@@ -42,21 +42,21 @@
                     <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">
                         Otra vez
                     </button>
-                    <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 2 %}>
-                        <button type="submit" class="btn btn-warning" style="width: 120px; margin-top: 20px">
-                            Dificil
-                        </button>
-                    </form>
-                    <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 3 %}>
-                        <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
-                            Bien
-                        </button>
-                        <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 4 %}>
-                            <button type="submit" class="btn btn-success" style="width: 120px; margin-top: 20px">
-                                Fácil
-                            </button>
-                        </form>
-                    </form>
+                </form>
+                <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 2 %}>
+                    <button type="submit" class="btn btn-warning" style="width: 120px; margin-top: 20px">
+                        Dificil
+                    </button>
+                </form>
+                <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 3 %}>
+                    <button type="submit" class="btn btn-info" style="width: 120px; margin-top: 20px">
+                        Bien
+                    </button>
+                </form>
+                <form action={% url 'estudio:apropiacionPregunta' seccion.id pregunta.id 4 %}>
+                    <button type="submit" class="btn btn-success" style="width: 120px; margin-top: 20px">
+                        Fácil
+                    </button>
                 </form>
             </figure>
         </div>

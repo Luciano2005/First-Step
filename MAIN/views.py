@@ -15,6 +15,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .models import Materia, Seccion, Tarea, Documento
 
+from pprint import pprint
+from Google import Create_Service, get_token
+
 # Create your views here.
 
 #---------------------------------------------------Login y Register-----------------------------------------
@@ -28,32 +31,38 @@ def register(request):
             'form':Registro
     })
     else:
-        if User.objects.filter(email = request.POST['email']).exists():
+        if request.POST['g-recaptcha-response'] != '':
+            if User.objects.filter(email = request.POST['email']).exists():
+                return render(request, 'register.html',{
+                    'form':Registro,
+                    'error':'El correo que está usando ya existe'
+                    })  
+            else:    
+                if request.POST['password1']==request.POST['password2']: 
+                    try:
+                        user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
+                        user.save()
+                        login(request, user)
+                        return redirect("login")
+                    except IntegrityError:
+                        return render(request, 'register.html',{
+                            'form':Registro,
+                            'error':'El nombre de usuario que registró, ya existe'
+                            })
+                    except ValueError:
+                        return render(request, 'register.html',{
+                    'form':Registro,
+                    'error':'Existe por lo menos un campo sin completar'
+            })
             return render(request, 'register.html',{
-                  'form':Registro,
-                  'error':'El correo que está usando ya existe'
-                 })  
-        else:    
-            if request.POST['password1']==request.POST['password2']: 
-                try:
-                    user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
-                    user.save()
-                    login(request, user)
-                    return redirect("login")
-                except IntegrityError:
-                    return render(request, 'register.html',{
-                        'form':Registro,
-                        'error':'El nombre de usuario que registró, ya existe'
-                        })
-                except ValueError:
-                    return render(request, 'register.html',{
                 'form':Registro,
-                'error':'Existe por lo menos un campo sin completar'
-        })
-        return render(request, 'register.html',{
-            'form':Registro,
-            'error':'Las contraseñas no coindicen'
-    })
+                'error':'Las contraseñas no coindicen'
+            })
+        else:
+            return render(request, 'register.html',{
+                'form':Registro,
+                'error':'Verifique el CAPTCHA'
+            }) 
 
 def formlogin(request):
     if request.method== 'GET':
@@ -61,18 +70,25 @@ def formlogin(request):
             'form':Loguearse
     })
     else:
-        user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
-        if user is None:
-         return render(request, 'login.html',{
-            'form':Loguearse,
-            'error':'Nombre de usuario o contraseña incorrecto'
-            }) 
+        if request.POST['g-recaptcha-response'] != '':
+            user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
+            if user is None:
+                return render(request, 'login.html',{
+                    'form':Loguearse,
+                    'error':'Nombre de usuario o contraseña incorrecto'
+                    }) 
+            else:
+                login(request, user)
+                return redirect('main')
         else:
-            login(request, user)
-            return redirect('main')
+            return render(request, 'login.html',{
+                    'form':Loguearse,
+                    'error':'Verifique el CAPTCHA'
+                    }) 
 
 @login_required
 def logout2(request):
+    os.remove(os.path.join('token files/token_calendar_v3.pickle'))
     logout(request)
     return redirect('login')
 
@@ -272,10 +288,10 @@ def crearTarea(request):
             'form' : newTarea(user=request.user)
         })
     else:
-        form= newTarea(request.POST)
-        new_tarea=form.save(commit=False)
-        new_tarea.user=request.user
-        new_tarea.save()
+        if request.POST['fecha'] != '' :
+            Tarea.objects.create(user = request.user, name = request.POST['name'], materia_id = request.POST['materia'], prioridad = request.POST['prioridad'], fecha = request.POST['fecha'])
+        else:
+            Tarea.objects.create(user = request.user, name = request.POST['name'], materia_id = request.POST['materia'], prioridad = request.POST['prioridad'])
         return redirect('/tareas/')
 
 @login_required
@@ -363,6 +379,27 @@ def perfil(request):
                 'cambiar_contrasena':cambiar_contrasena
             })
 
+
+#-------------------------------------------Calendar----------------------------------------------------------------
+
+def calendar(request):
+    if request.method == 'POST':
+        solicitud_calendar(request)
+    return render(request, 'calendar.html')
+
+def solicitud_calendar(request):
+    CLIENT_SECRET_FILE = 'client_secret_883464149952-j83ui7qf98nsu8o1q8jbir4aacqv80gq.apps.googleusercontent.com.json'
+    API_NAME = 'calendar'
+    API_VERSION = 'v3'
+    SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    # guardarUser(request)
+    
+
+# def guardarUser(request):
+#     Calendar.objects.create(user=request.user, key=get_token())
+    
         
 
 

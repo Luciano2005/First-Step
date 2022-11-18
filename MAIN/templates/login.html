@@ -10,24 +10,44 @@
         </div>
         <form method = "POST">
             {% csrf_token %}
-            <div class="row justify-content-center">
-                <div class="col-9" >{{ form.username|as_crispy_field }}</div>
-                <div class="form-text col-9">
-                    <p class="text-center" style="color: red;">{{error}}</p>
+            <div class="row justify-content-center pb-1">
+                    <div class="col-9">
+                    <label for="id_username" class="form-label requiredField col-9">
+                        Nombre de usuario<span class="asteriskField">*</span>
+                        <div class="form-text d-inline">
+                            <p class="text-start" style="color: red; font-size: 12px; margin-bottom: 0px;">{{error}}</p>
+                        </div>
+                    </label>
+                    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required="" id="id_username">
+                </div>
+            </div>
+            <div class="row justify-content-center pb-2">
+                <div class="col-9">
+                    <label for="id_password" class="form-label requiredField">
+                        Contraseña<span class="asteriskField">*</span>
+                        <div class="form-text d-inline">
+                            <p class="text-start" style="color: red; font-size: 12px; margin-bottom: 0px;">{{error}}</p>
+                        </div>
+                    </label>
+                    <input type="password" name="password" autocomplete="current-password" class="textinput textInput form-control" required="" id="id_password">
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-9">{{ form.password|as_crispy_field }}</div>
-                <div class="form-text col-9">
-                    <p class="text-center" style="color: red;">{{error}}</p>
-                </div>
+                <div class="pb-2 col-9">{{ form.captcha }}</div>
+            </div>
+            <div class="row justify-content-center pb-2">
+                <button type="submit" class="btn btn-dark" style="width: 13rem;">Iniciar Sesión</button>
             </div>
             <div class="row justify-content-center">
-                <button type="submit" class="btn btn-dark" style="width: 120px;">Ingresar</button>
+                <div class="text-center">
+                    <a class="text-decoration-none" href="/resetPassword">¿Olvidaste tu constraseña?</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <a href="/register" class="btn btn-danger" style="width: 13rem;">Crea una cuenta nueva</a>
             </div>
         </form>
-        <a href="/register">Registro</a> <!--FRONTEND!!!-->
-        <a href="/resetPassword">Olvide Mi Contrasena</a> <!--FRONTEND!!!-->
     </div>
 
 {% endblock %}

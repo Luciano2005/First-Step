@@ -22,7 +22,7 @@ class Materia(models.Model):
         ("Sábado", "Sábado"),
         ("Domingo", "Domingo"),
     )
-    horario = MultiSelectField(choices=OPTIONS, max_length=100, null=True)
+    horario = MultiSelectField(choices=OPTIONS, max_length=100, null=True, blank=True)
     imagen = models.ImageField(null=True, blank=True, upload_to="images/")
     aula = models.CharField(max_length=100, blank=True)
 
@@ -62,6 +62,11 @@ class Tarea(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# class Calendar(models.Model):
+#     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+#     key = models.FileField(null=True, blank=True, upload_to="token files/")
 
 
     

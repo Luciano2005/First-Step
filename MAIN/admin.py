@@ -8,3 +8,4 @@ admin.site.register(Materia)
 admin.site.register(Seccion)
 admin.site.register(Documento)
 admin.site.register(Tarea)
+

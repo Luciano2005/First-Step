@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.http import QueryDict
 from django.urls import reverse
+from datetime import datetime, timedelta
 
 from ESTUDIO.forms import newPregunta,newRespuestaCerrada,newPreguntaCerrada,newRespuestaCerradaVerdadera
 from ESTUDIO.models import Pregunta,RespuestasCerradas
@@ -197,7 +198,9 @@ def repasoFlashcard(request, seccion_id):
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         #respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
-        print(respuestas_cerradas)
+        # pregunta=get_object_or_404(Pregunta, pk=preguntas[contador-1].id)        
+        # pregunta.save()
+
         try:
             return render(request, 'repaso.html',{
                     'pregunta':preguntas[contador-1],
@@ -218,16 +221,36 @@ def repasoFlashcard(request, seccion_id):
 @login_required     
 def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de preguntas organizadas de forma aleatoria
     if contador==0:
-        preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id).order_by('?'))
-        print(preguntas)
+        preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id, ultima_vez__lt = datetime.now()).order_by('?'))
     return preguntas
 
 @login_required
 def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
     pregunta = get_object_or_404(Pregunta,pk=pregunta_id,user=request.user)
     pregunta.apropiacion=numero
+
+    multi=0
+
+    if pregunta.num_repaso <= 5:
+        multi = 1
+    elif pregunta.num_repaso <= 10:
+        multi = 2
+    else:
+        multi = 3
+        
+    pregunta.num_repaso += 1
+    # print(pregunta.apropiacion)
+    pregunta.ultima_vez = datetime.now()
+    match pregunta.apropiacion:
+        case 1:
+            pregunta.ultima_vez += timedelta(minutes=10*multi)
+        case 2:
+            pregunta.ultima_vez += timedelta(hours=1*multi)
+        case 3:
+            pregunta.ultima_vez += timedelta(days=1*multi) 
+        case 4:
+            pregunta.ultima_vez += timedelta(days=3*multi) 
     pregunta.save()
-    print(pregunta.apropiacion)
     return repasoFlashcard(request, seccion_id)
 
 
