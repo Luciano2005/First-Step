@@ -49,17 +49,17 @@ def register(request):
                         #ENVIAR EMAIL. AQUÍ LO QUE SE HACE ES COLOCAR QUIÉN MANDA EL CORREO, A DÓNDE LO MANDA Y LO QUE DICE
                         uidb64=(urlsafe_base64_encode(force_bytes(user.pk)))
 
-
+                        email=request.POST['email']
                         domain= get_current_site(request).domain
                         link=reverse('verificar',kwargs={'uidb64':uidb64,'token':account_activation_token.make_token(user)})
                         url_activacion='http://'+domain+link
                         email_subject='Active su cuenta'
-                        email_body='Qhubo '+user.username+ ' espero esté bien. Métase aquí para verificar su cuenta por fa'+url_activacion
+                        email_body='¡Hola, '+user.username+ ' esperamos estés bien. Para activar tu cuenta correctamente, por favor presiona el siguiente link '+url_activacion
                         email= EmailMessage(
                             email_subject,
                             email_body,
                            'firststepunal@gmail.com',
-                            ['nicolas.hinestroza2004@gmail.com'],
+                            [email],
                         )
                         email.send(fail_silently=False)
                         messages.success(request,"CUENTA A VERIFICAR")
@@ -111,10 +111,15 @@ def formlogin(request):
         if request.POST['g-recaptcha-response'] != '':
             user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
             if user is None:
+                if request.user.is_active==False:
+                    return render(request, 'login.html',{
+                    'form':Loguearse,
+                    'error':'No has verificado tu cuenta. Por favor ingresa a tu correo.'})
                 return render(request, 'login.html',{
                     'form':Loguearse,
                     'error':'Nombre de usuario o contraseña incorrecto'
                     }) 
+        
             else:
                 login(request, user)
                 return redirect('main')
