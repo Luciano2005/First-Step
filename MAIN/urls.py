@@ -44,4 +44,6 @@ urlpatterns = [
     #Calendar
     path('calendar/', views.calendar, name="calendar"),
     
+    #Correo
+    path('verificar/<uidb64>/<token>', views.verificar, name='verificar'),
 ]
