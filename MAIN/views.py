@@ -16,7 +16,7 @@ from django.contrib.auth import login, logout, authenticate, update_session_auth
 from .models import Materia, Seccion, Tarea, Documento
 
 from pprint import pprint
-from Google import Create_Service
+from Google import Create_Service, get_token
 
 # Create your views here.
 
@@ -88,6 +88,7 @@ def formlogin(request):
 
 @login_required
 def logout2(request):
+    os.remove(os.path.join('token files/token_calendar_v3.pickle'))
     logout(request)
     return redirect('login')
 
@@ -393,9 +394,12 @@ def solicitud_calendar(request):
     SCOPES = ['https://www.googleapis.com/auth/calendar']
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    # guardarUser(request)
+    
 
-def guardarUser(token):
-    pass
+# def guardarUser(request):
+#     Calendar.objects.create(user=request.user, key=get_token())
+    
         
 
 

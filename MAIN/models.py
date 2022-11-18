@@ -64,9 +64,9 @@ class Tarea(models.Model):
         return self.name
 
 
-class Calendar(models.Model):
-    user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
-    key = models.FileField(null=True, blank=True, upload_to="token files/")
+# class Calendar(models.Model):
+#     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+#     key = models.FileField(null=True, blank=True, upload_to="token files/")
 
 
     

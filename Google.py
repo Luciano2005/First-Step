@@ -7,6 +7,9 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
 
+token_d=None
+def get_token():
+	return token_d
 
 def Create_Service(client_secret_file, api_name, api_version, *scopes, prefix=''):
 	CLIENT_SECRET_FILE = client_secret_file
@@ -36,7 +39,8 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes, prefix=''
 
 		with open(os.path.join(working_dir, token_dir, pickle_file), 'wb') as token:
 			pickle.dump(cred, token)
-			print(token.name)
+			global token_d
+			token_d=os.path.relpath(token.name)
 
 	try:
 		service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
