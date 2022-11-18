@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from distutils.command.upload import upload
 from random import choices
 from django.db import models
@@ -58,7 +59,7 @@ class Tarea(models.Model):
     materia=models.ForeignKey(Materia, on_delete = models.CASCADE, null = True)
     nivel_prioridad=(('Bajo', 'Bajo'),('Medio','Medio'),('Alto','Alto'))
     prioridad=models.CharField(max_length=20,choices = nivel_prioridad, default = 'Bajo')
-    fecha=models.DateField(blank=False, null=True)
+    fecha=models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.name

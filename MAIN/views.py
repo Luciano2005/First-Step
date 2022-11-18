@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ast import MatchSequence
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
@@ -8,18 +9,23 @@ from django.contrib import messages
 import pathlib
 import os
 from django.conf import settings
-
+from urllib.parse import unquote
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from .models import Materia, Seccion, Tarea, Documento
-
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from .utils import PasswordResetTokenGenerator, account_activation_token
 from pprint import pprint
 from Google import Create_Service, get_token
 
 # Create your views here.
-
 #---------------------------------------------------Login y Register-----------------------------------------
 
 def main(request):
@@ -41,7 +47,25 @@ def register(request):
                 if request.POST['password1']==request.POST['password2']: 
                     try:
                         user=User.objects.create_user(username=request.POST['username'],first_name=request.POST['first_name'],email=request.POST['email'],password=request.POST['password1']) 
+                        user.is_active=False
                         user.save()
+                        #ENVIAR EMAIL. AQUÍ LO QUE SE HACE ES COLOCAR QUIÉN MANDA EL CORREO, A DÓNDE LO MANDA Y LO QUE DICE
+                        uidb64=(urlsafe_base64_encode(force_bytes(user.pk)))
+
+                        email=request.POST['email']
+                        domain= get_current_site(request).domain
+                        link=reverse('verificar',kwargs={'uidb64':uidb64,'token':account_activation_token.make_token(user)})
+                        url_activacion='http://'+domain+link
+                        email_subject='Active su cuenta'
+                        email_body='¡Hola, '+user.username+ ' esperamos estés bien. Para activar tu cuenta correctamente, por favor presiona el siguiente link '+url_activacion
+                        email= EmailMessage(
+                            email_subject,
+                            email_body,
+                           'firststepunal@gmail.com',
+                            [email],
+                        )
+                        email.send(fail_silently=False)
+                        messages.success(request,"CUENTA A VERIFICAR")
                         login(request, user)
                         return redirect("login")
                     except IntegrityError:
@@ -64,6 +88,23 @@ def register(request):
                 'error':'Verifique el CAPTCHA'
             }) 
 
+#TOKEN
+def verificar(request, uidb64, token):
+    try:
+        id=force_str(urlsafe_base64_decode(uidb64))
+        user= User.objects.get(pk=id)
+        if not account_activation_token.check_token(user, token):
+            return redirect('login'+'?message='+'Usario ACTIVO')
+        if user.is_active:
+            return redirect('login')
+        user.is_active=True
+        user.save()
+        messages.success(request,'CUENTA ACTIVADA')
+        return redirect('login')
+    except Exception as ex:
+        pass
+    return redirect('login')
+
 def formlogin(request):
     if request.method== 'GET':
         return render(request, 'login.html',{
@@ -73,10 +114,15 @@ def formlogin(request):
         if request.POST['g-recaptcha-response'] != '':
             user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
             if user is None:
+                if request.user.is_active==False:
+                    return render(request, 'login.html',{
+                    'form':Loguearse,
+                    'error':'No has verificado tu cuenta. Por favor ingresa a tu correo.'})
                 return render(request, 'login.html',{
                     'form':Loguearse,
                     'error':'Nombre de usuario o contraseña incorrecto'
                     }) 
+        
             else:
                 login(request, user)
                 return redirect('main')
@@ -88,7 +134,7 @@ def formlogin(request):
 
 @login_required
 def logout2(request):
-    os.remove(os.path.join('token files/token_calendar_v3.pickle'))
+    #os.remove(os.path.join('token files/token_calendar_v3.pickle'))
     logout(request)
     return redirect('login')
 
@@ -317,6 +363,7 @@ def eliminarTarea(request, tarea_id):
         return redirect('/tareas/')
 
 
+
 #---------------------------------------------------Archivos-----------------------------------------
 def verArchivos(request, materia_id):
     if request.method == 'GET':
@@ -330,7 +377,7 @@ def verArchivos(request, materia_id):
 def eliminarArchivo(request, archivo_id):
     archivo=get_object_or_404(Documento,user=request.user, pk=archivo_id)
     materia_id=archivo.materia.id
-    os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
+    os.remove(os.path.join('.'+MEDIA_ROOT+unquote(archivo.documento.url)))
     archivo.delete()
     return redirect('verArchivos', materia_id)
 
