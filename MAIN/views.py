@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from ast import MatchSequence
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
@@ -8,7 +9,7 @@ from django.contrib import messages
 import pathlib
 import os
 from django.conf import settings
-
+from urllib.parse import unquote
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
@@ -25,7 +26,6 @@ from pprint import pprint
 from Google import Create_Service, get_token
 
 # Create your views here.
-
 #---------------------------------------------------Login y Register-----------------------------------------
 
 def main(request):
@@ -363,6 +363,7 @@ def eliminarTarea(request, tarea_id):
         return redirect('/tareas/')
 
 
+
 #---------------------------------------------------Archivos-----------------------------------------
 def verArchivos(request, materia_id):
     if request.method == 'GET':
@@ -376,7 +377,7 @@ def verArchivos(request, materia_id):
 def eliminarArchivo(request, archivo_id):
     archivo=get_object_or_404(Documento,user=request.user, pk=archivo_id)
     materia_id=archivo.materia.id
-    os.remove(os.path.join('.'+MEDIA_ROOT+archivo.documento.url))
+    os.remove(os.path.join('.'+MEDIA_ROOT+unquote(archivo.documento.url)))
     archivo.delete()
     return redirect('verArchivos', materia_id)
 
