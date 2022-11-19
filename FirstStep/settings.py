@@ -180,8 +180,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'firststepunal@gmail.com'
 EMAIL_HOST_PASSWORD = 'zvywuktayqqtpfgt'
 
-RECAPTCHA_PUBLIC_KEY = '6Lf3hQgjAAAAAFEUiXo6gxQYwrGg51i-k3DYb_De'
-RECAPTCHA_PRIVATE_KEY = '6Lf3hQgjAAAAAM4tkcdL4oUAh50eCeByDazcb41k'
+RECAPTCHA_PUBLIC_KEY = '6LdvmxwjAAAAAGH5o3ayyPSjgbUtyMVrx17LajeL'
+RECAPTCHA_PRIVATE_KEY = '6LdvmxwjAAAAAHPTZ7rrFd0MT_0EvfN5ghqqJw6c'
 
 if DEBUG:
     SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error'] #Quitar esto en produccion
