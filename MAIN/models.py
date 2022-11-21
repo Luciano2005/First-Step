@@ -13,7 +13,7 @@ class Materia(models.Model):
     name = models.CharField(max_length = 30, blank = False)
     hora = models.TimeField(blank = False)
     profesor = models.CharField(max_length = 30, blank = False)
-    profesor_email = models.EmailField(blank = False)
+    profesor_email = models.EmailField(blank = True)
     OPTIONS = (
         ("Lunes", "Lunes"),
         ("Martes", "Martes"),

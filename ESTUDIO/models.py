@@ -27,8 +27,8 @@ class Pregunta(models.Model):
 
 class RespuestasCerradas(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
-    respuesta_cerrada = models.CharField(max_length=30,blank=False, null=True)
-    respuesta_verdadera = models.CharField(max_length=30,blank=False, null=True)
+    respuesta_cerrada = models.CharField(max_length=70,blank=False, null=True)
+    respuesta_verdadera = models.CharField(max_length=70,blank=False, null=True)
     pregunta = models.ForeignKey(Pregunta, on_delete = models.CASCADE, null = True)
     
     

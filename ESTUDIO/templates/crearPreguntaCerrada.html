@@ -13,12 +13,15 @@
                         <p class="h1">Crear Pregunta Cerrada</p>
                     </blockquote>
                 </figure>
-                <label class="form-label requiredField row justify-content-center" for="id_name"><span class="form-text col-9" style="color: red:">{{error}}</span></label>
-                <input class="form-control" type="text" name="name" required id=id_name placeholder="Pregunta">
+            
+                <label class="form-label requiredField row justify-content-center" for="id_name"><span class="form-text col-9" style="color: red">{{error}}</span></label>
+                <input class="form-control" type="text" name="name" required id=id_name placeholder="Pregunta" maxlength="30">
+
                 <label class="form-label requiredField row justify-content-center" for="id_respuesta_verdadera"><span class="form-text col-9" style="color: red">{{error}}</span></label>
-                <input class="form-control" type="text" name="respuesta_verdadera" required id="id_respuesta_verdadera" placeholder="Respuesta">
+                <input class="form-control" type="text" name="respuesta_verdadera" required id="id_respuesta_verdadera" placeholder="Respuesta Verdadera" maxlength="70">
+
                 <label class="form-label requiredField row justify-content-center" for="id_respuesta_cerrada"><span class="form-text col-9" style="color: red">{{error}}</span></label>
-                <input class="form-control" type="text" name="respuesta_cerrada" required id="id_respuesta_cerrada" placeholder="Respuesta Cerrada">
+                <input class="form-control" type="text" name="respuesta_cerrada" required id="id_respuesta_cerrada" placeholder="Respuesta Falsa" maxlength="70">
                 {% for respuesta in respuestas %}
                     <p>{{respuesta}}</p>
                         {% endfor %}
