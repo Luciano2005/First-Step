@@ -1,15 +1,54 @@
 {% extends 'navegacion.html' %}
 
 {% block content %}
-<p>Pagina principal</p>
 
 {% if user.is_authenticated %}
 <h1>ESTE ES EL HOME</h1>
 <h2>¡Bienvenido, {{user.username}} esperamos que tu sesión de hoy sea bastante productiva!</h2>
 
 {% else %}
+<!---Esto es re cutre pero bn, es solo un esbozo-->
+<div>
+    <figure>
+        <img src="media\images\foto_no_exif.jpg" alt="Imagen acerca del estudio" width="1350" height="470">
+    </figure>
 
-<h3> Inicia sesion primero para acceder a las funcionalidades </h3>
+    <h1>EL ESTUDIO EN TUS MANOS</h1>
+    
+    <form action="/register/">
+        <button>
+            Empieza gratis
+        </button>
+    </form>
+</div>
+
+
+<h2>"Una web para potencializar</h2>
+<h2>el estudio autónomo"</h2>
+
+<div>
+    <h3>Repasa usando la</h3>
+    <h3>repeticion espaciada</h3> 
+    <figure>
+        <img src="media\images\time-and-date.png" alt="Reloj">
+    </figure>
+</div>
+
+<div>
+    <h3>Organiza tus tareas</h3>
+    <figure>
+        <img src="media\images\to-do-list.png" alt="Tareas">
+    </figure>
+</div>
+
+<div>
+    <h3>Toma pausa con el</h3>
+    <h3>Pomodoro</h3>
+    <figure>
+        <img src="media\images\pause.png" alt="Pausa">
+    </figure>
+</div>
+
 {% endif %}
 
 {% endblock %}
