@@ -194,7 +194,7 @@ def repasoFlashcard(request, seccion_id):
                 })
         except IndexError:
             contador=0
-            return redirect('/materias/')
+            return redirect('seccion_detail', seccion_id)
     else:
         seccion=get_object_or_404(Seccion,pk=seccion_id,user=request.user)
         #respuestas_cerradas=RespuestasCerradas.objects.filter(user=request.user,pregunta=preguntas[contador-1])
