@@ -8,19 +8,6 @@
     <form method = 'POST'>
     {% csrf_token %}
 
-<div class="row justify-content-center">
-<div class="col-lg-4 col-md-6 col-sm-7 col-9">
-    <figure class="text-center">
-        <blockquote class="blockquote" style="margin-bottom:30px">
-            <p class="h1">Crear Tema</p>
-        </blockquote>
-        <figcaption class="blockquote-footer" style="margin-bottom:30px">
-            HOLA! Aquí podrás crear los temas que quiras repasar posteriormente, <cite title="Título fuente">¡ANÍMATE!</cite>
-        </figcaption>
-      </figure>
-      
-      <label class="form-label requiredField row justify-content-center" for="id_name">Nombre del tema*<span class="form-text col-9" style="color: red:">{{error}}</span></label>
-      <input class="form-control" type="text" maxlength="30" name="name" required id=id_name placeholder="Ejemplo: Polimorfismo">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-sm-7 col-9">
             <figure class="text-center">
