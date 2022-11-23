@@ -144,12 +144,30 @@ def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
         form_pregunta.save()
 
         n=request.POST.getlist('respuesta_cerrada')
+        print(n)
 
+        # if len(respuestas)<=len(n):
+        #     for respuesta in respuestas:
+        #         RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])   
+        #         RespuestasCerradas.objects.update_or_create(pk=respuesta.id,user=request.user, pregunta_id=pregunta_id,respuesta_cerrada=respuesta, defaults={"respuesta_verdadera=request.POST['respuesta_verdadera']"},) 
+        
         for respuesta in respuestas:
-            RespuestasCerradas.objects.filter(pk=respuesta.id,user=request.user,pregunta_id=pregunta_id).update(respuesta_cerrada=n.pop(0), respuesta_verdadera=request.POST['respuesta_verdadera'])                 
+            if len(n)==0:
+                respuesta.delete()
+            else:
+                RespuestasCerradas.objects.update_or_create(pk = respuesta.id, user=request.user, pregunta=pregunta, respuesta_cerrada= respuesta.respuesta_cerrada, defaults={"respuesta_cerrada":n.pop(0),"respuesta_verdadera":request.POST['respuesta_verdadera']},) 
+        
+        for respuesta in n:
+            RespuestasCerradas.objects.create(user=request.user, pregunta=pregunta, respuesta_cerrada=respuesta, respuesta_verdadera=request.POST['respuesta_verdadera'])
+                
 
 
         return redirect('seccion_detail', pregunta.seccion_id)  
+
+def CambiaraRespuestaCerrada_eliminar(request, pregunta_id, respuesta):
+    consulta_respuesta=get_object_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id, respuesta_cerrada=respuesta)
+    consulta_respuesta.delete()
+    return redirect('estudio:redireccionarPregunta', pregunta_id)
 
 # @login_required
 # def crearMasRespuestasCerradas(request, pregunta_id):

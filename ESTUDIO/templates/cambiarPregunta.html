@@ -1,4 +1,5 @@
 {% extends 'navegacion.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
 {{error}}
@@ -46,7 +47,10 @@
                 <input class="form-control" type="text" name="respuesta_verdadera"  maxlength="70" required="" id="id_respuesta_verdadera" placeholder="Respuesta Verdadera" value="{{respuesta_verdadera.respuesta_verdadera.value}}">
                 
                 {% for respuesta in form_respuesta %}
-                {{respuesta.as_p}}
+                <div class="eliminar">
+                    {{respuesta}}
+                    <input type="button" class="btn-eliminar" onclick="eliminaPregunta(this.parentNode)" value="Eliminar">
+                </div>
                 {% endfor %}
                 {% for respuesta_cerrad in nueva_respuesta %}
                 {{respuesta_cerrad.as_p}}
@@ -78,4 +82,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    var d=document.getElementsByClassName('eliminar');
+    var b=document.getElementsByClassName('btn-eliminar');
+    for(let i=0;i<d.length;i++){
+        d[i].setAttribute('id', 'r'+i);
+        b[i].setAttribute('id', 'btn'+i);
+    }
+
+
+    function eliminaPregunta(padre){
+        let nObjetos = document.getElementsByClassName('eliminar');
+        if(nObjetos.length<2){
+            padre.childNodes[5].remove()
+        }else{
+            padre.remove()
+        }
+        
+        
+        // if(nObjetos.length<2){
+
+        // }
+    }
+
+</script>
+
 {% endblock %}
