@@ -21,7 +21,8 @@
                 <label class="form-label requiredField row justify-content-center" for="id_respuesta"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
                 <textarea class="form-control" type="a" name="respuesta" required id="id_respuesta" placeholder="Respuesta" maxlength="200">{{form.respuesta.value}}</textarea>
                 <input type="hidden" name="apropiacion" value="{{form.apropiacion.value}}" id="id_apropiacion">
-                <input type="hidden" name="ultima_vez" id="id_ultima_vez">
+                <input type="hidden" name="ultima_vez" value="{{form.ultima_vez.value|date:'Y-m-d H:i:s'}}" id="id_ultima_vez">
+                <input type="hidden" name="initial-ultima_vez" value="{{form.ultima_vez.value|date:'Y-m-d H:i:s'}}" id="initial-id_ultima_vez">
                 <input type="hidden" name="seccion" value="{{form.seccion.value}}" id="id_seccion">
 
                 <div class="row justify-content-center">
@@ -40,7 +41,8 @@
                 <input class="form-control" type="text" name="name"   required="" id="id_name" placeholder="Pregunta" value="{{form_pregunta.name.value}}" maxlength="30">
                 <input type="hidden" name="respuesta" id="id_respuesta">
                 <input type="hidden" name="apropiacion" value="{{form_pregunta.apropiacion.value}}" id="id_apropiacion">
-                <input type="hidden" name="ultima_vez" id="id_ultima_vez">
+                <input type="hidden" name="ultima_vez" value="{{form_pregunta.ultima_vez.value|date:'Y-m-d H:i:s'}}" id="id_ultima_vez">
+                <input type="hidden" name="initial-ultima_vez" value="{{form_pregunta.ultima_vez.value|date:'Y-m-d H:i:s'}}" id="initial-id_ultima_vez">
                 <input type="hidden" name="seccion" value="{{form_pregunta.seccion.value}}" id="id_seccion">
 
                 <label class="form-label requiredField row justify-content-center" for="id_respuesta_verdadera"><span class="form-text col-9" style="color: red;">{{error}}</span></label>
