@@ -16,7 +16,7 @@ class newPregunta(forms.ModelForm):
         
 
 class newPreguntaCerrada(forms.ModelForm):
-    class Meta:
+    class Meta: 
         model=Pregunta
         fields=['name','respuesta','apropiacion','ultima_vez','seccion']
         widgets = {
