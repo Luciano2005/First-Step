@@ -162,12 +162,8 @@ def cambiarPreguntaCerrada(request, pregunta_id, size=None, eliminar=None):
                 
 
 
-        return redirect('seccion_detail', pregunta.seccion_id)  
+        return redirect('seccion_detail', pregunta.seccion_id) 
 
-def CambiaraRespuestaCerrada_eliminar(request, pregunta_id, respuesta):
-    consulta_respuesta=get_object_or_404(RespuestasCerradas, user=request.user, pregunta_id=pregunta_id, respuesta_cerrada=respuesta)
-    consulta_respuesta.delete()
-    return redirect('estudio:redireccionarPregunta', pregunta_id)
 
 # @login_required
 # def crearMasRespuestasCerradas(request, pregunta_id):
