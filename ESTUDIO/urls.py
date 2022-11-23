@@ -15,7 +15,6 @@ urlpatterns=[
     path('cambiarPreguntaCerrada/<int:pregunta_id>', views.cambiarPreguntaCerrada, name = 'pregunta_cerrada'),
     path('cambiarPreguntaCerrada/<int:pregunta_id>/<int:size>', views.cambiarPreguntaCerrada, name = 'nueva_respuesta_cerrada'),
     path('cambiarPreguntaCerrada/<int:pregunta_id>/<int:eliminar>', views.cambiarPreguntaCerrada, name = 'eliminar_nueva_respuesta_cerrada'),
-    path('cambiarPreguntaCerrada/<int:pregunta_id>/<str:respuesta>', views.CambiaraRespuestaCerrada_eliminar, name = 'eliminar_respuesta_cerrada'),
     path('eliminarPregunta/<int:pregunta_id>', views.eliminarPregunta, name = 'eliminarPregunta'),
 
     #Repaso
