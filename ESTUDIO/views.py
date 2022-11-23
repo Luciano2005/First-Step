@@ -242,6 +242,7 @@ def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de pre
 def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
     pregunta = get_object_or_404(Pregunta,pk=pregunta_id,user=request.user)
     pregunta.apropiacion=numero
+    pregunta.save()
 
     multi=0
 
