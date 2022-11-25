@@ -86,7 +86,7 @@
                                 <p>{{tarea_m.materia}}</p>
                             </td>
                             <td class="col-2">
-                                <p>{{tarea_m.fecha}}</p>
+                                <p>{{tarea_m.fecha|timeuntil}}</p>
                             </td>
                             <td class="col-1">
                                 <a href={% url 'actualizarTarea' tarea_m.id %}>Editar</a>
@@ -133,7 +133,7 @@
                                 <p>{{tarea_b.materia}}</p>
                             </td>
                             <td class="col-2">
-                                <p>{{tarea_b.fecha}}</p>
+                                <p>{{tarea_b.fecha|timeuntil}}</p>
                             </td>
                             <td class="col-1">
                                 <a href={% url 'actualizarTarea' tarea_b.id %}>Editar</a>
