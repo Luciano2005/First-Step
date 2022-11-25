@@ -37,7 +37,7 @@
                                 <p>{{tarea_a.materia}}</p>
                             </td>
                             <td class="col-2">
-                                <p>{{tarea_a.fecha}}</p>
+                                <p>{{tarea_a.fecha|timeuntil}}</p>
                             </td>
                             <td class="col-1">
                                 <a href={% url 'actualizarTarea' tarea_a.id %}>Editar</a>

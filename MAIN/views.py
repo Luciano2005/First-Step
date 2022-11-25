@@ -24,7 +24,7 @@ from django.urls import reverse
 from .utils import PasswordResetTokenGenerator, account_activation_token
 from pprint import pprint
 from Google import Create_Service, get_token
-
+import datetime
 # Create your views here.
 #---------------------------------------------------Login y Register-----------------------------------------
 
@@ -311,11 +311,11 @@ def mostrarTareas(request):
     prioridadA= Tarea.objects.filter(user=request.user,prioridad='Alto').order_by('fecha')
     prioridadM= Tarea.objects.filter(user=request.user,prioridad='Medio').order_by('fecha')
     prioridadB= Tarea.objects.filter(user=request.user,prioridad='Bajo').order_by('fecha')
-
     return render(request, 'mostrarTareas.html',{
         'tareas_a':prioridadA,
         'tareas_m':prioridadM,
-        'tareas_b':prioridadB
+        'tareas_b':prioridadB,
+
     })
 
 
