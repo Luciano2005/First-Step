@@ -114,15 +114,16 @@ def formlogin(request):
         if request.POST['g-recaptcha-response'] != '':
             user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
             if user is None:
-                if request.user.is_active==False:
+                consulta_user = User.objects.filter(username=request.POST['username'])
+                # print(consulta_user[0].is_active)
+                if len(consulta_user) > 0 and consulta_user[0].is_active==False:
                     return render(request, 'login.html',{
                     'form':Loguearse,
                     'error':'No has verificado tu cuenta. Por favor ingresa a tu correo.'})
                 return render(request, 'login.html',{
                     'form':Loguearse,
                     'error':'Nombre de usuario o contraseña incorrecto'
-                    }) 
-        
+                    })
             else:
                 login(request, user)
                 return redirect('main')
@@ -418,12 +419,21 @@ def perfil(request):
             return redirect('perfil')
         else:
         #     messages.error(request,"Las contraseñas es muy corta")
-            if request.POST['username']!=request.user.username or request.POST['email']!=request.user.email:
-                form.save()
-                return redirect('materias')
+            if (request.POST['username']!=request.user.username or request.POST['email']!=request.user.email) and not User.objects.filter(email = request.POST['email']).exists():
+                try:
+                    form.save()
+                    return redirect('materias')
+                except ValueError:
+                    pass
+            if User.objects.filter(email = request.POST['email']).exists() and request.POST['email']!=request.user.email :
+                return render(request, 'perfil.html',{
+                    'form':form,
+                    'cambiar_contrasena':cambiar_contrasena,
+                    'error':'El correo que está usando ya existe'
+                    })
             return render(request, 'perfil.html',{
                 'form':form,
-                'cambiar_contrasena':cambiar_contrasena
+                'cambiar_contrasena':cambiar_contrasena,
             })
 
 
