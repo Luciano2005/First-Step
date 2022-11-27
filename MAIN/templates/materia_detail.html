@@ -16,33 +16,37 @@
     </form>
     <hr>
     <div class="row">
-        <div class="col-1">
+        <div class="col-xl-1 col-md-2 col-sm-2 col-4 me-md-4">
             <ul><li><p class="h6">Profesor: </p></li></ul>
         </div>
-        <div class="col-2">
+        <div class="col-xl-3 col-md-3 col-sm-3 col-7">
             {{materia.profesor}}
         </div>
-        <div class="col-2">
+        <div class="col-xl-1 col-md-2 col-sm-3 col-4 me-md-5">
             <ul><li><p class="h6">Correo Electronico: </p></li></ul>
         </div>
-        <div class="col-2">
+        <div class="col-xl-1 col-sm-3 col-7">
             {{materia.profesor_email}}
         </div>
     </div>
     <div class="row">
-        <div class="col-1">
+        <div class="col-xl-1 col-md-2 col-sm-2 col-4 me-md-4 ">
             <ul><li><p class="h6">Horario: </p></li></ul>
         </div>
-        <div class="col-2">
-            <p>{% for dia in materia.horario %}
-                {{dia}} - {{materia.hora}}
-                {% endfor %}
-            </p>
+        <div class="col-xl-3 col-md-3 col-7 col-sm-3">
+            {% for dia in materia.horario %}
+            <div class="bg-dark rounded-5 ps-2 p-1 text-white d-inline" style="margin-right: 0.15rem; margin-bottom: 3rem;">
+                <span class="text-center">{{dia.0}}{{dia.1}}{{dia.2}}</span>
+            </div>
+            {% endfor %}
+            <div class="mt-2">
+                <div class="rounded-5 p-1 pe-2 text-white d-inline" style="background-color: #247881;">🕔{{materia.hora}}</div>
+            </div>
         </div>
-        <div class="col-2">
+        <div class="col-xl-1 col-md-2 col-sm-3 col-4 me-md-5 mt-sm-n5">
             <ul><li><p class="h6">Aula: </p></li></ul>
         </div>
-        <div class="col-2">
+        <div class="col-xl-1 col-md-3 col-sm-3 col-7">
             <p>{{materia.aula}}</p><!--PARA LOS DEL FRONTEND-->
         </div>
     </div>
