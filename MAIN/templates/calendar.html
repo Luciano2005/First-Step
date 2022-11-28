@@ -1,8 +1,25 @@
 <h1>Ahora si se viene lo bueno</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    <button>
-        Iniciar sesión Calendar
-    </button>
-</form>
+{% if verifica %}
+    <h1>Crea un evento</h1>
+    <p>{{enviado}}</p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Titulo">
+        <textarea name="description" required placeholder="Descripción"></textarea>
+        <label>Fecha de inicio:</label>
+        <input type="datetime-local" required name="datetime-start" placeholder="Fecha y hora de inicio">
+        <label>Fecha Final:</label>
+        <input type="datetime-local" required name="datetime-end" placeholder="Fecha y hora final">
+        <button>
+            Crear un evento
+        </button>
+    </form>
+{% else %}
+    <form method="POST">
+        {% csrf_token %}
+        <button>
+            Iniciar sesión Calendar
+        </button>
+    </form>
+{% endif %}
