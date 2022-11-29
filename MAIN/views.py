@@ -9,7 +9,7 @@ from django.contrib import messages
 import pathlib
 import os
 from django.conf import settings
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
@@ -442,12 +442,29 @@ def perfil(request):
 #-------------------------------------------Calendar----------------------------------------------------------------
 service=None
 s=False
+id_calendario=''
 
 def calendar(request):
-    global s, service
+    global s, service, id_calendario
     if request.method == 'POST':
         if s==False:
             s=solicitud_calendar(request)
+            if s==True:
+                
+                response=service.calendarList().list().execute()
+                calendarItems=response.get('items')
+                myCalendar=filter(lambda x:'First-Step' in x['summary'], calendarItems)
+                myCalendar=next(myCalendar)
+                calendar_id_firststep=myCalendar['id']
+                id_calendario=quote(calendar_id_firststep)
+                
+                rules = {
+                    "role": "reader",
+                    "scope": {
+                        "type": "default",
+                    }
+                    }
+                created_rule = service.acl().insert(calendarId=calendar_id_firststep, body=rules).execute()
         else:
             # Consultar calendario
             response=service.calendarList().list().execute()
@@ -455,7 +472,7 @@ def calendar(request):
             myCalendar=filter(lambda x:'First-Step' in x['summary'], calendarItems)
             myCalendar=next(myCalendar)
             calendar_id_firststep=myCalendar['id'] #Id del calendario
-
+            id_calendario=quote(calendar_id_firststep)
             #Fecha y hora del  evento
             date_start= request.POST['datetime-start'][:10].split('-')
             time_start=request.POST['datetime-start'][11:].split(':')
@@ -477,7 +494,7 @@ def calendar(request):
                 'colorId':5,
                 'status':'confirmed',
                 'transparency': 'opaque',
-                'visibility': 'private',
+                'visibility': 'public',
                 # 'creator':{
 
                 # },
@@ -496,11 +513,13 @@ def calendar(request):
             ).execute()
             return render(request, 'calendar.html',{
                 'verifica':s,
-                'enviado':'Evento creado exitosamente' 
+                'enviado':'Evento creado exitosamente',
+                'calendario': id_calendario
             })
     else:
         return render(request, 'calendar.html',{
             'verifica':s,
+            'calendario': id_calendario
         })
     return redirect('calendar')
 
@@ -519,6 +538,7 @@ def solicitud_calendar(request,):
     # print(myCalendar)
     try:
         myCalendar=next(myCalendar)
+        id_calendario=quote(myCalendar['id'])
     except:
         request_body={
             'summary': 'First-Step', #Titulo del calendario
