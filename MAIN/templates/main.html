@@ -1,54 +1,56 @@
 {% extends 'navegacion.html' %}
 
 {% block content %}
+<div class="container-md justify-content-around py-4 px-4">
 
 {% if user.is_authenticated %}
-<h1>ESTE ES EL HOME</h1>
-<h2>¡Bienvenido, {{user.username}} esperamos que tu sesión de hoy sea bastante productiva!</h2>
+    <h1>ESTE ES EL HOME</h1>
+    <h2>¡Bienvenido, {{user.username}} esperamos que tu sesión de hoy sea bastante productiva!</h2>
 
 {% else %}
 <!---Esto es re cutre pero bn, es solo un esbozo-->
-<div>
-    <figure>
-        <img src="media\images\foto_no_exif.jpg" alt="Imagen acerca del estudio" width="1350" height="470">
-    </figure>
-
-    <h1>EL ESTUDIO EN TUS MANOS</h1>
+    <div>        
+        <h1 class="d-inline">¿Quieres mejor tus hábitos de estudio?</h1>
+        
+        <form class="d-inline ms-3 pb-2" action="/register/">
+            <button class="btn" style="background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple)">
+                <span style="color: white;">Empieza GRATIS</span>
+            </button>
+        </form>
+    </div>
     
-    <form action="/register/">
-        <button>
-            Empieza gratis
-        </button>
-    </form>
+    <p class="mt-4 fs-4 fst-italic">Una web para potencializar tu estudio autónomo creada desde los laboratorios de la UNAL</p>
+    <div id="carousel" class="carousel carousel-dark slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="img-fluid rounded mx-auto d-block" style="height: 26rem;" src="media\images\repeticion.png" alt="Knowledge">
+            <div class="carousel-caption d-none d-md-block">
+                <p class="d-inline fs-6">Repasa usando la <span class="h6 d-inline">repeticion espaciada</span></p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img class="img-fluid rounded mx-auto d-block" style="height: 26rem;" src="media\images\priorizar.png" alt="Tareas">
+            <div class="carousel-caption d-none d-md-block text-black">
+                <h1></h1>
+                <p class="d-inline fs-6">Organiza tus <span class="h6 d-inline">tareas prioritariamente</span></p>                
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img class="img-fluid rounded mx-auto d-block" style="height: 26rem;" src="media\images\pomodoru.png" alt="Pausa">
+            <div class="carousel-caption d-none d-md-block text-black">
+                <p></p>
+                <p class="d-inline fs-6">Regalate una pausa con el <span class="h6 d-inline">pomodoro</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    {% endif %}
 </div>
-
-
-<h2>"Una web para potencializar</h2>
-<h2>el estudio autónomo"</h2>
-
-<div>
-    <h3>Repasa usando la</h3>
-    <h3>repeticion espaciada</h3> 
-    <figure>
-        <img src="media\images\time-and-date.png" alt="Reloj">
-    </figure>
-</div>
-
-<div>
-    <h3>Organiza tus tareas</h3>
-    <figure>
-        <img src="media\images\to-do-list.png" alt="Tareas">
-    </figure>
-</div>
-
-<div>
-    <h3>Toma pausa con el</h3>
-    <h3>Pomodoro</h3>
-    <figure>
-        <img src="media\images\pause.png" alt="Pausa">
-    </figure>
-</div>
-
-{% endif %}
 
 {% endblock %}
