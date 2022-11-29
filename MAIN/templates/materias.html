@@ -20,7 +20,7 @@
                     {% if materia.imagen %}
                         <img class="card-img-top" src={{materia.imagen.url}} alt="materia" style="height: 150px;">
                     {% else %}
-                        <img class="card-img-top" src="https://prod-discovery.edx-cdn.org/media/course/image/f42bce09-2533-48fb-a9c4-8053aedf941b-798c36769d88.small.png" alt="materia" style="height: 150px;">
+                        <img class="card-img-top" src="https://d1vcqlflm6aitx.cloudfront.net/images/800x100p/1557364192-work_while_you_study_banner.webp" alt="materia" style="height: 150px;">
                     {% endif %}
                     <div class="card-body" style="height: 5rem;">
                         <h4 class="cardtitle">{{materia.name}}</h5>
@@ -37,7 +37,7 @@
                                 <li>
                                     <div class="row">
                                             <div class="col-4 col-xl-4 col-sm-5"><p class="card-text text-start">{{materia.hora}}</p></div>
-                                            <div class="col-8 col-xl-8 col-sm-6"><a href={% url 'verArchivos' materia.id %} class="btn btn-dark">Ver Archivos</a></div>
+                                            <div class="col-8 col-xl-8 col-sm-6"><a href={% url 'verArchivos' materia.id %} class="btn btn-dark btn-sm">Ver Archivos</a></div>
                                     </div>
                                 </li>
                             </ul>
