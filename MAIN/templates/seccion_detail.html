@@ -60,17 +60,17 @@
         {% for pregunta in preguntas %}
         {% if pregunta.respuesta|length %}
         <div class="col-8 col-sm-6 col-md-6 col-xxl-2 col-xl-3 col-lg-3 py-2">
-                <div class="card text-white mb-3" style="width: 12rem; background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple);">
+                <div class="card text-white mb-3" style="width: 12rem; height: 14rem; background:linear-gradient(30deg, crimson,sienna, royalblue, indianred, purple);">
                     <div class="text-center">
-                    <div class="card-header">{{pregunta.name}}
+                    <div class="card-header" style="height: 4rem;"><h6>{{pregunta.name}}</h6>
                     </div>
                     <div class="card-body">
                         <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
-                            <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
+                            <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 20px">Editar</button>
                         </a> 
                         <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
+                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 20px">Eliminar</button>
                         </form> 
                     </div>
                 </div>
@@ -78,17 +78,17 @@
             </div>
             {% else %}
             <div class="col-8 col-sm-6 col-md-6 col-xxl-2 col-xl-3 col-lg-3 py-2">
-                <div class="card mb-3 text-white" style="width: 12rem; background-color: #371B58">
+                <div class="card mb-3 text-white" style="width: 12rem; height: 14rem; background-color: #371B58">
                     <div class="text-center">
-                    <div class="card-header">{{pregunta.name}}
+                    <div class="card-header" style="height: 4rem;"><h6>{{pregunta.name}}</h6>
                     </div>
                     <div class="card-body">
                         <a href = {% url 'estudio:redireccionarPregunta' pregunta.id %}>
-                            <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 40px">Editar</button>
+                            <button type="submit" class="btn btn-light" style="width: 120px; margin-top: 20px">Editar</button>
                         </a>  
                         <form action={% url 'estudio:eliminarPregunta' pregunta.id %} , method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" style="width: 120px; margin-top: 40px">Eliminar</button>
+                            <button type="submit" class="btn btn-danger" style="width: 120px;  margin-top: 20px">Eliminar</button>
                         </form>
                     </div>
                 </div>
