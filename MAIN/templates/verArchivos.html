@@ -1,23 +1,51 @@
-<h1>Archivos</h1>
+{% extends 'ingreso.html' %}
 
-<form action={% url 'agregarArchivos' materia_id %} method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{agregar}}
-    <button>
-        Guardar
-    </button>
-</form>
-
-<ul>
-    {% for archivo in archivos %}
-        <li>
-            <a href={{archivo.documento.url}}>{{archivo.filename}}</a>
-            <form action={% url 'eliminarArchivo' archivo.id %} method="POST">
-                {% csrf_token %}
-                <button>
-                    Eliminar
+{% block content %}
+    <div class="container-md justify-content-around" style="background-color: white;" > 
+        <h1>Archivos</h1>
+        <form action={% url 'agregarArchivos' materia_id %} method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="id_documento" class="form-label">Agrega un archivo para tu materia</label>
+            <div class="input-group">
+                <input type="file" name="documento" class="form-control" id="id_documento">
+                <button class="btn btn-outline-secondary">
+                    Guardar
                 </button>
-            </form>
-        </li>
-    {% endfor %}
-</ul>
+            </div>
+        </form>
+        <div class="card my-2">
+            <table class="table" style="margin-bottom: 0rem;">
+                <thead>
+                    <th class="col">Nombre</th>
+                    <th class="col"></th>
+                </thead>
+                <tbody>
+                {% for archivo in archivos %}
+                <tr>
+                    <div class="row">
+                        <td class="col-9">
+                            <a class="text-decoration-none" href={{archivo.documento.url}}>{{archivo.filename}}</a>
+                        </td>
+                        <td class="col-4">
+                            <form action={% url 'eliminarArchivo' archivo.id %} method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-link text-decoration-none">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+                
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="card-footer">
+                <span class="my-2">Uso de almacenamiento:</span>
+                <div class="progress my-2">
+                    <div class="progress-bar bg-info" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="1400"></div>
+                </div>  
+            </div>
+        </div>
+    </div>
+{% endblock %}
