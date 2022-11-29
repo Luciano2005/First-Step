@@ -484,11 +484,11 @@ def calendar(request):
             # print(int(time_start[0])-hour_adjustment)
             event_request_body={
                 'start':{
-                    'dateTime':convert_to_RFC_datetime(int(date_start[0]), int(date_start[1]),int(date_start[2]) if int(time_start[0])<19 else int(date_start[2])+1,int(time_start[0])+hour_adjustment if int(time_start[0])<19 else int(time_start[0])+hour_adjustment-24,0 if int(time_start[1])<30 else 30),
+                    'dateTime':convert_to_RFC_datetime(int(date_start[0]), int(date_start[1]),int(date_start[2]) if int(time_start[0])<19 else int(date_start[2])+1,int(time_start[0])+hour_adjustment if int(time_start[0])<19 else int(time_start[0])+hour_adjustment-24,int(time_start[1])),
                     'timeZone':'America/Bogota'
                 },
                 'end':{
-                    'dateTime':convert_to_RFC_datetime(int(date_end[0]),int(date_end[1]),int(date_end[2]) if int(time_end[0])<19 else int(date_end[2])+1, int(time_end[0])+hour_adjustment if int(time_end[0])<19 else int(time_end[0])+hour_adjustment-24,0 if int(time_end[1])<30 else 30) ,
+                    'dateTime':convert_to_RFC_datetime(int(date_end[0]),int(date_end[1]),int(date_end[2]) if int(time_end[0])<19 else int(date_end[2])+1, int(time_end[0])+hour_adjustment if int(time_end[0])<19 else int(time_end[0])+hour_adjustment-24,int(time_end[1])) ,
                     'timeZone':'America/Bogota'
                 },
                 'summary':request.POST['title'],
