@@ -9,7 +9,7 @@ from django.contrib import messages
 import pathlib
 import os
 from django.conf import settings
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 from ESTUDIO.models import Pregunta
 from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
 from django.contrib.auth.models import User
@@ -23,7 +23,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import PasswordResetTokenGenerator, account_activation_token
 from pprint import pprint
-from Google import Create_Service, get_token
+from Google import Create_Service, get_token, convert_to_RFC_datetime
 import datetime
 # Create your views here.
 #---------------------------------------------------Login y Register-----------------------------------------
@@ -136,6 +136,8 @@ def formlogin(request):
 @login_required
 def logout2(request):
     #os.remove(os.path.join('token files/token_calendar_v3.pickle'))
+    global s
+    s=False
     logout(request)
     return redirect('login')
 
@@ -438,19 +440,139 @@ def perfil(request):
 
 
 #-------------------------------------------Calendar----------------------------------------------------------------
+service=None
+s=False
+id_calendario=''
 
 def calendar(request):
+    global s, service, id_calendario
     if request.method == 'POST':
-        solicitud_calendar(request)
-    return render(request, 'calendar.html')
+        if s==False:
+            s=solicitud_calendar(request)
+            if s==True:
+                
+                response=service.calendarList().list().execute()
+                calendarItems=response.get('items')
+                myCalendar=filter(lambda x:'First-Step' in x['summary'], calendarItems)
+                myCalendar=next(myCalendar)
+                calendar_id_firststep=myCalendar['id']
+                id_calendario=quote(calendar_id_firststep)
+                
+                rules = {
+                    "role": "reader",
+                    "scope": {
+                        "type": "default",
+                    }
+                    }
+                created_rule = service.acl().insert(calendarId=calendar_id_firststep, body=rules).execute()
+        else:
+            # Consultar calendario
+            response=service.calendarList().list().execute()
+            calendarItems=response.get('items')
+            myCalendar=filter(lambda x:'First-Step' in x['summary'], calendarItems)
+            myCalendar=next(myCalendar)
+            calendar_id_firststep=myCalendar['id'] #Id del calendario
+            id_calendario=quote(calendar_id_firststep)
+            #Fecha y hora del  evento
+            date_start= request.POST['datetime-start'][:10].split('-')
+            time_start=request.POST['datetime-start'][11:].split(':')
+            date_end=request.POST['datetime-end'][:10].split('-')
+            time_end=request.POST['datetime-end'][11:].split(':')
+        
+            #Crear evento
+            hour_adjustment=5
+            # print(int(time_start[0])-hour_adjustment)
+            event_request_body={
+                'start':{
+                    'dateTime':convert_to_RFC_datetime(int(date_start[0]), int(date_start[1]),int(date_start[2]) if int(time_start[0])<19 else int(date_start[2])+1,int(time_start[0])+hour_adjustment if int(time_start[0])<19 else int(time_start[0])+hour_adjustment-24,0 if int(time_start[1])<30 else 30),
+                    'timeZone':'America/Bogota'
+                },
+                'end':{
+                    'dateTime':convert_to_RFC_datetime(int(date_end[0]),int(date_end[1]),int(date_end[2]) if int(time_end[0])<19 else int(date_end[2])+1, int(time_end[0])+hour_adjustment if int(time_end[0])<19 else int(time_end[0])+hour_adjustment-24,0 if int(time_end[1])<30 else 30) ,
+                    'timeZone':'America/Bogota'
+                },
+                'summary':request.POST['title'],
+                'description':request.POST['description'],
+                'colorId':5,
+                'status':'confirmed',
+                'transparency': 'opaque',
+                'visibility': 'public',
+                # 'creator':{
 
-def solicitud_calendar(request):
+                # },
+                # 'organizer':{
+                    
+                # }
+            }
+            sendNotification=True
+            sendUpdate='none'
+            response=service.events().insert(
+                calendarId=calendar_id_firststep,
+                sendNotifications=sendNotification,
+                sendUpdates=sendUpdate,
+                body=event_request_body
+
+            ).execute()
+            return render(request, 'calendar.html',{
+                'verifica':s,
+                'enviado':'Evento creado exitosamente',
+                'calendario': id_calendario
+            })
+    else:
+        return render(request, 'calendar.html',{
+            'verifica':s,
+            'calendario': id_calendario
+        })
+    return redirect('calendar')
+
+def solicitud_calendar(request,):
     CLIENT_SECRET_FILE = 'client_secret_883464149952-j83ui7qf98nsu8o1q8jbir4aacqv80gq.apps.googleusercontent.com.json'
     API_NAME = 'calendar'
     API_VERSION = 'v3'
     SCOPES = ['https://www.googleapis.com/auth/calendar']
+    global service
+    service = Create_Service(request.user,CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    
+    #Consultar si el calendario existe
+    response=service.calendarList().list().execute()
+    calendarItems=response.get('items')
+    myCalendar=filter(lambda x:'First-Step' in x['summary'], calendarItems)
+    # print(myCalendar)
+    try:
+        myCalendar=next(myCalendar)
+        id_calendario=quote(myCalendar['id'])
+    except:
+        request_body={
+            'summary': 'First-Step', #Titulo del calendario
+            'description':'Organización y productividad'
+        }
+        response= service.calendars().insert(body=request_body).execute()
+        print("Deberia Funcionar")
 
-    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    # if myCalendar==None:
+        #Cuerpo del nuevo calendario
+    
+
+    # #Crear Nuevo calendario
+    
+
+    #Listar todos los calendarios del usuario
+    # response=service.calendarList().list().execute()
+    # pprint(response)
+
+    # calendarItems=response.get('items') #Obtener los items de cada calendario
+    # myCalendar=filter(lambda x:'Nuevo calendario con la API :D' in x['summary'], calendarItems) #Filtrar para actualizar
+    # myCalendar=next(myCalendar)
+    # print(myCalendar) #Imprime en consola
+
+    #Actualizaciones
+    # myCalendar['summary'] = 'First-Step'
+    # myCalendar['description'] = 'Este es un nuevo calendario creado con API calendar'
+    # myCalendar['location'] = 'Neiva, Huila'
+
+    #Ejecuta actualizaciones
+    # service.calendars().update(calendarId=myCalendar['id'], body=myCalendar).execute()
+    return True
     # guardarUser(request)
     
 

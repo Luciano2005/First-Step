@@ -1,6 +1,35 @@
-<h1>MODIFICAR TAREA</h1>
-<form method="POST" tarea.id>
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Guardar</button>
-</form>
+{% extends 'navegacion.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+        <figure class="text-center" style="margin-top:50px">
+            <blockquote class="blockquote" style="margin-bottom:20px">
+                <h1 class="h1">MODIFICAR TAREA</h1>
+            </blockquote>
+            <figcaption class="blockquote-footer" style="margin-bottom:50px">
+                <h4>¡Actualiza tus tareas,</h4> <h5>FirstStep te mantiene al día!</h5>
+             </figcaption>
+            <form method="POST" tarea.id>
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 col-sm-7 col-9" >{{ form.name|as_crispy_field }}</div>
+                    <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.materia|as_crispy_field }}</div>
+                </div>
+                <div class="row justify-content-center ">
+                    <div class="col-lg-4 col-md-6 col-sm-7 col-9">{{ form.prioridad|as_crispy_field }}</div>
+                    <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+                        <label for="id_fecha" class="form-label requiredField">Fecha de entrega</label>
+                        <input type="date" name="fecha" class="form-control" id="id_fecha">
+                    </div>
+                </div>
+                <div class="row justify-content-center" style="margin-top:30px">
+                    <button type="submit" class="btn btn-dark" style="width: 120px;">Guardar</button>
+                </div>
+            </form>
+        </figure>
+    </div>
+</div>
+
+{% endblock %}

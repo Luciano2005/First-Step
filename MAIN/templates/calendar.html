@@ -1,8 +1,54 @@
-<h1>Ahora si se viene lo bueno</h1>
+{% extends 'navegacion.html' %}
 
-<form method="POST">
-    {% csrf_token %}
-    <button>
-        Iniciar sesión Calendar
-    </button>
-</form>
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-7 col-9">
+        <figure class="text-center" style="margin-top:30px">
+            <blockquote class="blockquote" style="margin-bottom:30px">
+                <h1 class="h1">GOOGLE CALENDAR</h1>
+            </blockquote>
+            <figcaption class="blockquote-footer" style="margin-bottom:30px">
+               <h4>¡Todo en un solo lugar; Al alcance de tu mano.</h4> <h5>First-Step, Tu Mejor Aliado!</h5>
+            </figcaption>
+        </figure>
+    </div>
+</div>
+<div class="row justify-content-start">
+    <div class="col-lg-4 my-auto mx-auto col-md-7 my-auto mx-auto col-sm-8  my-auto mx-auto">
+        <div class="text-center" style="margin-bottom:100px">
+            {% if verifica %}
+            <h1>Crea un evento</h1>
+            <p>{{enviado}}</p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input class="form-control" type="text" maxlength="30" name="title" placeholder="Titulo">
+                <textarea class="form-control" type="text" name="description" required placeholder="Descripción" maxlength="200"></textarea>
+                <label>Fecha de inicio:</label>
+                <input class="form-control" type="datetime-local" maxlength="30" required name="datetime-start" placeholder="Fecha y hora de inicio">
+                <label>Fecha Final:</label>
+                <input class="form-control" type="datetime-local" maxlength="30" required name="datetime-end" placeholder="Fecha y hora final">
+                <button type="submit" class="btn btn-success" style="width: 120px;  margin-top: 20px">
+                    Crear evento
+                </button>
+        </div>
+    </div>
+    <div class="col-lg-7 my-auto mx-auto col-md-7 my-auto mx-auto col-sm-8  my-auto mx-auto">
+        <div class="row justify-content-center">
+            <iframe src="https://calendar.google.com/calendar/embed?src={{calendario}}&ctz=America%2FBogota" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div style="margin-top:80px">
+    <h4>Inicia sesión en Google para sincronizar tu Calendario!</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success" style="width: 120px;  margin-top: 20px">
+            Iniciar sesión Google
+        </button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

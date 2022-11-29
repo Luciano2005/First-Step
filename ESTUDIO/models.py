@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class Pregunta(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
-    name = models.CharField(max_length = 30, blank = False)
+    name = models.CharField(max_length = 70, blank = False)
     respuesta = models.TextField(max_length = 200, blank = True)
     
     class nivel(models.IntegerChoices):
