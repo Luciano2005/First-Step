@@ -1,7 +1,8 @@
 from time import time
 from django import forms
 from django.forms import ModelForm, Widget
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from captcha.fields import ReCaptchaField
@@ -33,7 +34,6 @@ class Registro(UserCreationForm):
         } 
 
 class Loguearse(AuthenticationForm):
-    captcha = ReCaptchaField(widget = ReCaptchaV2Checkbox())
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label='Nombre de usuario'
@@ -43,7 +43,7 @@ class Loguearse(AuthenticationForm):
             
     class Meta:
         model=User
-        fields=['username','password', 'captcha']
+        fields=['username','password']
         widgets={
             'username' : forms.TextInput(attrs=({'placeholder':'Username/tagname/apodo', 'class':'form-control'}))
         }
@@ -121,3 +121,18 @@ class editPassword(PasswordChangeForm):
     class Meta:
         model=User
         fields=['old_password','new_password1','new_password2']
+
+class ResetPassword(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+    captcha = ReCaptchaField(widget = ReCaptchaV2Checkbox)
+
+class LetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['new_password1', 'new_password2']
+
+    
+
+        

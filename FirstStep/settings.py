@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = 'RENDER' not in os.environ
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -183,5 +183,5 @@ EMAIL_HOST_PASSWORD = 'zvywuktayqqtpfgt'
 RECAPTCHA_PUBLIC_KEY = '6LdvmxwjAAAAAGH5o3ayyPSjgbUtyMVrx17LajeL'
 RECAPTCHA_PRIVATE_KEY = '6LdvmxwjAAAAAHPTZ7rrFd0MT_0EvfN5ghqqJw6c'
 
-if DEBUG:
-    SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error'] #Quitar esto en produccion
+
+#SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error'] #Quitar esto en produccion
