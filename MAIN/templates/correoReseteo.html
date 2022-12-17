@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+Hola {{ user.username }}, 
+
+Hemos recibido una peticion para restablecer tu contrasena en First Step para este correo.
+Para iniciar el proceso de reestablecer tu contrasena, ingrese aqui:
+
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+{% endautoescape %}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ast import MatchSequence
 from django.db import IntegrityError
+from django.db.models.query_utils import Q
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
@@ -11,15 +12,17 @@ import os
 from django.conf import settings
 from urllib.parse import unquote, quote
 from ESTUDIO.models import Pregunta
-from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword
+from .forms import Registro, Loguearse, newMateria, newSeccion, newTarea, newDocumento, editUser,editPassword, ResetPassword, LetPasswordForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash, get_user_model
 from .models import Materia, Seccion, Tarea, Documento
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
+from django.contrib.auth.forms import SetPasswordForm
 from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
 from django.urls import reverse
 from .utils import PasswordResetTokenGenerator, account_activation_token
 from pprint import pprint
@@ -111,27 +114,21 @@ def formlogin(request):
             'form':Loguearse
     })
     else:
-        if request.POST['g-recaptcha-response'] != '':
-            user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
-            if user is None:
-                consulta_user = User.objects.filter(username=request.POST['username'])
-                # print(consulta_user[0].is_active)
-                if len(consulta_user) > 0 and consulta_user[0].is_active==False:
-                    return render(request, 'login.html',{
-                    'form':Loguearse,
-                    'error':'No has verificado tu cuenta. Por favor ingresa a tu correo.'})
+        user= authenticate(request, username=request.POST['username'],password=request.POST['password'])
+        if user is None:
+            consulta_user = User.objects.filter(username=request.POST['username'])
+            # print(consulta_user[0].is_active)
+            if len(consulta_user) > 0 and consulta_user[0].is_active==False:
                 return render(request, 'login.html',{
-                    'form':Loguearse,
-                    'error':'Nombre de usuario o contraseña incorrecto'
-                    })
-            else:
-                login(request, user)
-                return redirect('main')
-        else:
+                'form':Loguearse,
+                'error':'No has verificado tu cuenta. Por favor ingresa a tu correo.'})
             return render(request, 'login.html',{
-                    'form':Loguearse,
-                    'error':'Verifique el CAPTCHA'
-                    }) 
+                'form':Loguearse,
+                'error':'Nombre de usuario o contraseña incorrecto'
+                })
+        else:
+            login(request, user)
+            return redirect('main')
 
 @login_required
 def logout2(request):
@@ -438,6 +435,89 @@ def perfil(request):
                 'cambiar_contrasena':cambiar_contrasena,
             })
 
+#--------------------------------------Resetear contrasena----------------------------------------------------------
+
+def passwordReset(request):
+
+    if request.method == 'POST':
+        form = ResetPassword(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = get_user_model().objects.filter(Q(email = email)).first()
+            if user:
+                subject = "Peticion de reseteo de contrasena"
+                message = render_to_string("correoReseteo.html", {
+                    'user' : user.username,
+                    'domain' : get_current_site(request).domain,
+                    'uid' : urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token' : account_activation_token.make_token(user),
+                    "protocol" : 'https' if request.is_secure() else 'http'
+                })
+
+                email = EmailMessage(subject, message, to = [user.email])
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+                if email.send:
+                    print("Correo enviado a:" , user.email)
+
+                return redirect('password_reset_done')
+                
+
+            return redirect('')
+
+    form = ResetPassword()
+    return render(request, 'resetPassword.html', {
+        'form' : form
+    })
+
+
+def passwordResetConfirm(request, uidb64, token):
+    user = get_user_model()
+
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk = uid)
+    except:
+        user = None
+
+    print(user)
+    print(account_activation_token.check_token(user,token))
+
+    if user is not None and account_activation_token.check_token(user,token):
+        if request.POST:
+            if request.POST['new_password1'] == request.POST['new_password2']:
+                if form.is_valid():
+                    user = User.objects.get(username = user)
+                    user.set_password(request.POST['new_password1'])
+                    user.save()
+                    return render(request, 'resetPasswordComplete.html')   
+            else:   
+                form = SetPasswordForm(user)
+                return render(request, 'resetPasswordForm.html', {
+                'form' : form,
+                'error' : "Las contrasenas no coinciden"
+                })    
+
+        form = SetPasswordForm(user)
+        return render(request, 'resetPasswordForm.html', {
+            'form' : form
+        })       
+
+def resetPasswordForm(request):
+    
+    if request.POST == 'POST':
+        form = SetPasswordForm(request.user, request)
+        if form.is_valid():
+            form.save()
+            return redirect('/formlogin/')
+
+    form = SetPasswordForm(request.user)
+    return render(request, "resetPasswordForm.html", {
+        'form' : form
+    })
+
+def resetPasswordSent(request):
+    return render(request, "resetPasswordSent.html")
 
 #-------------------------------------------Calendar----------------------------------------------------------------
 service=None
