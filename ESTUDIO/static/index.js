@@ -4,15 +4,17 @@ const notifica = async () => {
         const data = response.json();
         var num = 0;
         var array = [];
+        var texto = "";
 
         data.then(function(value){
             arreglo = value.preguntas;
-        
-            arreglo.forEach(element => {
-                num += 1;
+            notifi.innerText = arreglo.length;
+
+            arreglo.forEach(el => {
+                texto += `Ya puedes repasar la pregunta ${el.name}\n`;
             });
 
-            notifi.innerText = num;
+            seccion.innerText = texto;
 
         });
 
