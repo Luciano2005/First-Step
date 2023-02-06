@@ -10,12 +10,11 @@ const notifica = async () => {
             arreglo = value.preguntas;
             notifi.innerText = arreglo.length;
 
+            // Cuando modifico el js en visual studio, no se modifica en el navegador
+
             arreglo.forEach(el => {
-                texto += `Ya puedes repasar la pregunta ${el.name}\n`;
+               console.log("HOla"); 
             });
-
-            seccion.innerText = texto;
-
         });
 
     } catch (error){
@@ -23,6 +22,10 @@ const notifica = async () => {
     }
 };
 
-window.addEventListener("load", async () => {
+const carga = async () => {
     await notifica();
+}
+
+window.addEventListener("load", async () => {
+    await carga();
 })
