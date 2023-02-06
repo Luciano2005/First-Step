@@ -18,6 +18,7 @@ urlpatterns=[
     path('eliminarPregunta/<int:pregunta_id>', views.eliminarPregunta, name = 'eliminarPregunta'),
 
     #Repaso
+    path('consulta/', views.crear, name = 'cosulta'),
     path('repaso/<int:seccion_id>', views.repasoFlashcard, name = 'repaso'),
     path('repaso/<int:seccion_id>/<int:pregunta_id>/<int:numero>', views.apropiacionPregunta, name='apropiacionPregunta'),
 

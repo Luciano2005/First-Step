@@ -1,7 +1,7 @@
 from doctest import FAIL_FAST
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
-from django.http import QueryDict
+from django.http import QueryDict, JsonResponse
 from django.urls import reverse
 from datetime import datetime, timedelta
 
@@ -237,6 +237,19 @@ def crearPreguntas(request, seccion_id, contador, preguntas): #Crear lita de pre
     if contador==0:
         preguntas=list(Pregunta.objects.filter(user=request.user, seccion_id=seccion_id, ultima_vez__lt = datetime.now()).order_by('?'))
     return preguntas
+
+def crear(request):
+    seccion = list(Seccion.objects.filter(user = request.user))
+    preguntas = []
+
+    for i in seccion:
+        lis_sec = list(Pregunta.objects.filter(user = request.user, seccion_id = i.id, ultima_vez__lt = datetime.now()).values())
+        for j in lis_sec:
+            preguntas.append(j)
+    
+    js = {'preguntas' : preguntas}
+
+    return JsonResponse(js)
 
 @login_required
 def apropiacionPregunta(request, seccion_id, pregunta_id, numero):
